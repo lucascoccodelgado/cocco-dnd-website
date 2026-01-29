@@ -1,0 +1,14 @@
+{
+  "name": "cocco-dnd-website",
+  "version": "1.0.0",
+  "description": "D&D Campaign Website for Curse of Strahd and The Waning Wonder",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["dnd", "campaign", "website"],
+  "author": "Cocco the Bard",
+  "license": "ISC"
+}
+

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cocco's D&D Universe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=UnifrakturMaguntia&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="module">
+    import React, { useState, useEffect } from 'https://esm.sh/react@18.2.0';
+    import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+    
+    // Mock storage API for development/local testing
+    // When deployed to claude.ai artifacts, window.storage will be provided
+    // This fallback uses localStorage for testing
+    if (!window.storage) {
+      console.log('Using localStorage fallback for storage');
+      window.storage = {
+        async get(key) {
+          const value = localStorage.getItem(key);
+          return value ? { key, value, shared: false } : null;
+        },
+        async set(key, value) {
+          localStorage.setItem(key, value);
+          return { key, value, shared: false };
+        },
+        async delete(key) {
+          localStorage.removeItem(key);
+          return { key, deleted: true, shared: false };
+        },
+        async list(prefix) {
+          const keys = Object.keys(localStorage).filter(k => !prefix || k.startsWith(prefix));
+          return { keys, prefix, shared: false };
+        }
+      };
+    }
+    
+    const { createElement: h } = React;
+
+    // Homepage Component
+    function HomePage({ onEnterCampaign }) {
+      const [activeMap, setActiveMap] = useState(1);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveMap(prev => prev === 1 ? 2 : 1);
+        }, 4000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return h('div', { className: 'homepage' },
+        h('div', { className: 'hero-wrapper' },
+          h('div', { className: `map-bg map-bg-1 ${activeMap === 1 ? 'active' : 'hidden'}` }),
+          h('div', { className: `map-bg map-bg-2 ${activeMap === 2 ? 'active' : 'hidden'}` }),
+          h('div', { className: 'hero-section' },
+            h('div', { className: 'hero-text' },
+              h('h1', { className: 'main-title' }, 'Welcome to Cocco\'s D&D Universe'),
+              h('p', { className: 'subtitle' },
+                "Your gateway to epic adventures. Track your journey, relive memorable sessions, connect with fellow adventurers, discover NPCs and locations, earn achievements, and explore the worlds we're building together."
+              )
+            ),
+            h('div', { className: 'hero-portrait' },
+              h('img', {
+                src: 'cocco-portrait.png',
+                alt: 'Cocco the Bard',
+                className: 'dm-portrait'
+              })
+            )
+          )
+        ),
+        h('div', { className: 'homepage-divider' }),
+        h('div', { className: 'campaigns-wrapper' },
+          h('div', { className: 'campaigns-section' },
+            h('h2', { className: 'section-title' }, 'Pick Your Universe'),
+            h('div', { className: 'campaign-cards' },
+              h('div', {
+                className: 'campaign-card curse-of-strahd',
+                onClick: () => onEnterCampaign('cos')
+              },
+                h('h3', null, 'Curse of Strahd'),
+                h('p', { className: 'campaign-tagline' }, 'Enter the Mists of Barovia'),
+                h('div', { className: 'card-overlay' })
+              ),
+              h('div', {
+                className: 'campaign-card waning-wonder',
+                onClick: () => onEnterCampaign('tww')
+              },
+                h('h3', null, 'The Waning Wonder'),
+                h('p', { className: 'campaign-tagline' }, 'Uncover Divine Mysteries in Sefara'),
+                h('div', { className: 'card-overlay' })
+              )
+            )
+          ),
+          h('div', { className: 'resources-section' },
+            h('p', { className: 'resources-text' },
+              'Playing D&D for the first time? ',
+              h('span', { className: 'wip-tag' }, '(WIP)'),
+              h('br'),
+              'Check out these resources first'
+            )
+          )
+        )
+      );
+    }
+
+    // Password Gate Component
+    function PasswordGate({ campaign, onUnlock }) {
+      const [password, setPassword] = useState('');
+      const [error, setError] = useState(false);
+
+      const correctPassword = campaign === 'cos' ? 'strahd' : 'wonder';
+      const campaignName = campaign === 'cos' ? 'Curse of Strahd' : 'The Waning Wonder';
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (password.toLowerCase() === correctPassword) {
+          onUnlock();
+          setError(false);
+        } else {
+          setError(true);
+          setPassword('');
+        }
+      };
+
+      return h('div', { className: `password-gate ${campaign}` },
+        h('div', { className: 'password-box' },
+          h('h2', null, campaignName),
+          h('p', null, 'Enter the password to access this campaign'),
+          h('form', { onSubmit: handleSubmit },
+            h('input', {
+              type: 'password',
+              value: password,
+              onChange: (e) => setPassword(e.target.value),
+              placeholder: 'Password',
+              className: error ? 'error' : '',
+              autoFocus: true
+            }),
+            error && h('p', { className: 'error-message' }, 'Incorrect password. Try again.'),
+            h('button', { type: 'submit' }, 'Enter')
+          ),
+          h('button', { 
+            className: 'back-button',
+            onClick: () => window.location.reload()
+          }, '← Back to Home')
+        )
+      );
+    }
+
+    // Campaign Dashboard Component
+    function CampaignDashboard({ campaign, onBack }) {
+      const [activeTab, setActiveTab] = useState('recaps');
+      const [recaps, setRecaps] = useState([]);
+      const [comments, setComments] = useState([]);
+      const [achievements, setAchievements] = useState([]);
+      const [npcs, setNpcs] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      const campaignName = campaign === 'cos' ? 'Curse of Strahd' : 'The Waning Wonder';
+      const storagePrefix = campaign === 'cos' ? 'cos' : 'tww';
+
+      useEffect(() => {
+        loadData();
+      }, []);
+
+      const loadData = async () => {
+        try {
+          const recapsData = await window.storage.get(`${storagePrefix}_recaps`);
+          if (recapsData?.value) setRecaps(JSON.parse(recapsData.value));
+
+          const commentsData = await window.storage.get(`${storagePrefix}_comments`);
+          if (commentsData?.value) setComments(JSON.parse(commentsData.value));
+
+          const achievementsData = await window.storage.get(`${storagePrefix}_achievements`);
+          if (achievementsData?.value) setAchievements(JSON.parse(achievementsData.value));
+
+          const npcsData = await window.storage.get(`${storagePrefix}_npcs`);
+          if (npcsData?.value) setNpcs(JSON.parse(npcsData.value));
+        } catch (error) {
+          console.log('No existing data found, starting fresh');
+        }
+        setLoading(false);
+      };
+
+      const saveRecaps = async (newRecaps) => {
+        await window.storage.set(`${storagePrefix}_recaps`, JSON.stringify(newRecaps));
+        setRecaps(newRecaps);
+      };
+
+      const saveComments = async (newComments) => {
+        await window.storage.set(`${storagePrefix}_comments`, JSON.stringify(newComments));
+        setComments(newComments);
+      };
+
+      const saveAchievements = async (newAchievements) => {
+        await window.storage.set(`${storagePrefix}_achievements`, JSON.stringify(newAchievements));
+        setAchievements(newAchievements);
+      };
+
+      const saveNpcs = async (newNpcs) => {
+        await window.storage.set(`${storagePrefix}_npcs`, JSON.stringify(newNpcs));
+        setNpcs(newNpcs);
+      };
+
+      if (loading) {
+        return h('div', { className: `campaign-dashboard ${campaign}` }, 'Loading...');
+      }
+
+      return h('div', { className: `campaign-dashboard ${campaign}` },
+        h('header', { className: 'campaign-header' },
+          h('button', { className: 'back-button', onClick: onBack }, '← Back to Home'),
+          h('h1', null, campaignName)
+        ),
+        h('nav', { className: 'campaign-nav' },
+          h('button', { 
+            className: activeTab === 'recaps' ? 'active' : '',
+            onClick: () => setActiveTab('recaps')
+          }, 'Session Recaps'),
+          h('button', { 
+            className: activeTab === 'comments' ? 'active' : '',
+            onClick: () => setActiveTab('comments')
+          }, 'Message Board'),
+          h('button', { 
+            className: activeTab === 'achievements' ? 'active' : '',
+            onClick: () => setActiveTab('achievements')
+          }, 'Achievements'),
+          h('button', { 
+            className: activeTab === 'npcs' ? 'active' : '',
+            onClick: () => setActiveTab('npcs')
+          }, 'NPCs'),
+          h('button', { 
+            className: activeTab === 'maps' ? 'active' : '',
+            onClick: () => setActiveTab('maps')
+          }, 'Maps')
+        ),
+        h('main', { className: 'campaign-content' },
+          activeTab === 'recaps' && h(RecapsTab, { recaps, onSave: saveRecaps, campaign }),
+          activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments, campaign }),
+          activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
+          activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs, campaign }),
+          activeTab === 'maps' && h(MapsTab, { campaign })
+        )
+      );
+    }
+
+    // Recaps Tab
+    function RecapsTab({ recaps, onSave, campaign }) {
+      const [isAdding, setIsAdding] = useState(false);
+      const [newRecap, setNewRecap] = useState({ session: '', title: '', content: '', date: '' });
+
+      const handleAdd = () => {
+        if (newRecap.session && newRecap.title && newRecap.content) {
+          const recap = {
+            ...newRecap,
+            id: Date.now(),
+            date: newRecap.date || new Date().toLocaleDateString()
+          };
+          onSave([recap, ...recaps]);
+          setNewRecap({ session: '', title: '', content: '', date: '' });
+          setIsAdding(false);
+        }
+      };
+
+      const handleDelete = (id) => onSave(recaps.filter(r => r.id !== id));
+
+      return h('div', { className: 'tab-content' },
+        h('div', { className: 'tab-header' },
+          h('h2', null, 'Session Recaps'),
+          h('button', { 
+            className: 'add-button',
+            onClick: () => setIsAdding(!isAdding)
+          }, isAdding ? 'Cancel' : '+ Add Recap')
+        ),
+        isAdding && h('div', { className: 'add-form' },
+          h('input', {
+            type: 'text',
+            placeholder: 'Session Number (e.g., Session 1)',
+            value: newRecap.session,
+            onChange: (e) => setNewRecap({...newRecap, session: e.target.value})
+          }),
+          h('input', {
+            type: 'text',
+            placeholder: 'Session Title',
+            value: newRecap.title,
+            onChange: (e) => setNewRecap({...newRecap, title: e.target.value})
+          }),
+          h('input', {
+            type: 'date',
+            value: newRecap.date,
+            onChange: (e) => setNewRecap({...newRecap, date: e.target.value})
+          }),
+          h('textarea', {
+            placeholder: 'Write your session recap here...',
+            value: newRecap.content,
+            onChange: (e) => setNewRecap({...newRecap, content: e.target.value}),
+            rows: 10
+          }),
+          h('button', { className: 'save-button', onClick: handleAdd }, 'Save Recap')
+        ),
+        h('div', { className: 'recaps-list' },
+          recaps.length === 0
+            ? h('p', { className: 'empty-state' }, 'No recaps yet. Add your first session recap!')
+            : recaps.map(recap => 
+                h('div', { key: recap.id, className: 'recap-card' },
+                  h('div', { className: 'recap-header' },
+                    h('div', null,
+                      h('h3', null, `${recap.session}: ${recap.title}`),
+                      h('p', { className: 'recap-date' }, recap.date)
+                    ),
+                    h('button', { 
+                      className: 'delete-button',
+                      onClick: () => handleDelete(recap.id)
+                    }, 'Delete')
+                  ),
+                  h('div', { className: 'recap-content' }, recap.content)
+                )
+              )
+        )
+      );
+    }
+
+    // Comments Tab
+    function CommentsTab({ comments, onSave, campaign }) {
+      const [newComment, setNewComment] = useState({ author: '', message: '' });
+
+      const handleAdd = () => {
+        if (newComment.author && newComment.message) {
+          const comment = {
+            ...newComment,
+            id: Date.now(),
+            timestamp: new Date().toLocaleString()
+          };
+          onSave([...comments, comment]);
+          setNewComment({ author: '', message: '' });
+        }
+      };
+
+      const handleDelete = (id) => onSave(comments.filter(c => c.id !== id));
+
+      return h('div', { className: 'tab-content' },
+        h('h2', null, 'Message Board'),
+        h('div', { className: 'add-form comment-form' },
+          h('input', {
+            type: 'text',
+            placeholder: 'Your name',
+            value: newComment.author,
+            onChange: (e) => setNewComment({...newComment, author: e.target.value})
+          }),
+          h('textarea', {
+            placeholder: 'Write a message...',
+            value: newComment.message,
+            onChange: (e) => setNewComment({...newComment, message: e.target.value}),
+            rows: 4
+          }),
+          h('button', { className: 'save-button', onClick: handleAdd }, 'Post Message')
+        ),
+        h('div', { className: 'comments-list' },
+          comments.length === 0
+            ? h('p', { className: 'empty-state' }, 'No messages yet. Be the first to post!')
+            : comments.map(comment =>
+                h('div', { key: comment.id, className: 'comment-card' },
+                  h('div', { className: 'comment-header' },
+                    h('strong', null, comment.author),
+                    h('span', { className: 'comment-time' }, comment.timestamp),
+                    h('button', {
+                      className: 'delete-button small',
+                      onClick: () => handleDelete(comment.id)
+                    }, '×')
+                  ),
+                  h('p', null, comment.message)
+                )
+              )
+        )
+      );
+    }
+
+    // Achievements Tab
+    function AchievementsTab({ achievements, onSave, campaign }) {
+      const [isAdding, setIsAdding] = useState(false);
+      const [newAchievement, setNewAchievement] = useState({ title: '', description: '', date: '' });
+
+      const handleAdd = () => {
+        if (newAchievement.title && newAchievement.description) {
+          const achievement = {
+            ...newAchievement,
+            id: Date.now(),
+            date: newAchievement.date || new Date().toLocaleDateString()
+          };
+          onSave([achievement, ...achievements]);
+          setNewAchievement({ title: '', description: '', date: '' });
+          setIsAdding(false);
+        }
+      };
+
+      const handleDelete = (id) => onSave(achievements.filter(a => a.id !== id));
+
+      return h('div', { className: 'tab-content' },
+        h('div', { className: 'tab-header' },
+          h('h2', null, 'Party Achievements'),
+          h('button', {
+            className: 'add-button',
+            onClick: () => setIsAdding(!isAdding)
+          }, isAdding ? 'Cancel' : '+ Add Achievement')
+        ),
+        isAdding && h('div', { className: 'add-form' },
+          h('input', {
+            type: 'text',
+            placeholder: 'Achievement Title',
+            value: newAchievement.title,
+            onChange: (e) => setNewAchievement({...newAchievement, title: e.target.value})
+          }),
+          h('input', {
+            type: 'date',
+            value: newAchievement.date,
+            onChange: (e) => setNewAchievement({...newAchievement, date: e.target.value})
+          }),
+          h('textarea', {
+            placeholder: 'Achievement description...',
+            value: newAchievement.description,
+            onChange: (e) => setNewAchievement({...newAchievement, description: e.target.value}),
+            rows: 4
+          }),
+          h('button', { className: 'save-button', onClick: handleAdd }, 'Save Achievement')
+        ),
+        h('div', { className: 'achievements-grid' },
+          achievements.length === 0
+            ? h('p', { className: 'empty-state' }, 'No achievements yet. Your legendary deeds await!')
+            : achievements.map(achievement =>
+                h('div', { key: achievement.id, className: 'achievement-card' },
+                  h('div', { className: 'achievement-icon' }, '🏆'),
+                  h('h3', null, achievement.title),
+                  h('p', { className: 'achievement-date' }, achievement.date),
+                  h('p', null, achievement.description),
+                  h('button', {
+                    className: 'delete-button small',
+                    onClick: () => handleDelete(achievement.id)
+                  }, 'Delete')
+                )
+              )
+        )
+      );
+    }
+
+    // NPCs Tab
+    function NpcsTab({ npcs, onSave, campaign }) {
+      const [isAdding, setIsAdding] = useState(false);
+      const [newNpc, setNewNpc] = useState({ name: '', title: '', location: '', description: '', status: 'alive' });
+
+      const handleAdd = () => {
+        if (newNpc.name && newNpc.description) {
+          const npc = { ...newNpc, id: Date.now() };
+          onSave([...npcs, npc]);
+          setNewNpc({ name: '', title: '', location: '', description: '', status: 'alive' });
+          setIsAdding(false);
+        }
+      };
+
+      const handleDelete = (id) => onSave(npcs.filter(n => n.id !== id));
+
+      return h('div', { className: 'tab-content' },
+        h('div', { className: 'tab-header' },
+          h('h2', null, 'NPCs & Characters'),
+          h('button', {
+            className: 'add-button',
+            onClick: () => setIsAdding(!isAdding)
+          }, isAdding ? 'Cancel' : '+ Add NPC')
+        ),
+        isAdding && h('div', { className: 'add-form' },
+          h('input', {
+            type: 'text',
+            placeholder: 'NPC Name',
+            value: newNpc.name,
+            onChange: (e) => setNewNpc({...newNpc, name: e.target.value})
+          }),
+          h('input', {
+            type: 'text',
+            placeholder: 'Title/Role (e.g., Innkeeper, Lord, Merchant)',
+            value: newNpc.title,
+            onChange: (e) => setNewNpc({...newNpc, title: e.target.value})
+          }),
+          h('input', {
+            type: 'text',
+            placeholder: 'Location',
+            value: newNpc.location,
+            onChange: (e) => setNewNpc({...newNpc, location: e.target.value})
+          }),
+          h('select', {
+            value: newNpc.status,
+            onChange: (e) => setNewNpc({...newNpc, status: e.target.value})
+          },
+            h('option', { value: 'alive' }, 'Alive'),
+            h('option', { value: 'deceased' }, 'Deceased'),
+            h('option', { value: 'unknown' }, 'Unknown')
+          ),
+          h('textarea', {
+            placeholder: 'Description, personality, notes...',
+            value: newNpc.description,
+            onChange: (e) => setNewNpc({...newNpc, description: e.target.value}),
+            rows: 6
+          }),
+          h('button', { className: 'save-button', onClick: handleAdd }, 'Save NPC')
+        ),
+        h('div', { className: 'npcs-grid' },
+          npcs.length === 0
+            ? h('p', { className: 'empty-state' }, 'No NPCs recorded yet. Meet someone interesting!')
+            : npcs.map(npc =>
+                h('div', { key: npc.id, className: 'npc-card' },
+                  h('div', { className: 'npc-header' },
+                    h('h3', null, npc.name),
+                    h('span', { className: `status-badge ${npc.status}` }, npc.status)
+                  ),
+                  npc.title && h('p', { className: 'npc-title' }, npc.title),
+                  npc.location && h('p', { className: 'npc-location' }, `📍 ${npc.location}`),
+                  h('p', { className: 'npc-description' }, npc.description),
+                  h('button', {
+                    className: 'delete-button',
+                    onClick: () => handleDelete(npc.id)
+                  }, 'Delete')
+                )
+              )
+        )
+      );
+    }
+
+    // Maps Tab
+    function MapsTab({ campaign }) {
+      return h('div', { className: 'tab-content' },
+        h('h2', null, 'Maps & Locations'),
+        h('p', { className: 'empty-state' }, 'Maps coming soon! You can add map images here later.')
+      );
+    }
+
+    // Main App Component
+    function App() {
+      const [currentView, setCurrentView] = useState('home');
+      const [selectedCampaign, setSelectedCampaign] = useState(null);
+      const [isUnlocked, setIsUnlocked] = useState(false);
+
+      const handleEnterCampaign = (campaign) => {
+        setSelectedCampaign(campaign);
+        setCurrentView('password');
+        setIsUnlocked(false);
+      };
+
+      const handleUnlock = () => {
+        setIsUnlocked(true);
+        setCurrentView('dashboard');
+      };
+
+      const handleBackHome = () => {
+        setCurrentView('home');
+        setSelectedCampaign(null);
+        setIsUnlocked(false);
+      };
+
+      return h('div', { className: 'app' },
+        currentView === 'home' && h(HomePage, { onEnterCampaign: handleEnterCampaign }),
+        currentView === 'password' && selectedCampaign && h(PasswordGate, { 
+          campaign: selectedCampaign,
+          onUnlock: handleUnlock
+        }),
+        currentView === 'dashboard' && selectedCampaign && h(CampaignDashboard, {
+          campaign: selectedCampaign,
+          onBack: handleBackHome
+        })
+      );
+    }
+    
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(h(App));
+  </script>
+</body>
+</html>

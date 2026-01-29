@@ -1,0 +1,1140 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cinzel', 'Georgia', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #0d0603;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+/* Homepage Styles */
+.homepage {
+  min-height: 100vh;
+  color: #f4e4c1;
+  position: relative;
+  background: #0d0603;
+}
+
+/* Top section: map background area */
+.hero-wrapper {
+  position: relative;
+  background: #1a0f08;
+  padding: 2rem 2rem 3rem;
+  overflow: hidden;
+}
+
+/* Crossfading map backgrounds */
+.map-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 1.5s ease-in-out;
+  pointer-events: none;
+}
+
+.map-bg-1 {
+  background-image: url('background-map.png');
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.map-bg-2 {
+  background-image: url('background-map-2.png');
+  opacity: 0;
+  z-index: 0;
+}
+
+.map-bg-1.active {
+  opacity: 0.2;
+}
+
+.map-bg-1.hidden {
+  opacity: 0;
+}
+
+.map-bg-2.active {
+  opacity: 0.2;
+}
+
+.map-bg-2.hidden {
+  opacity: 0;
+}
+
+/* Dark overlay to keep text readable */
+.hero-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 0, 0, 0.08) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(26, 15, 8, 0.3) 0%, rgba(26, 15, 8, 0.6) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Ornate gold border around the map area */
+.hero-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Divider between hero and campaigns */
+.homepage-divider {
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.15) 10%,
+    #d4af37 40%,
+    #d4af37 60%,
+    rgba(212, 175, 55, 0.15) 90%,
+    transparent 100%
+  );
+  position: relative;
+}
+
+.homepage-divider::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: #d4af37;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  z-index: 3;
+}
+
+/* Bottom section: campaigns area */
+.campaigns-wrapper {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 60%, rgba(139, 0, 0, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 80%, rgba(125, 82, 184, 0.05) 0%, transparent 40%),
+    linear-gradient(135deg, #1a0f08 0%, #2c1810 30%, #1a0f08 60%, #0d0603 100%);
+  padding: 3rem 2rem 2rem;
+}
+
+.hero-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 3rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-portrait {
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Ornate frame around portrait */
+.hero-portrait::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.hero-portrait::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.dm-portrait {
+  width: 380px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
+  box-shadow:
+    0 0 30px rgba(212, 175, 55, 0.2),
+    0 10px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dm-portrait:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 50px rgba(212, 175, 55, 0.3),
+    0 15px 50px rgba(0, 0, 0, 0.6);
+}
+
+.main-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #d4af37;
+  text-shadow:
+    2px 2px 8px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(212, 175, 55, 0.15);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* Decorative divider under title */
+.main-title::after {
+  content: '';
+  display: block;
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, rgba(212, 175, 55, 0.2));
+  margin-top: 1rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #f4e4c1;
+  opacity: 0.9;
+  max-width: 600px;
+  font-family: 'Georgia', serif;
+  text-transform: none;
+}
+
+.campaigns-section {
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  position: relative;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #d4af37;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+/* Decorative flourishes around section title */
+.section-title::before,
+.section-title::after {
+  content: '—';
+  color: rgba(212, 175, 55, 0.5);
+  margin: 0 0.75rem;
+  font-weight: 300;
+}
+
+.campaign-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+  padding: 0 1rem;
+}
+
+.campaign-card {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem;
+  border-radius: 4px;
+}
+
+/* Ornate double-border frame */
+.campaign-card::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color 0.4s ease;
+}
+
+.campaign-card:hover::before {
+  border-color: rgba(212, 175, 55, 0.6);
+}
+
+/* Corner accents */
+.campaign-card::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    /* top-left corner */
+    linear-gradient(135deg, #d4af37 0%, #d4af37 12px, transparent 12px) no-repeat top left,
+    /* top-right corner */
+    linear-gradient(225deg, #d4af37 0%, #d4af37 12px, transparent 12px) no-repeat top right,
+    /* bottom-left corner */
+    linear-gradient(45deg, #d4af37 0%, #d4af37 12px, transparent 12px) no-repeat bottom left,
+    /* bottom-right corner */
+    linear-gradient(315deg, #d4af37 0%, #d4af37 12px, transparent 12px) no-repeat bottom right;
+  background-size: 20px 20px;
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
+}
+
+.campaign-card:hover::after {
+  opacity: 0.8;
+}
+
+.campaign-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.campaign-card h3 {
+  font-size: 2.5rem;
+  z-index: 4;
+  position: relative;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.04em;
+}
+
+.campaign-tagline {
+  font-size: 1.15rem;
+  z-index: 4;
+  position: relative;
+  opacity: 0.9;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+  font-style: italic;
+  font-family: 'Georgia', serif;
+}
+
+/* Subtle animated glow line under tagline */
+.campaign-tagline::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  margin: 1rem auto 0;
+  transition: width 0.4s ease, opacity 0.4s ease;
+  opacity: 0.5;
+}
+
+.campaign-card:hover .campaign-tagline::after {
+  width: 120px;
+  opacity: 1;
+}
+
+.curse-of-strahd {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(139, 0, 0, 0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(80, 0, 0, 0.3) 0%, transparent 50%),
+    linear-gradient(135deg, #1a0000 0%, #3a0000 40%, #4d0000 70%, #1a0000 100%);
+  color: #fff;
+  border: 2px solid rgba(139, 0, 0, 0.6);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 0 60px rgba(139, 0, 0, 0.1);
+}
+
+.curse-of-strahd h3 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-weight: 400;
+  font-size: 2.8rem;
+}
+
+.curse-of-strahd:hover {
+  box-shadow:
+    0 15px 50px rgba(139, 0, 0, 0.5),
+    0 0 80px rgba(139, 0, 0, 0.2),
+    inset 0 0 80px rgba(139, 0, 0, 0.15);
+  border-color: rgba(139, 0, 0, 0.8);
+}
+
+.curse-of-strahd .campaign-tagline::after {
+  background: linear-gradient(90deg, transparent, #8b0000, transparent);
+}
+
+.waning-wonder {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(157, 110, 224, 0.3) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
+    linear-gradient(135deg, #2d1b4e 0%, #3d2463 30%, #5d3a8c 70%, #2d1b4e 100%);
+  color: #ffd700;
+  border: 2px solid rgba(157, 110, 224, 0.5);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 0 60px rgba(125, 82, 184, 0.1);
+}
+
+.waning-wonder h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 2.8rem;
+  letter-spacing: 0.06em;
+}
+
+.waning-wonder:hover {
+  box-shadow:
+    0 15px 50px rgba(125, 82, 184, 0.4),
+    0 0 80px rgba(125, 82, 184, 0.15),
+    inset 0 0 80px rgba(125, 82, 184, 0.15);
+  border-color: rgba(157, 110, 224, 0.8);
+}
+
+.waning-wonder .campaign-tagline::after {
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.resources-section {
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.resources-text {
+  font-size: 1.15rem;
+  color: #f4e4c1;
+  line-height: 1.8;
+  font-family: 'Georgia', serif;
+}
+
+.wip-tag {
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Password Gate Styles */
+.password-gate {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.password-gate.cos {
+  background: linear-gradient(135deg, #0d0000 0%, #330000 50%, #1a0000 100%);
+}
+
+.password-gate.tww {
+  background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #3d2463 100%);
+}
+
+.password-box {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3rem;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.password-gate.cos .password-box {
+  border: 2px solid #8b0000;
+  color: #fff;
+}
+
+.password-gate.tww .password-box {
+  border: 2px solid #9d6ee0;
+  color: #ffd700;
+}
+
+.password-box h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.password-box p {
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.password-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.password-box input {
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: 2px solid;
+  background: rgba(0, 0, 0, 0.3);
+  color: inherit;
+  text-align: center;
+  font-family: inherit;
+}
+
+.password-gate.cos input {
+  border-color: #8b0000;
+}
+
+.password-gate.tww input {
+  border-color: #9d6ee0;
+}
+
+.password-box input.error {
+  border-color: #ff4444;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+}
+
+.password-box button[type="submit"] {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.password-gate.cos button[type="submit"] {
+  background: #8b0000;
+  color: #fff;
+}
+
+.password-gate.cos button[type="submit"]:hover {
+  background: #a30000;
+  transform: translateY(-2px);
+}
+
+.password-gate.tww button[type="submit"] {
+  background: #7e52b8;
+  color: #ffd700;
+}
+
+.password-gate.tww button[type="submit"]:hover {
+  background: #9d6ee0;
+  transform: translateY(-2px);
+}
+
+.back-button {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 2px solid currentColor;
+  color: inherit;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Campaign Dashboard Styles */
+.campaign-dashboard {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.campaign-dashboard.cos {
+  background: linear-gradient(135deg, #0d0000 0%, #1a0000 50%, #0d0000 100%);
+  color: #fff;
+}
+
+.campaign-dashboard.tww {
+  background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c1 50%, #d4c5b0 100%);
+  color: #2d1b4e;
+  position: relative;
+}
+
+.campaign-dashboard.tww::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(0deg, rgba(139, 69, 19, 0.05) 0px, transparent 1px, transparent 2px, rgba(139, 69, 19, 0.05) 3px),
+    repeating-linear-gradient(90deg, rgba(139, 69, 19, 0.05) 0px, transparent 1px, transparent 2px, rgba(139, 69, 19, 0.05) 3px);
+  pointer-events: none;
+}
+
+.campaign-header {
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.campaign-dashboard.cos .campaign-header {
+  background: linear-gradient(180deg, rgba(139, 0, 0, 0.3) 0%, transparent 100%);
+  border-bottom: 2px solid #8b0000;
+}
+
+.campaign-dashboard.tww .campaign-header {
+  background: linear-gradient(180deg, rgba(125, 82, 184, 0.2) 0%, transparent 100%);
+  border-bottom: 3px solid #7e52b8;
+}
+
+.campaign-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.campaign-dashboard.cos h1 {
+  color: #ff6b6b;
+  text-shadow: 2px 2px 8px rgba(139, 0, 0, 0.8);
+}
+
+.campaign-dashboard.tww h1 {
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(125, 82, 184, 0.6);
+}
+
+.campaign-header .back-button {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+}
+
+.campaign-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.campaign-dashboard.cos .campaign-nav {
+  background: rgba(26, 0, 0, 0.95);
+  border-bottom: 1px solid #8b0000;
+}
+
+.campaign-dashboard.tww .campaign-nav {
+  background: rgba(245, 230, 211, 0.95);
+  border-bottom: 2px solid #7e52b8;
+}
+
+.campaign-nav button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.campaign-dashboard.cos .campaign-nav button {
+  color: #fff;
+  border-color: #8b0000;
+}
+
+.campaign-dashboard.cos .campaign-nav button:hover {
+  background: rgba(139, 0, 0, 0.3);
+}
+
+.campaign-dashboard.cos .campaign-nav button.active {
+  background: #8b0000;
+  box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+}
+
+.campaign-dashboard.tww .campaign-nav button {
+  color: #2d1b4e;
+  border-color: #7e52b8;
+}
+
+.campaign-dashboard.tww .campaign-nav button:hover {
+  background: rgba(125, 82, 184, 0.2);
+}
+
+.campaign-dashboard.tww .campaign-nav button.active {
+  background: #7e52b8;
+  color: #ffd700;
+  box-shadow: 0 0 20px rgba(125, 82, 184, 0.4);
+}
+
+.campaign-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tab-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.campaign-dashboard.cos h2 {
+  color: #ff6b6b;
+}
+
+.campaign-dashboard.tww h2 {
+  color: #7e52b8;
+}
+
+/* Buttons */
+.add-button, .save-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.campaign-dashboard.cos .add-button,
+.campaign-dashboard.cos .save-button {
+  background: #8b0000;
+  color: #fff;
+}
+
+.campaign-dashboard.cos .add-button:hover,
+.campaign-dashboard.cos .save-button:hover {
+  background: #a30000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.4);
+}
+
+.campaign-dashboard.tww .add-button,
+.campaign-dashboard.tww .save-button {
+  background: #7e52b8;
+  color: #ffd700;
+}
+
+.campaign-dashboard.tww .add-button:hover,
+.campaign-dashboard.tww .save-button:hover {
+  background: #9d6ee0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(125, 82, 184, 0.4);
+}
+
+.delete-button {
+  padding: 0.5rem 1rem;
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.delete-button:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+.delete-button.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Forms */
+.add-form {
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.campaign-dashboard.cos .add-form {
+  background: rgba(139, 0, 0, 0.1);
+  border: 2px solid #8b0000;
+}
+
+.campaign-dashboard.tww .add-form {
+  background: rgba(125, 82, 184, 0.1);
+  border: 2px solid #7e52b8;
+}
+
+.add-form input,
+.add-form textarea,
+.add-form select {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 2px solid;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.campaign-dashboard.cos .add-form input,
+.campaign-dashboard.cos .add-form textarea,
+.campaign-dashboard.cos .add-form select {
+  border-color: #8b0000;
+  color: #fff;
+}
+
+.campaign-dashboard.tww .add-form input,
+.campaign-dashboard.tww .add-form textarea,
+.campaign-dashboard.tww .add-form select {
+  border-color: #7e52b8;
+  color: #2d1b4e;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.add-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Cards and Lists */
+.recaps-list, .comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.recap-card, .comment-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.campaign-dashboard.cos .recap-card,
+.campaign-dashboard.cos .comment-card {
+  background: rgba(139, 0, 0, 0.15);
+  border: 2px solid #8b0000;
+}
+
+.campaign-dashboard.cos .recap-card:hover,
+.campaign-dashboard.cos .comment-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 20px rgba(139, 0, 0, 0.3);
+}
+
+.campaign-dashboard.tww .recap-card,
+.campaign-dashboard.tww .comment-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid #7e52b8;
+}
+
+.campaign-dashboard.tww .recap-card:hover,
+.campaign-dashboard.tww .comment-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 20px rgba(125, 82, 184, 0.2);
+}
+
+.recap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.recap-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.recap-date {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.recap-content {
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.comment-time {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Grids */
+.achievements-grid, .npcs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.achievement-card, .npc-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.campaign-dashboard.cos .achievement-card,
+.campaign-dashboard.cos .npc-card {
+  background: rgba(139, 0, 0, 0.15);
+  border: 2px solid #8b0000;
+}
+
+.campaign-dashboard.cos .achievement-card:hover,
+.campaign-dashboard.cos .npc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(139, 0, 0, 0.3);
+}
+
+.campaign-dashboard.tww .achievement-card,
+.campaign-dashboard.tww .npc-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid #7e52b8;
+}
+
+.campaign-dashboard.tww .achievement-card:hover,
+.campaign-dashboard.tww .npc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(125, 82, 184, 0.2);
+}
+
+.achievement-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.achievement-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-date {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.npc-card {
+  text-align: left;
+}
+
+.npc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+
+.npc-header h3 {
+  font-size: 1.5rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.alive {
+  background: #28a745;
+  color: #fff;
+}
+
+.status-badge.deceased {
+  background: #6c757d;
+  color: #fff;
+}
+
+.status-badge.unknown {
+  background: #ffc107;
+  color: #000;
+}
+
+.npc-title {
+  font-style: italic;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.npc-location {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.npc-description {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  opacity: 0.7;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .main-title::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dm-portrait {
+    width: 280px;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .campaign-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .campaign-card {
+    height: 260px;
+  }
+
+  .campaign-card h3 {
+    font-size: 2rem;
+  }
+  
+  .campaign-header h1 {
+    font-size: 2rem;
+  }
+  
+  .campaign-header .back-button {
+    position: static;
+    margin-bottom: 1rem;
+  }
+  
+  .tab-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .tab-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .achievements-grid, .npcs-grid {
+    grid-template-columns: 1fr;
+  }
+}
