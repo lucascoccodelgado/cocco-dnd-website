@@ -1139,6 +1139,28 @@ body {
 
 .tww-home {
   animation: fadeIn 0.3s ease;
+  position: relative;
+}
+
+.tww-home::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('city.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tww-home > section {
+  position: relative;
+  z-index: 1;
 }
 
 /* Hero Section */
