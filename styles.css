@@ -1370,99 +1370,71 @@ body {
 .tww-carousel-card {
   position: absolute;
   width: 300px;
-  background: rgba(25, 12, 45, 0.92);
+  background: transparent;
   border: none;
   border-radius: 0;
-  padding: 1.25rem;
-  padding-top: 3.5rem;
+  padding: 0;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
-  clip-path: polygon(
-    0% 100%,
-    0% 38%,
-    0.5% 34%,
-    1.5% 30%,
-    3% 26.5%,
-    5% 23%,
-    8% 19.5%,
-    11% 16.5%,
-    15% 13.5%,
-    19% 11%,
-    24% 8.5%,
-    29% 6.5%,
-    34% 4.8%,
-    39% 3.2%,
-    43% 2.1%,
-    46% 1.2%,
-    48.5% 0.5%,
-    50% 0%,
-    51.5% 0.5%,
-    54% 1.2%,
-    57% 2.1%,
-    61% 3.2%,
-    66% 4.8%,
-    71% 6.5%,
-    76% 8.5%,
-    81% 11%,
-    85% 13.5%,
-    89% 16.5%,
-    92% 19.5%,
-    95% 23%,
-    97% 26.5%,
-    98.5% 30%,
-    99.5% 34%,
-    100% 38%,
-    100% 100%
-  );
 }
 
-/* Window frame overlay using window.webp */
+/* The card inner content, masked to the window shape */
+.tww-carousel-inner {
+  background: rgba(25, 12, 45, 0.92);
+  padding: 1.25rem;
+  padding-top: 3rem;
+  -webkit-mask-image: url('window.webp');
+  mask-image: url('window.webp');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+
+/* Window frame border on top */
 .tww-carousel-card::after {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: url('window.webp');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   pointer-events: none;
   z-index: 10;
-  filter: invert(1) brightness(0.55) sepia(1) hue-rotate(220deg) saturate(4);
-  mix-blend-mode: screen;
+  filter: brightness(0) invert(0.35) sepia(1) hue-rotate(230deg) saturate(3);
 }
 
 .tww-carousel-card .tww-char-name {
   color: #e0d0f0;
-  position: relative;
-  z-index: 5;
 }
 
 .tww-carousel-card .tww-char-meta {
   color: #b8a0d8;
-  position: relative;
-  z-index: 5;
 }
 
 .tww-carousel-card .tww-char-player {
   color: #a090c0;
   opacity: 0.8;
-  position: relative;
-  z-index: 5;
 }
 
 .tww-carousel-center {
   cursor: default;
   width: 600px;
+}
+
+.tww-carousel-center .tww-carousel-inner {
   background: rgba(30, 15, 55, 0.97);
-  filter: drop-shadow(0 8px 32px rgba(125, 82, 184, 0.5));
 }
 
 .tww-carousel-center::after {
-  filter: invert(1) brightness(0.7) sepia(1) hue-rotate(220deg) saturate(5);
+  filter: brightness(0) invert(0.45) sepia(1) hue-rotate(230deg) saturate(4);
 }
 
 .tww-carousel-center .tww-char-name {
