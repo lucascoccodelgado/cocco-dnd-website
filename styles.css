@@ -58,10 +58,6 @@ body {
   z-index: 0;
 }
 
-.map-bg-1.active {
-  opacity: 0.2;
-}
-
 .map-bg-1.hidden {
   opacity: 0;
 }
@@ -658,8 +654,8 @@ body {
 }
 
 .campaign-dashboard.tww h1 {
-  color: #ffd700;
-  text-shadow: 2px 2px 4px rgba(125, 82, 184, 0.6);
+  color: #5a3d8a;
+  text-shadow: 1px 1px 2px rgba(125, 82, 184, 0.3);
 }
 
 .campaign-header .back-button {

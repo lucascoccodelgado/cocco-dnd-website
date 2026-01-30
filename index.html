@@ -43,16 +43,32 @@
     
     const { createElement: h } = React;
 
+    let idCounter = 0;
+    const uniqueId = () => `${Date.now()}_${idCounter++}_${Math.random().toString(36).slice(2, 7)}`;
+
     // Homepage Component
     function HomePage({ onEnterCampaign }) {
       const [activeMap, setActiveMap] = useState(1);
 
+      const [mapsLoaded, setMapsLoaded] = useState(false);
+
       useEffect(() => {
+        // Preload the second map image so it's ready before the first crossfade
+        const img = new Image();
+        img.src = 'background-map-2.png';
+        img.onload = () => setMapsLoaded(true);
+        // Start crossfading regardless after a short delay
+        const fallback = setTimeout(() => setMapsLoaded(true), 2000);
+        return () => clearTimeout(fallback);
+      }, []);
+
+      useEffect(() => {
+        if (!mapsLoaded) return;
         const interval = setInterval(() => {
           setActiveMap(prev => prev === 1 ? 2 : 1);
         }, 4000);
         return () => clearInterval(interval);
-      }, []);
+      }, [mapsLoaded]);
 
       return h('div', { className: 'homepage' },
         h('div', { className: 'hero-wrapper' },
@@ -69,7 +85,8 @@
               h('img', {
                 src: 'cocco-portrait.png',
                 alt: 'Cocco the Bard',
-                className: 'dm-portrait'
+                className: 'dm-portrait',
+                loading: 'eager'
               })
             )
           )
@@ -110,7 +127,7 @@
     }
 
     // Password Gate Component
-    function PasswordGate({ campaign, onUnlock }) {
+    function PasswordGate({ campaign, onUnlock, onBack }) {
       const [password, setPassword] = useState('');
       const [error, setError] = useState(false);
 
@@ -144,9 +161,9 @@
             error && h('p', { className: 'error-message' }, 'Incorrect password. Try again.'),
             h('button', { type: 'submit' }, 'Enter')
           ),
-          h('button', { 
+          h('button', {
             className: 'back-button',
-            onClick: () => window.location.reload()
+            onClick: onBack
           }, '← Back to Home')
         )
       );
@@ -169,43 +186,38 @@
       }, []);
 
       const loadData = async () => {
-        try {
-          const recapsData = await window.storage.get(`${storagePrefix}_recaps`);
-          if (recapsData?.value) setRecaps(JSON.parse(recapsData.value));
+        const loadKey = async (key, setter) => {
+          try {
+            const data = await window.storage.get(`${storagePrefix}_${key}`);
+            if (data?.value) setter(JSON.parse(data.value));
+          } catch (error) {
+            console.error(`Failed to load ${key}:`, error);
+          }
+        };
 
-          const commentsData = await window.storage.get(`${storagePrefix}_comments`);
-          if (commentsData?.value) setComments(JSON.parse(commentsData.value));
-
-          const achievementsData = await window.storage.get(`${storagePrefix}_achievements`);
-          if (achievementsData?.value) setAchievements(JSON.parse(achievementsData.value));
-
-          const npcsData = await window.storage.get(`${storagePrefix}_npcs`);
-          if (npcsData?.value) setNpcs(JSON.parse(npcsData.value));
-        } catch (error) {
-          console.log('No existing data found, starting fresh');
-        }
+        await Promise.all([
+          loadKey('recaps', setRecaps),
+          loadKey('comments', setComments),
+          loadKey('achievements', setAchievements),
+          loadKey('npcs', setNpcs),
+        ]);
         setLoading(false);
       };
 
-      const saveRecaps = async (newRecaps) => {
-        await window.storage.set(`${storagePrefix}_recaps`, JSON.stringify(newRecaps));
-        setRecaps(newRecaps);
+      const saveData = async (key, data, setter) => {
+        try {
+          await window.storage.set(`${storagePrefix}_${key}`, JSON.stringify(data));
+          setter(data);
+        } catch (error) {
+          console.error(`Failed to save ${key}:`, error);
+          alert(`Failed to save ${key}. Please try again.`);
+        }
       };
 
-      const saveComments = async (newComments) => {
-        await window.storage.set(`${storagePrefix}_comments`, JSON.stringify(newComments));
-        setComments(newComments);
-      };
-
-      const saveAchievements = async (newAchievements) => {
-        await window.storage.set(`${storagePrefix}_achievements`, JSON.stringify(newAchievements));
-        setAchievements(newAchievements);
-      };
-
-      const saveNpcs = async (newNpcs) => {
-        await window.storage.set(`${storagePrefix}_npcs`, JSON.stringify(newNpcs));
-        setNpcs(newNpcs);
-      };
+      const saveRecaps = (newRecaps) => saveData('recaps', newRecaps, setRecaps);
+      const saveComments = (newComments) => saveData('comments', newComments, setComments);
+      const saveAchievements = (newAchievements) => saveData('achievements', newAchievements, setAchievements);
+      const saveNpcs = (newNpcs) => saveData('npcs', newNpcs, setNpcs);
 
       if (loading) {
         return h('div', { className: `campaign-dashboard ${campaign}` }, 'Loading...');
@@ -239,17 +251,17 @@
           }, 'Maps')
         ),
         h('main', { className: 'campaign-content' },
-          activeTab === 'recaps' && h(RecapsTab, { recaps, onSave: saveRecaps, campaign }),
-          activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments, campaign }),
-          activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
-          activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs, campaign }),
+          activeTab === 'recaps' && h(RecapsTab, { recaps, onSave: saveRecaps }),
+          activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments }),
+          activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements }),
+          activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs }),
           activeTab === 'maps' && h(MapsTab, { campaign })
         )
       );
     }
 
     // Recaps Tab
-    function RecapsTab({ recaps, onSave, campaign }) {
+    function RecapsTab({ recaps, onSave }) {
       const [isAdding, setIsAdding] = useState(false);
       const [newRecap, setNewRecap] = useState({ session: '', title: '', content: '', date: '' });
 
@@ -257,7 +269,7 @@
         if (newRecap.session && newRecap.title && newRecap.content) {
           const recap = {
             ...newRecap,
-            id: Date.now(),
+            id: uniqueId(),
             date: newRecap.date || new Date().toLocaleDateString()
           };
           onSave([recap, ...recaps]);
@@ -266,7 +278,11 @@
         }
       };
 
-      const handleDelete = (id) => onSave(recaps.filter(r => r.id !== id));
+      const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this recap?')) {
+          onSave(recaps.filter(r => r.id !== id));
+        }
+      };
 
       return h('div', { className: 'tab-content' },
         h('div', { className: 'tab-header' },
@@ -325,14 +341,14 @@
     }
 
     // Comments Tab
-    function CommentsTab({ comments, onSave, campaign }) {
+    function CommentsTab({ comments, onSave }) {
       const [newComment, setNewComment] = useState({ author: '', message: '' });
 
       const handleAdd = () => {
         if (newComment.author && newComment.message) {
           const comment = {
             ...newComment,
-            id: Date.now(),
+            id: uniqueId(),
             timestamp: new Date().toLocaleString()
           };
           onSave([...comments, comment]);
@@ -340,7 +356,11 @@
         }
       };
 
-      const handleDelete = (id) => onSave(comments.filter(c => c.id !== id));
+      const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this message?')) {
+          onSave(comments.filter(c => c.id !== id));
+        }
+      };
 
       return h('div', { className: 'tab-content' },
         h('h2', null, 'Message Board'),
@@ -380,7 +400,7 @@
     }
 
     // Achievements Tab
-    function AchievementsTab({ achievements, onSave, campaign }) {
+    function AchievementsTab({ achievements, onSave }) {
       const [isAdding, setIsAdding] = useState(false);
       const [newAchievement, setNewAchievement] = useState({ title: '', description: '', date: '' });
 
@@ -388,7 +408,7 @@
         if (newAchievement.title && newAchievement.description) {
           const achievement = {
             ...newAchievement,
-            id: Date.now(),
+            id: uniqueId(),
             date: newAchievement.date || new Date().toLocaleDateString()
           };
           onSave([achievement, ...achievements]);
@@ -397,7 +417,11 @@
         }
       };
 
-      const handleDelete = (id) => onSave(achievements.filter(a => a.id !== id));
+      const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this achievement?')) {
+          onSave(achievements.filter(a => a.id !== id));
+        }
+      };
 
       return h('div', { className: 'tab-content' },
         h('div', { className: 'tab-header' },
@@ -447,20 +471,24 @@
     }
 
     // NPCs Tab
-    function NpcsTab({ npcs, onSave, campaign }) {
+    function NpcsTab({ npcs, onSave }) {
       const [isAdding, setIsAdding] = useState(false);
       const [newNpc, setNewNpc] = useState({ name: '', title: '', location: '', description: '', status: 'alive' });
 
       const handleAdd = () => {
         if (newNpc.name && newNpc.description) {
-          const npc = { ...newNpc, id: Date.now() };
+          const npc = { ...newNpc, id: uniqueId() };
           onSave([...npcs, npc]);
           setNewNpc({ name: '', title: '', location: '', description: '', status: 'alive' });
           setIsAdding(false);
         }
       };
 
-      const handleDelete = (id) => onSave(npcs.filter(n => n.id !== id));
+      const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this NPC?')) {
+          onSave(npcs.filter(n => n.id !== id));
+        }
+      };
 
       return h('div', { className: 'tab-content' },
         h('div', { className: 'tab-header' },
@@ -560,9 +588,10 @@
 
       return h('div', { className: 'app' },
         currentView === 'home' && h(HomePage, { onEnterCampaign: handleEnterCampaign }),
-        currentView === 'password' && selectedCampaign && h(PasswordGate, { 
+        currentView === 'password' && selectedCampaign && h(PasswordGate, {
           campaign: selectedCampaign,
-          onUnlock: handleUnlock
+          onUnlock: handleUnlock,
+          onBack: handleBackHome
         }),
         currentView === 'dashboard' && selectedCampaign && h(CampaignDashboard, {
           campaign: selectedCampaign,
