@@ -1371,13 +1371,65 @@ body {
   position: absolute;
   width: 300px;
   background: rgba(25, 12, 45, 0.92);
-  border: 2px solid rgba(125, 82, 184, 0.3);
-  border-radius: 12px;
+  border: none;
+  border-radius: 0 0 12px 12px;
   padding: 1.25rem;
+  padding-top: 2rem;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
+  clip-path: polygon(
+    0% 12%,
+    2% 8%,
+    6% 5%,
+    12% 2.5%,
+    20% 1%,
+    30% 0.2%,
+    40% 0%,
+    50% 0%,
+    60% 0%,
+    70% 0.2%,
+    80% 1%,
+    88% 2.5%,
+    94% 5%,
+    98% 8%,
+    100% 12%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/* Stained glass border glow behind the card */
+.tww-carousel-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(180deg, rgba(125, 82, 184, 0.5) 0%, rgba(125, 82, 184, 0.2) 15%, rgba(125, 82, 184, 0.1) 100%);
+  clip-path: polygon(
+    0% 12%,
+    2% 8%,
+    6% 5%,
+    12% 2.5%,
+    20% 1%,
+    30% 0.2%,
+    40% 0%,
+    50% 0%,
+    60% 0%,
+    70% 0.2%,
+    80% 1%,
+    88% 2.5%,
+    94% 5%,
+    98% 8%,
+    100% 12%,
+    100% 100%,
+    0% 100%
+  );
+  z-index: -1;
+  pointer-events: none;
 }
 
 .tww-carousel-card .tww-char-name {
@@ -1396,9 +1448,12 @@ body {
 .tww-carousel-center {
   cursor: default;
   width: 600px;
-  border-color: #9d6ee0;
-  box-shadow: 0 12px 48px rgba(125, 82, 184, 0.5);
   background: rgba(30, 15, 55, 0.97);
+  filter: drop-shadow(0 8px 32px rgba(125, 82, 184, 0.5));
+}
+
+.tww-carousel-center::before {
+  background: linear-gradient(180deg, rgba(157, 110, 224, 0.7) 0%, rgba(125, 82, 184, 0.3) 12%, rgba(125, 82, 184, 0.15) 100%);
 }
 
 .tww-carousel-center .tww-char-name {
@@ -1429,7 +1484,7 @@ body {
   width: 100%;
   max-height: 580px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .tww-carousel-arrow {
@@ -1468,28 +1523,6 @@ body {
   right: 8px;
 }
 
-/* Carousel detail panel */
-.tww-carousel-detail {
-  max-width: 700px;
-  margin: 0 auto 2rem;
-  text-align: center;
-  padding: 1.5rem 2rem;
-  background: rgba(25, 12, 45, 0.6);
-  border-radius: 12px;
-  border: 1px solid rgba(125, 82, 184, 0.2);
-  min-height: 100px;
-}
-
-.tww-carousel-detail .tww-char-hook {
-  color: #ffd700;
-  font-size: 1.05rem;
-  margin-bottom: 0.75rem;
-}
-
-.tww-carousel-detail .tww-char-bio {
-  color: #d4c5e8;
-  opacity: 1;
-}
 
 .tww-char-name {
   font-size: 1.4rem;

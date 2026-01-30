@@ -717,12 +717,6 @@
             h('button', { className: 'tww-carousel-arrow tww-arrow-right', onClick: goRight, 'aria-label': 'Next character' }, '\u203A')
           ),
 
-          // Detail panel for the active character
-          h('div', { className: 'tww-carousel-detail' },
-            h('p', { className: 'tww-char-hook' }, `\u201C${partyMembers[carouselIndex].hook}\u201D`),
-            h('p', { className: 'tww-char-bio' }, partyMembers[carouselIndex].bio)
-          ),
-
           h('p', { className: 'tww-party-composition' }, 'Sorcerer (Dreamweave) \u2022 Barbarian/Druid (Wild Heart / Moon) \u2022 Paladin (Redemption) \u2022 Cleric (Grave) \u2022 Rogue (Arcane Trickster)'),
           h('p', { className: 'tww-party-closing' }, 'Different vows. Different wounds. One road \u2014 into the silence.')
         ),
@@ -742,7 +736,7 @@
 
         // DM Notes Section
         h('section', { className: 'tww-dm-notes-section', id: 'tww-dm-notes' },
-          h('h3', null, 'DM Notes (Public)'),
+          h('h3', null, 'Themes & Pillars'),
           h('p', { className: 'tww-dm-notes-intro' }, 'A few truths about this story, spoken plainly.'),
           h('div', { className: 'tww-dm-notes-body' },
             h('p', null, 'The Waning Wonder is a story of belief and consequence \u2014 what it means to live in a world where faith and magic are threads of the same weave.'),
