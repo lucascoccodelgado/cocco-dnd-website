@@ -692,7 +692,7 @@
                   key: member.name,
                   className: `tww-carousel-card ${isCenter ? 'tww-carousel-center' : ''} ${!visible ? 'tww-carousel-hidden' : ''}`,
                   style: {
-                    transform: `translateX(${pos * 300}px) scale(${isCenter ? 1 : 0.6 - absPos * 0.05})`,
+                    transform: `translateX(${pos * 380}px) scale(${isCenter ? 1 : 0.5 - absPos * 0.05})`,
                     zIndex: 10 - absPos,
                     opacity: visible ? (isCenter ? 1 : 0.6 - (absPos - 1) * 0.2) : 0,
                     filter: isCenter ? 'none' : 'brightness(0.7)'
