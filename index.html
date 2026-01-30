@@ -171,7 +171,7 @@
 
     // Campaign Dashboard Component
     function CampaignDashboard({ campaign, onBack }) {
-      const [activeTab, setActiveTab] = useState('recaps');
+      const [activeTab, setActiveTab] = useState(campaign === 'tww' ? 'home' : 'recaps');
       const [recaps, setRecaps] = useState([]);
       const [comments, setComments] = useState([]);
       const [achievements, setAchievements] = useState([]);
@@ -229,7 +229,11 @@
           h('h1', null, campaignName)
         ),
         h('nav', { className: 'campaign-nav' },
-          h('button', { 
+          campaign === 'tww' && h('button', {
+            className: activeTab === 'home' ? 'active' : '',
+            onClick: () => setActiveTab('home')
+          }, 'Home'),
+          h('button', {
             className: activeTab === 'recaps' ? 'active' : '',
             onClick: () => setActiveTab('recaps')
           }, 'Session Recaps'),
@@ -251,6 +255,7 @@
           }, 'Maps')
         ),
         h('main', { className: 'campaign-content' },
+          activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
           activeTab === 'recaps' && h(RecapsTab, { recaps, onSave: saveRecaps }),
           activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments }),
           activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements }),
@@ -560,6 +565,168 @@
       return h('div', { className: 'tab-content' },
         h('h2', null, 'Maps & Locations'),
         h('p', { className: 'empty-state' }, 'Maps coming soon! You can add map images here later.')
+      );
+    }
+
+    // TWW Home Tab
+    function TWWHomeTab({ onNavigate }) {
+      const scrollTo = (id) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      const partyMembers = [
+        {
+          name: 'Iodem Lalivero',
+          initials: 'IL',
+          player: 'Skye',
+          race: 'Human',
+          level: 4,
+          classInfo: 'Sorcerer \u2014 Dreamweave Sorcery',
+          hook: 'He walks with one foot in waking, and one foot in the place where promises go to die.',
+          bio: 'Iodem\'s magic does not crash into the world like flame or thunder. It arrives like a thread \u2014 a tug at the edge of thought, a pattern in the corner of the eye, a dream that remembers you. In Sefara, where miracles once felt as common as sunrise, his gift is both comfort and warning: wonder may be fading, but it is not gone. It is changing, becoming stranger \u2014 more selective \u2014 more personal.'
+        },
+        {
+          name: "Kord'ak",
+          initials: 'K',
+          player: 'Milan3s4',
+          race: 'Orc',
+          level: 6,
+          classInfo: 'Barbarian \u2014 Wild Heart / Druid \u2014 Circle of the Moon',
+          hook: "A war cry with a soul \u2014 nature's fury wearing a name.",
+          bio: "Kord'ak is power given shape: the kind that breaks doors, splits shields, and dares the world to flinch first. But beneath the rage is something older and steadier \u2014 the wilderness, watching through mortal eyes. When he calls upon the wild, it is not a performance. It is recognition. A pact written in breath and blood: if the world is fraying, then someone must be strong enough to hold it."
+        },
+        {
+          name: 'Lucien',
+          initials: 'L',
+          player: 'eduardogomezvidela',
+          race: 'Human \u2014 Vampire Spawn',
+          level: 4,
+          classInfo: 'Paladin \u2014 Oath of Redemption',
+          hook: 'A monster who chose mercy \u2014 and pays for that choice every day.',
+          bio: 'Lucien carries a curse that the world loves to fear, and an oath the world loves to doubt. He is undead, hungry, and haunted \u2014 yet he has sworn not to destroy the wicked, but to save them, even when salvation is harder than a blade. In a land built on faith, Lucien stands as a living contradiction: proof that redemption is real... and proof that it costs more than anyone wants to admit.'
+        },
+        {
+          name: 'Scales',
+          initials: 'S',
+          player: 'Misteringo',
+          race: 'Divineforged',
+          level: 4,
+          classInfo: 'Cleric \u2014 Grave Domain',
+          hook: "A sacred instrument of endings \u2014 here to keep the world's balance from snapping.",
+          bio: 'Scales is the quiet certainty at the edge of every life. Not cruel. Not kind. True. A being shaped by divine purpose, walking among mortals as both warning and witness. Where others see the grave as terror, Scales sees it as structure: the mercy of completion, the sanctity of the boundary between what must end and what must continue.'
+        },
+        {
+          name: 'Vazriel "Vaz" Caelithra',
+          initials: 'V',
+          player: 'lsyc',
+          race: 'Tiefling \u2014 Bloodline of Glasya',
+          level: 4,
+          classInfo: 'Rogue \u2014 Arcane Trickster',
+          hook: 'A smile like a secret \u2014 hands quick enough to steal certainty itself.',
+          bio: "Vaz moves like a rumor that learned how to pick locks. He is clever, charming, and just magical enough to make you doubt your own senses. In a world where wonder is vanishing, some people chase it. Some people pray for it. Vaz? Vaz survives it. If there's something left worth having \u2014 truth, power, relic, or fate \u2014 he's the sort to take it first... and decide what it means later."
+        }
+      ];
+
+      return h('div', { className: 'tww-home' },
+        // Hero Section
+        h('section', { className: 'tww-hero-section', id: 'tww-hero' },
+          h('h2', null, 'The Waning Wonder'),
+          h('p', { className: 'tww-hero-tagline' }, "Magic was once the world's breath. Now the world is holding it."),
+          h('div', { className: 'tww-hero-teaser' },
+            h('p', null, 'In Sefara, faith once moved stone, soothed storms, and set relics singing.'),
+            h('p', null, 'Now prayers return unanswered, miracles falter, and the laws of reality begin to fray.'),
+            h('p', null, 'Something vast has stirred \u2014 ancient, patient, and hungry for the silence between gods.')
+          ),
+          h('div', { className: 'tww-hero-buttons' },
+            h('button', { className: 'tww-btn', onClick: () => scrollTo('tww-premise') }, 'Read the Premise'),
+            h('button', { className: 'tww-btn tww-btn-outline', onClick: () => scrollTo('tww-party') }, 'Meet the Party')
+          )
+        ),
+
+        // Premise Section
+        h('section', { className: 'tww-premise-section', id: 'tww-premise' },
+          h('h3', null, 'Premise'),
+          h('div', { className: 'tww-premise-body' },
+            h('p', null, 'This is Sefara \u2014 a land where faith has long shaped law, and where wonders once breathed through every stone.'),
+            h('p', null, 'Empires and kingdoms were raised by prophecy, and the stars themselves were said to bend at the sound of a prayer. Pilgrims still cross the Dawat Desert chasing visions, and in the frozen reaches of the Vel\'Carmin Range the devout carve their vows into ice that will never melt.'),
+            h('p', null, 'For as long as memory can reach, the divine has answered. Cathedrals across the Empire of Ram\'rodun gleamed with living light, relics sang when touched, and magic was the breath of belief made visible.'),
+            h('p', null, 'But now, something is fading. Torches sputter though the oil is fresh. Prayers return in silence. Spells misfire without cause.'),
+            h('p', null, 'In markets and taverns, whispers tell of charms that crumble and of relics that shine only to gutter to ash. The learned call it a crisis of faith. Sailors across the Drake Sea speak of hollow winds; zealots dream of dawns that never come.'),
+            h('p', null, 'Beneath every sermon and silence hums one truth: something vast and ancient stirs once more \u2014 and the very breath of wonder may soon slip away.')
+          )
+        ),
+
+        // DM Notes Section
+        h('section', { className: 'tww-dm-notes-section', id: 'tww-dm-notes' },
+          h('h3', null, 'DM Notes (Public)'),
+          h('p', { className: 'tww-dm-notes-intro' }, 'A few truths about this story, spoken plainly.'),
+          h('div', { className: 'tww-dm-notes-body' },
+            h('p', null, 'The Waning Wonder is a story of belief and consequence \u2014 what it means to live in a world where faith and magic are threads of the same weave.'),
+            h('p', null, h('strong', null, 'Faith and Doubt: '), 'In Sefara, reverence and rejection are two sides of the same act of questioning (as well as indifference). The gods may listen \u2014 or they may not \u2014 but every mortal must decide what fills that silence.'),
+            h('p', null, h('strong', null, 'Mystery and Power: '), 'The laws of reality are fraying. What will you cling to when miracles fail?'),
+            h('p', null, h('strong', null, 'Politics and Intrigue: '), 'Faith shapes power, and skepticism can be as dangerous as heresy.'),
+            h('p', null, h('strong', null, 'Exploration and Discovery: '), 'Across deserts, peaks, and ruins, every revelation demands a choice: what do you believe, and what will you sacrifice to prove it?')
+          )
+        ),
+
+        // At-a-Glance Strip
+        h('section', { className: 'tww-glance-section', id: 'tww-glance' },
+          h('div', { className: 'tww-glance-strip' },
+            h('div', { className: 'tww-glance-item' },
+              h('span', { className: 'tww-glance-label' }, 'Setting'),
+              h('span', { className: 'tww-glance-value' }, 'Sefara (Empire of Ram\'rodun and beyond)')
+            ),
+            h('div', { className: 'tww-glance-item' },
+              h('span', { className: 'tww-glance-label' }, 'Core Themes'),
+              h('span', { className: 'tww-glance-value' }, 'Faith, doubt, wonder, consequence')
+            ),
+            h('div', { className: 'tww-glance-item' },
+              h('span', { className: 'tww-glance-label' }, 'Tone'),
+              h('span', { className: 'tww-glance-value' }, 'Mythic fantasy with creeping dread and political intrigue')
+            ),
+            h('div', { className: 'tww-glance-item' },
+              h('span', { className: 'tww-glance-label' }, 'Play Style'),
+              h('span', { className: 'tww-glance-value' }, 'Character-driven, narrative-forward, high-stakes choices')
+            )
+          )
+        ),
+
+        // Meet the Party Section
+        h('section', { className: 'tww-party-section', id: 'tww-party' },
+          h('h3', null, 'Meet the Party'),
+          h('p', { className: 'tww-party-subtitle' }, 'Five souls bound together at the edge of a fading miracle.'),
+          h('p', { className: 'tww-party-hint' }, 'Click a portrait to learn who they are when the world grows quiet.'),
+          h('p', { className: 'tww-party-intro' }, 'They did not choose the age they were born into \u2014 only what they will become within it.'),
+          h('div', { className: 'tww-party-grid' },
+            partyMembers.map(member =>
+              h('div', { key: member.name, className: 'tww-char-card' },
+                h('div', { className: 'tww-portrait', 'data-initials': member.initials }),
+                h('h4', { className: 'tww-char-name' }, member.name),
+                h('p', { className: 'tww-char-meta' }, `Level ${member.level} ${member.race} \u2014 ${member.classInfo}`),
+                h('p', { className: 'tww-char-player' }, `Played by ${member.player}`),
+                h('p', { className: 'tww-char-hook' }, `\u201C${member.hook}\u201D`),
+                h('p', { className: 'tww-char-bio' }, member.bio)
+              )
+            )
+          ),
+          h('p', { className: 'tww-party-composition' }, 'Sorcerer (Dreamweave) \u2022 Barbarian/Druid (Wild Heart / Moon) \u2022 Paladin (Redemption) \u2022 Cleric (Grave) \u2022 Rogue (Arcane Trickster)'),
+          h('p', { className: 'tww-party-closing' }, 'Different vows. Different wounds. One road \u2014 into the silence.')
+        ),
+
+        // Footer CTA
+        h('section', { className: 'tww-footer-cta-section', id: 'tww-footer' },
+          h('h3', null, 'The wonder is waning. The story begins.'),
+          h('div', { className: 'tww-cta-body' },
+            h('p', null, 'Some will seek answers. Some will seek power. Some will seek forgiveness.'),
+            h('p', null, 'But all of them will be tested by the same question:'),
+            h('p', null, h('strong', null, 'What do you do when the world stops answering?'))
+          ),
+          h('div', { className: 'tww-cta-buttons' },
+            h('button', { className: 'tww-btn', onClick: () => scrollTo('tww-party') }, 'Meet the Party'),
+            h('button', { className: 'tww-btn tww-btn-outline', onClick: () => onNavigate('recaps') }, 'Session Recaps')
+          )
+        )
       );
     }
 
