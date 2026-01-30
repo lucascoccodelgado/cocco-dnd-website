@@ -575,10 +575,14 @@
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       };
 
+      const [carouselIndex, setCarouselIndex] = useState(0);
+      const [hovered, setHovered] = useState(false);
+      const timerRef = React.useRef(null);
+
       const partyMembers = [
         {
           name: 'Iodem Lalivero',
-          initials: 'IL',
+          image: 'io-pc.png',
           player: 'Skye',
           race: 'Human',
           level: 4,
@@ -588,8 +592,8 @@
         },
         {
           name: "Kord'ak",
-          initials: 'K',
-          player: 'Milan3s4',
+          image: 'kordak-pc.png',
+          player: 'Mila',
           race: 'Orc',
           level: 6,
           classInfo: 'Barbarian \u2014 Wild Heart / Druid \u2014 Circle of the Moon',
@@ -598,8 +602,8 @@
         },
         {
           name: 'Lucien',
-          initials: 'L',
-          player: 'eduardogomezvidela',
+          image: 'lucien-pc.png',
+          player: 'Eduardo',
           race: 'Human \u2014 Vampire Spawn',
           level: 4,
           classInfo: 'Paladin \u2014 Oath of Redemption',
@@ -608,8 +612,8 @@
         },
         {
           name: 'Scales',
-          initials: 'S',
-          player: 'Misteringo',
+          image: 'scales-pc.png',
+          player: 'Matthew',
           race: 'Divineforged',
           level: 4,
           classInfo: 'Cleric \u2014 Grave Domain',
@@ -618,8 +622,8 @@
         },
         {
           name: 'Vazriel "Vaz" Caelithra',
-          initials: 'V',
-          player: 'lsyc',
+          image: 'vaz-pc.png',
+          player: 'Laura',
           race: 'Tiefling \u2014 Bloodline of Glasya',
           level: 4,
           classInfo: 'Rogue \u2014 Arcane Trickster',
@@ -627,6 +631,27 @@
           bio: "Vaz moves like a rumor that learned how to pick locks. He is clever, charming, and just magical enough to make you doubt your own senses. In a world where wonder is vanishing, some people chase it. Some people pray for it. Vaz? Vaz survives it. If there's something left worth having \u2014 truth, power, relic, or fate \u2014 he's the sort to take it first... and decide what it means later."
         }
       ];
+
+      const count = partyMembers.length;
+
+      useEffect(() => {
+        if (hovered) return;
+        timerRef.current = setInterval(() => {
+          setCarouselIndex(prev => (prev + 1) % count);
+        }, 3500);
+        return () => clearInterval(timerRef.current);
+      }, [hovered, count]);
+
+      const goLeft = () => setCarouselIndex(prev => (prev - 1 + count) % count);
+      const goRight = () => setCarouselIndex(prev => (prev + 1) % count);
+
+      // Compute position offset from center for each card
+      const getPos = (i) => {
+        let diff = i - carouselIndex;
+        if (diff > Math.floor(count / 2)) diff -= count;
+        if (diff < -Math.floor(count / 2)) diff += count;
+        return diff;
+      };
 
       return h('div', { className: 'tww-home' },
         // Hero Section
@@ -642,6 +667,64 @@
             h('button', { className: 'tww-btn', onClick: () => scrollTo('tww-premise') }, 'Read the Premise'),
             h('button', { className: 'tww-btn tww-btn-outline', onClick: () => scrollTo('tww-party') }, 'Meet the Party')
           )
+        ),
+
+        // Meet the Party Section (moved above Premise)
+        h('section', { className: 'tww-party-section', id: 'tww-party' },
+          h('h3', null, 'Meet the Party'),
+          h('p', { className: 'tww-party-subtitle' }, 'Five souls bound together at the edge of a fading miracle.'),
+          h('p', { className: 'tww-party-intro' }, 'They did not choose the age they were born into \u2014 only what they will become within it.'),
+
+          // Carousel
+          h('div', {
+            className: 'tww-carousel',
+            onMouseEnter: () => setHovered(true),
+            onMouseLeave: () => setHovered(false)
+          },
+            h('button', { className: 'tww-carousel-arrow tww-arrow-left', onClick: goLeft, 'aria-label': 'Previous character' }, '\u2039'),
+            h('div', { className: 'tww-carousel-track' },
+              partyMembers.map((member, i) => {
+                const pos = getPos(i);
+                const isCenter = pos === 0;
+                const absPos = Math.abs(pos);
+                const visible = absPos <= 2;
+                return h('div', {
+                  key: member.name,
+                  className: `tww-carousel-card ${isCenter ? 'tww-carousel-center' : ''} ${!visible ? 'tww-carousel-hidden' : ''}`,
+                  style: {
+                    transform: `translateX(${pos * 240}px) scale(${isCenter ? 1 : 0.78 - absPos * 0.05})`,
+                    zIndex: 10 - absPos,
+                    opacity: visible ? (isCenter ? 1 : 0.6 - (absPos - 1) * 0.2) : 0,
+                    filter: isCenter ? 'none' : 'brightness(0.7)'
+                  },
+                  onClick: () => setCarouselIndex(i)
+                },
+                  h('div', { className: 'tww-carousel-img-wrap' },
+                    h('img', {
+                      src: member.image,
+                      alt: member.name,
+                      className: 'tww-carousel-img',
+                      loading: 'lazy'
+                    })
+                  ),
+                  h('h4', { className: 'tww-char-name' }, member.name),
+                  h('p', { className: 'tww-char-meta' }, `Level ${member.level} ${member.race}`),
+                  h('p', { className: 'tww-char-meta' }, member.classInfo),
+                  h('p', { className: 'tww-char-player' }, `Played by ${member.player}`)
+                );
+              })
+            ),
+            h('button', { className: 'tww-carousel-arrow tww-arrow-right', onClick: goRight, 'aria-label': 'Next character' }, '\u203A')
+          ),
+
+          // Detail panel for the active character
+          h('div', { className: 'tww-carousel-detail' },
+            h('p', { className: 'tww-char-hook' }, `\u201C${partyMembers[carouselIndex].hook}\u201D`),
+            h('p', { className: 'tww-char-bio' }, partyMembers[carouselIndex].bio)
+          ),
+
+          h('p', { className: 'tww-party-composition' }, 'Sorcerer (Dreamweave) \u2022 Barbarian/Druid (Wild Heart / Moon) \u2022 Paladin (Redemption) \u2022 Cleric (Grave) \u2022 Rogue (Arcane Trickster)'),
+          h('p', { className: 'tww-party-closing' }, 'Different vows. Different wounds. One road \u2014 into the silence.')
         ),
 
         // Premise Section
@@ -690,28 +773,6 @@
               h('span', { className: 'tww-glance-value' }, 'Character-driven, narrative-forward, high-stakes choices')
             )
           )
-        ),
-
-        // Meet the Party Section
-        h('section', { className: 'tww-party-section', id: 'tww-party' },
-          h('h3', null, 'Meet the Party'),
-          h('p', { className: 'tww-party-subtitle' }, 'Five souls bound together at the edge of a fading miracle.'),
-          h('p', { className: 'tww-party-hint' }, 'Click a portrait to learn who they are when the world grows quiet.'),
-          h('p', { className: 'tww-party-intro' }, 'They did not choose the age they were born into \u2014 only what they will become within it.'),
-          h('div', { className: 'tww-party-grid' },
-            partyMembers.map(member =>
-              h('div', { key: member.name, className: 'tww-char-card' },
-                h('div', { className: 'tww-portrait', 'data-initials': member.initials }),
-                h('h4', { className: 'tww-char-name' }, member.name),
-                h('p', { className: 'tww-char-meta' }, `Level ${member.level} ${member.race} \u2014 ${member.classInfo}`),
-                h('p', { className: 'tww-char-player' }, `Played by ${member.player}`),
-                h('p', { className: 'tww-char-hook' }, `\u201C${member.hook}\u201D`),
-                h('p', { className: 'tww-char-bio' }, member.bio)
-              )
-            )
-          ),
-          h('p', { className: 'tww-party-composition' }, 'Sorcerer (Dreamweave) \u2022 Barbarian/Druid (Wild Heart / Moon) \u2022 Paladin (Redemption) \u2022 Cleric (Grave) \u2022 Rogue (Arcane Trickster)'),
-          h('p', { className: 'tww-party-closing' }, 'Different vows. Different wounds. One road \u2014 into the silence.')
         ),
 
         // Footer CTA
