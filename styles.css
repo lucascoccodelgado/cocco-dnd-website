@@ -1370,45 +1370,14 @@ body {
 .tww-carousel-card {
   position: absolute;
   width: 300px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
+  background: rgba(25, 12, 45, 0.92);
+  border: 2px solid rgba(125, 82, 184, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
-}
-
-/* The card inner content, masked to the window shape */
-.tww-carousel-inner {
-  background: rgba(25, 12, 45, 0.92);
-  padding: 1.25rem;
-  padding-top: 3rem;
-  -webkit-mask-image: url('window.webp');
-  mask-image: url('window.webp');
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-mode: luminance;
-  mask-mode: luminance;
-}
-
-/* Window frame border on top */
-.tww-carousel-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('window.webp');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  z-index: 10;
-  filter: brightness(0) invert(0.35) sepia(1) hue-rotate(230deg) saturate(3);
 }
 
 .tww-carousel-card .tww-char-name {
@@ -1427,14 +1396,22 @@ body {
 .tww-carousel-center {
   cursor: default;
   width: 600px;
-}
-
-.tww-carousel-center .tww-carousel-inner {
+  border-color: #9d6ee0;
+  box-shadow: 0 12px 48px rgba(125, 82, 184, 0.5);
   background: rgba(30, 15, 55, 0.97);
 }
 
-.tww-carousel-center::after {
-  filter: brightness(0) invert(0.45) sepia(1) hue-rotate(230deg) saturate(4);
+.tww-carousel-center .tww-char-name {
+  color: #ffd700;
+  font-size: 1.6rem;
+}
+
+.tww-carousel-center .tww-char-meta {
+  color: #d4b8f0;
+}
+
+.tww-carousel-center .tww-char-player {
+  color: #c0aae0;
 }
 
 .tww-carousel-center .tww-char-name {
@@ -1459,15 +1436,13 @@ body {
   margin-bottom: 0.75rem;
   display: flex;
   justify-content: center;
-  position: relative;
-  z-index: 5;
 }
 
 .tww-carousel-img {
   width: 100%;
   max-height: 580px;
   object-fit: contain;
-  border-radius: 0;
+  border-radius: 8px;
 }
 
 .tww-carousel-arrow {
