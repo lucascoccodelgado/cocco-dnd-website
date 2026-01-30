@@ -1357,13 +1357,13 @@ body {
   max-width: 1200px;
   margin: 0 auto 2rem;
   padding: 1rem 0;
-  min-height: 420px;
+  min-height: 520px;
 }
 
 .tww-carousel-track {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1371,7 +1371,7 @@ body {
 
 .tww-carousel-card {
   position: absolute;
-  width: 260px;
+  width: 320px;
   background: rgba(255, 255, 255, 0.85);
   border: 2px solid rgba(125, 82, 184, 0.25);
   border-radius: 12px;
@@ -1402,7 +1402,7 @@ body {
 
 .tww-carousel-img {
   width: 100%;
-  max-height: 260px;
+  max-height: 360px;
   object-fit: contain;
   border-radius: 8px;
 }
@@ -1555,23 +1555,23 @@ body {
   }
 
   .tww-carousel {
-    min-height: 360px;
+    min-height: 400px;
   }
 
   .tww-carousel-track {
-    height: 350px;
+    height: 380px;
   }
 
   .tww-carousel-card {
-    width: 200px;
-  }
-
-  .tww-carousel-card.tww-carousel-center {
     width: 220px;
   }
 
+  .tww-carousel-card.tww-carousel-center {
+    width: 240px;
+  }
+
   .tww-carousel-img {
-    max-height: 200px;
+    max-height: 240px;
   }
 
   .tww-arrow-left {
