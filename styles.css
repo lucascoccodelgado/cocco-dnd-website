@@ -1372,77 +1372,86 @@ body {
   width: 300px;
   background: rgba(25, 12, 45, 0.92);
   border: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0;
   padding: 1.25rem;
-  padding-top: 2rem;
+  padding-top: 3.5rem;
   text-align: center;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
   clip-path: polygon(
-    0% 12%,
-    2% 8%,
-    6% 5%,
-    12% 2.5%,
-    20% 1%,
-    30% 0.2%,
-    40% 0%,
+    0% 100%,
+    0% 38%,
+    0.5% 34%,
+    1.5% 30%,
+    3% 26.5%,
+    5% 23%,
+    8% 19.5%,
+    11% 16.5%,
+    15% 13.5%,
+    19% 11%,
+    24% 8.5%,
+    29% 6.5%,
+    34% 4.8%,
+    39% 3.2%,
+    43% 2.1%,
+    46% 1.2%,
+    48.5% 0.5%,
     50% 0%,
-    60% 0%,
-    70% 0.2%,
-    80% 1%,
-    88% 2.5%,
-    94% 5%,
-    98% 8%,
-    100% 12%,
-    100% 100%,
-    0% 100%
+    51.5% 0.5%,
+    54% 1.2%,
+    57% 2.1%,
+    61% 3.2%,
+    66% 4.8%,
+    71% 6.5%,
+    76% 8.5%,
+    81% 11%,
+    85% 13.5%,
+    89% 16.5%,
+    92% 19.5%,
+    95% 23%,
+    97% 26.5%,
+    98.5% 30%,
+    99.5% 34%,
+    100% 38%,
+    100% 100%
   );
 }
 
-/* Stained glass border glow behind the card */
-.tww-carousel-card::before {
+/* Window frame overlay using window.webp */
+.tww-carousel-card::after {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(180deg, rgba(125, 82, 184, 0.5) 0%, rgba(125, 82, 184, 0.2) 15%, rgba(125, 82, 184, 0.1) 100%);
-  clip-path: polygon(
-    0% 12%,
-    2% 8%,
-    6% 5%,
-    12% 2.5%,
-    20% 1%,
-    30% 0.2%,
-    40% 0%,
-    50% 0%,
-    60% 0%,
-    70% 0.2%,
-    80% 1%,
-    88% 2.5%,
-    94% 5%,
-    98% 8%,
-    100% 12%,
-    100% 100%,
-    0% 100%
-  );
-  z-index: -1;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background-image: url('window.webp');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   pointer-events: none;
+  z-index: 10;
+  filter: invert(1) brightness(0.55) sepia(1) hue-rotate(220deg) saturate(4);
+  mix-blend-mode: screen;
 }
 
 .tww-carousel-card .tww-char-name {
   color: #e0d0f0;
+  position: relative;
+  z-index: 5;
 }
 
 .tww-carousel-card .tww-char-meta {
   color: #b8a0d8;
+  position: relative;
+  z-index: 5;
 }
 
 .tww-carousel-card .tww-char-player {
   color: #a090c0;
   opacity: 0.8;
+  position: relative;
+  z-index: 5;
 }
 
 .tww-carousel-center {
@@ -1452,8 +1461,8 @@ body {
   filter: drop-shadow(0 8px 32px rgba(125, 82, 184, 0.5));
 }
 
-.tww-carousel-center::before {
-  background: linear-gradient(180deg, rgba(157, 110, 224, 0.7) 0%, rgba(125, 82, 184, 0.3) 12%, rgba(125, 82, 184, 0.15) 100%);
+.tww-carousel-center::after {
+  filter: invert(1) brightness(0.7) sepia(1) hue-rotate(220deg) saturate(5);
 }
 
 .tww-carousel-center .tww-char-name {
@@ -1478,13 +1487,15 @@ body {
   margin-bottom: 0.75rem;
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 5;
 }
 
 .tww-carousel-img {
   width: 100%;
   max-height: 580px;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .tww-carousel-arrow {
