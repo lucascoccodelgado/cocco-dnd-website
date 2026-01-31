@@ -189,7 +189,6 @@
     function CampaignDashboard({ campaign, onBack }) {
       const [activeTab, setActiveTab] = useState(campaign === 'tww' ? 'home' : 'recaps');
       const [recaps, setRecaps] = useState([]);
-      const [comments, setComments] = useState([]);
       const [achievements, setAchievements] = useState([]);
       const [npcs, setNpcs] = useState([]);
       const [loading, setLoading] = useState(true);
@@ -213,7 +212,6 @@
 
         await Promise.all([
           loadKey('recaps', setRecaps),
-          loadKey('comments', setComments),
           loadKey('achievements', setAchievements),
           loadKey('npcs', setNpcs),
         ]);
@@ -231,7 +229,6 @@
       };
 
       const saveRecaps = (newRecaps) => saveData('recaps', newRecaps, setRecaps);
-      const saveComments = (newComments) => saveData('comments', newComments, setComments);
       const saveAchievements = (newAchievements) => saveData('achievements', newAchievements, setAchievements);
       const saveNpcs = (newNpcs) => saveData('npcs', newNpcs, setNpcs);
 
@@ -259,11 +256,7 @@
             className: activeTab === 'recaps' ? 'active' : '',
             onClick: () => setActiveTab('recaps')
           }, 'Session Recaps'),
-          h('button', { 
-            className: activeTab === 'comments' ? 'active' : '',
-            onClick: () => setActiveTab('comments')
-          }, 'Message Board'),
-          h('button', { 
+          h('button', {
             className: activeTab === 'achievements' ? 'active' : '',
             onClick: () => setActiveTab('achievements')
           }, 'Achievements'),
@@ -279,7 +272,6 @@
         h('main', { className: 'campaign-content' },
           activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
           activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(RecapsTab, { recaps, onSave: saveRecaps })),
-          activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments }),
           activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
           activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs }),
           activeTab === 'maps' && h(MapsTab, { campaign })
@@ -361,65 +353,6 @@
                     }, 'Delete')
                   ),
                   h('div', { className: 'recap-content' }, recap.content)
-                )
-              )
-        )
-      );
-    }
-
-    // Comments Tab
-    function CommentsTab({ comments, onSave }) {
-      const [newComment, setNewComment] = useState({ author: '', message: '' });
-
-      const handleAdd = () => {
-        if (newComment.author && newComment.message) {
-          const comment = {
-            ...newComment,
-            id: uniqueId(),
-            timestamp: new Date().toLocaleString()
-          };
-          onSave([...comments, comment]);
-          setNewComment({ author: '', message: '' });
-        }
-      };
-
-      const handleDelete = (id) => {
-        if (confirm('Are you sure you want to delete this message?')) {
-          onSave(comments.filter(c => c.id !== id));
-        }
-      };
-
-      return h('div', { className: 'tab-content' },
-        h('h2', null, 'Message Board'),
-        h('div', { className: 'add-form comment-form' },
-          h('input', {
-            type: 'text',
-            placeholder: 'Your name',
-            value: newComment.author,
-            onChange: (e) => setNewComment({...newComment, author: e.target.value})
-          }),
-          h('textarea', {
-            placeholder: 'Write a message...',
-            value: newComment.message,
-            onChange: (e) => setNewComment({...newComment, message: e.target.value}),
-            rows: 4
-          }),
-          h('button', { className: 'save-button', onClick: handleAdd }, 'Post Message')
-        ),
-        h('div', { className: 'comments-list' },
-          comments.length === 0
-            ? h('p', { className: 'empty-state' }, 'No messages yet. Be the first to post!')
-            : comments.map(comment =>
-                h('div', { key: comment.id, className: 'comment-card' },
-                  h('div', { className: 'comment-header' },
-                    h('strong', null, comment.author),
-                    h('span', { className: 'comment-time' }, comment.timestamp),
-                    h('button', {
-                      className: 'delete-button small',
-                      onClick: () => handleDelete(comment.id)
-                    }, '×')
-                  ),
-                  h('p', null, comment.message)
                 )
               )
         )

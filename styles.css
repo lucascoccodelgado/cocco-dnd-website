@@ -683,7 +683,9 @@ body {
 }
 
 .dndbeyond-link {
-  display: inline-block;
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
   padding: 0.5rem 1.25rem;
   background: #e40712;
   color: #000;
