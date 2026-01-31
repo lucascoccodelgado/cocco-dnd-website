@@ -422,22 +422,6 @@
 
     // Achievements Tab
     function AchievementsTab({ achievements, onSave, campaign }) {
-      const [isAdding, setIsAdding] = useState(false);
-      const [newAchievement, setNewAchievement] = useState({ title: '', description: '', date: '' });
-
-      const handleAdd = () => {
-        if (newAchievement.title && newAchievement.description) {
-          const achievement = {
-            ...newAchievement,
-            id: uniqueId(),
-            date: newAchievement.date || new Date().toLocaleDateString()
-          };
-          onSave([achievement, ...achievements]);
-          setNewAchievement({ title: '', description: '', date: '' });
-          setIsAdding(false);
-        }
-      };
-
       const handleDelete = (id) => {
         if (confirm('Are you sure you want to delete this achievement?')) {
           onSave(achievements.filter(a => a.id !== id));
@@ -445,45 +429,21 @@
       };
 
       return h('div', { className: 'tab-content' },
-        h('div', { className: 'tab-header' },
-          h('h2', null, 'Party Achievements'),
-          h('button', {
-            className: 'add-button',
-            onClick: () => setIsAdding(!isAdding)
-          }, isAdding ? 'Cancel' : '+ Add Achievement')
-        ),
+        h('h2', null, 'Party Achievements'),
         campaign === 'tww' && h('div', { className: 'arc-achievements-buttons' },
           h('a', {
             href: 'arc1-achievements.html',
             target: '_blank',
             rel: 'noopener noreferrer',
             className: 'arc-achievements-btn'
-          }, 'Arc 1: Threads of Fate — Achievements')
-        ),
-        isAdding && h('div', { className: 'add-form' },
-          h('input', {
-            type: 'text',
-            placeholder: 'Achievement Title',
-            value: newAchievement.title,
-            onChange: (e) => setNewAchievement({...newAchievement, title: e.target.value})
-          }),
-          h('input', {
-            type: 'date',
-            value: newAchievement.date,
-            onChange: (e) => setNewAchievement({...newAchievement, date: e.target.value})
-          }),
-          h('textarea', {
-            placeholder: 'Achievement description...',
-            value: newAchievement.description,
-            onChange: (e) => setNewAchievement({...newAchievement, description: e.target.value}),
-            rows: 4
-          }),
-          h('button', { className: 'save-button', onClick: handleAdd }, 'Save Achievement')
+          },
+            h('span', { className: 'arc-achievements-arc' }, 'Arc 1'),
+            h('span', { className: 'arc-achievements-title' }, 'Threads of Fate'),
+            h('span', { className: 'arc-achievements-subtitle' }, '32 Achievements Unlocked')
+          )
         ),
         h('div', { className: 'achievements-grid' },
-          achievements.length === 0
-            ? h('p', { className: 'empty-state' }, 'No achievements yet. Your legendary deeds await!')
-            : achievements.map(achievement =>
+          achievements.map(achievement =>
                 h('div', { key: achievement.id, className: 'achievement-card' },
                   h('div', { className: 'achievement-icon' }, '🏆'),
                   h('h3', null, achievement.title),
