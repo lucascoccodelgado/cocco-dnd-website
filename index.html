@@ -242,7 +242,13 @@
       return h('div', { className: `campaign-dashboard ${campaign}` },
         h('header', { className: 'campaign-header' },
           h('button', { className: 'back-button', onClick: onBack }, '← Back to Home'),
-          h('h1', null, campaignName)
+          h('h1', null, campaignName),
+          campaign === 'tww' && h('a', {
+            href: 'https://www.dndbeyond.com/campaigns/7014637',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            className: 'dndbeyond-link'
+          }, 'D&D Beyond')
         ),
         h('nav', { className: 'campaign-nav' },
           campaign === 'tww' && h('button', {
