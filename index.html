@@ -546,16 +546,100 @@
 
     // Maps Tab
     function MapsTab({ campaign }) {
+      const [zoom, setZoom] = useState(1);
+      const [pan, setPan] = useState({ x: 0, y: 0 });
+      const [dragging, setDragging] = useState(false);
+      const dragStart = React.useRef({ x: 0, y: 0 });
+      const panStart = React.useRef({ x: 0, y: 0 });
+      const containerRef = React.useRef(null);
+
+      const minZoom = 1;
+      const maxZoom = 5;
+
+      const handleWheel = (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.15 : 0.15;
+        setZoom(prev => Math.min(maxZoom, Math.max(minZoom, prev + delta)));
+      };
+
+      const handleMouseDown = (e) => {
+        if (zoom <= 1) return;
+        e.preventDefault();
+        setDragging(true);
+        dragStart.current = { x: e.clientX, y: e.clientY };
+        panStart.current = { ...pan };
+      };
+
+      const handleMouseMove = (e) => {
+        if (!dragging) return;
+        setPan({
+          x: panStart.current.x + (e.clientX - dragStart.current.x),
+          y: panStart.current.y + (e.clientY - dragStart.current.y)
+        });
+      };
+
+      const handleMouseUp = () => setDragging(false);
+
+      const handleTouchStart = (e) => {
+        if (zoom <= 1 || e.touches.length !== 1) return;
+        setDragging(true);
+        dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        panStart.current = { ...pan };
+      };
+
+      const handleTouchMove = (e) => {
+        if (!dragging || e.touches.length !== 1) return;
+        setPan({
+          x: panStart.current.x + (e.touches[0].clientX - dragStart.current.x),
+          y: panStart.current.y + (e.touches[0].clientY - dragStart.current.y)
+        });
+      };
+
+      const resetView = () => { setZoom(1); setPan({ x: 0, y: 0 }); };
+
+      useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        return () => el.removeEventListener('wheel', handleWheel);
+      });
+
+      useEffect(() => {
+        if (zoom <= 1) setPan({ x: 0, y: 0 });
+      }, [zoom]);
+
       return h('div', { className: 'tab-content' },
         h('h2', null, 'Maps & Locations'),
         campaign === 'tww' ? h('div', { className: 'maps-container' },
           h('h3', null, 'Sefara'),
-          h('img', {
-            src: 'sefara-map.jpeg',
-            alt: 'Map of Sefara',
-            className: 'map-image',
-            loading: 'lazy'
-          })
+          h('div', { className: 'map-controls' },
+            h('button', { className: 'map-ctrl-btn', onClick: () => setZoom(prev => Math.min(maxZoom, prev + 0.3)) }, '+'),
+            h('button', { className: 'map-ctrl-btn', onClick: () => setZoom(prev => Math.max(minZoom, prev - 0.3)) }, '\u2212'),
+            h('button', { className: 'map-ctrl-btn map-ctrl-reset', onClick: resetView }, 'Reset'),
+            h('span', { className: 'map-zoom-level' }, `${Math.round(zoom * 100)}%`)
+          ),
+          h('div', {
+            className: `map-viewer ${dragging ? 'map-dragging' : ''}`,
+            ref: containerRef,
+            onMouseDown: handleMouseDown,
+            onMouseMove: handleMouseMove,
+            onMouseUp: handleMouseUp,
+            onMouseLeave: handleMouseUp,
+            onTouchStart: handleTouchStart,
+            onTouchMove: handleTouchMove,
+            onTouchEnd: () => setDragging(false)
+          },
+            h('img', {
+              src: 'sefara-map.jpeg',
+              alt: 'Map of Sefara',
+              className: 'map-image',
+              draggable: false,
+              style: {
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`
+              }
+            })
+          ),
+          h('p', { className: 'map-hint' }, 'Scroll to zoom \u00B7 Drag to pan when zoomed')
         ) : h('p', { className: 'empty-state' }, 'Maps coming soon! You can add map images here later.')
       );
     }
