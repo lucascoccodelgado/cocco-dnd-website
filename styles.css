@@ -758,11 +758,13 @@ body {
   text-align: center;
 }
 
-.maps-container h3 {
+.map-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
   margin-bottom: 1rem;
-  color: #f5e6d3;
+  color: rgba(245, 230, 211, 0.65);
+  text-align: left;
 }
 
 .map-controls {

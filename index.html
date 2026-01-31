@@ -611,7 +611,7 @@
       return h('div', { className: 'tab-content' },
         h('h2', null, 'Maps & Locations'),
         campaign === 'tww' ? h('div', { className: 'maps-container' },
-          h('h3', null, 'Sefara'),
+          h('h3', { className: 'map-title' }, 'Map of the Continent of Sefara'),
           h('div', { className: 'map-controls' },
             h('button', { className: 'map-ctrl-btn', onClick: () => setZoom(prev => Math.min(maxZoom, prev + 0.3)) }, '+'),
             h('button', { className: 'map-ctrl-btn', onClick: () => setZoom(prev => Math.max(minZoom, prev - 0.3)) }, '\u2212'),
