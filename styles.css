@@ -292,6 +292,10 @@ body {
   filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
 }
 
+.waning-wonder .campaign-card-party img {
+  border: 1.5px solid #ffd700;
+}
+
 /* Ornate double-border frame */
 .campaign-card::before {
   content: '';
