@@ -100,6 +100,9 @@
                 className: 'campaign-card curse-of-strahd',
                 onClick: () => onEnterCampaign('cos')
               },
+                h('div', { className: 'campaign-card-party' },
+                  h('img', { src: 'strahd-party.png', alt: 'Curse of Strahd Party', loading: 'lazy' })
+                ),
                 h('h3', null, 'Curse of Strahd'),
                 h('p', { className: 'campaign-tagline' }, 'Enter the Mists of Barovia'),
                 h('div', { className: 'card-overlay' })
@@ -108,6 +111,9 @@
                 className: 'campaign-card waning-wonder',
                 onClick: () => onEnterCampaign('tww')
               },
+                h('div', { className: 'campaign-card-party' },
+                  h('img', { src: 'wonder-party.png', alt: 'The Waning Wonder Party', loading: 'lazy' })
+                ),
                 h('h3', null, 'The Waning Wonder'),
                 h('p', { className: 'campaign-tagline' }, 'Uncover Divine Mysteries in Sefara'),
                 h('div', { className: 'card-overlay' })
@@ -564,7 +570,15 @@
     function MapsTab({ campaign }) {
       return h('div', { className: 'tab-content' },
         h('h2', null, 'Maps & Locations'),
-        h('p', { className: 'empty-state' }, 'Maps coming soon! You can add map images here later.')
+        campaign === 'tww' ? h('div', { className: 'maps-container' },
+          h('h3', null, 'Sefara'),
+          h('img', {
+            src: 'sefara-map.jpeg',
+            alt: 'Map of Sefara',
+            className: 'map-image',
+            loading: 'lazy'
+          })
+        ) : h('p', { className: 'empty-state' }, 'Maps coming soon! You can add map images here later.')
       );
     }
 
