@@ -1661,3 +1661,126 @@ body {
     font-size: 1.4rem;
   }
 }
+
+/* TWW Session Recaps Accordion */
+.tww-recaps {
+  animation: fadeIn 0.3s ease;
+}
+
+.tww-recaps-arc {
+  margin-bottom: 2rem;
+}
+
+.tww-recaps-arc-header {
+  font-size: 1.8rem;
+  color: #5a3d8a;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(125, 82, 184, 0.3);
+  text-align: center;
+}
+
+.tww-recaps-sessions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tww-recaps-session-btn {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(125, 82, 184, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Cinzel', serif;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tww-recaps-session-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: #7e52b8;
+  transform: translateX(4px);
+}
+
+.tww-recaps-session-btn.active {
+  background: rgba(125, 82, 184, 0.1);
+  border-color: #7e52b8;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+
+.tww-recaps-session-info {
+  flex: 1;
+}
+
+.tww-recaps-session-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5a3d8a;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.tww-recaps-session-title {
+  font-size: 0.95rem;
+  color: #7e52b8;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.tww-recaps-session-meta {
+  font-size: 0.8rem;
+  color: #2d1b4e;
+  opacity: 0.6;
+  font-family: 'Georgia', serif;
+  display: block;
+}
+
+.tww-recaps-expand-icon {
+  font-size: 1.2rem;
+  color: #7e52b8;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tww-recaps-session-btn.active .tww-recaps-expand-icon {
+  transform: rotate(180deg);
+}
+
+.tww-recaps-session-content {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 2px solid #7e52b8;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 0.5rem;
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: #2d1b4e;
+  white-space: pre-wrap;
+  animation: fadeIn 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .tww-recaps-arc-header {
+    font-size: 1.4rem;
+  }
+
+  .tww-recaps-session-btn {
+    padding: 0.75rem 1rem;
+  }
+
+  .tww-recaps-session-content {
+    padding: 1.25rem;
+    font-size: 0.9rem;
+  }
+}

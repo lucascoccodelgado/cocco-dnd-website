@@ -256,7 +256,7 @@
         ),
         h('main', { className: 'campaign-content' },
           activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
-          activeTab === 'recaps' && h(RecapsTab, { recaps, onSave: saveRecaps }),
+          activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(RecapsTab, { recaps, onSave: saveRecaps })),
           activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments }),
           activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements }),
           activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs }),
@@ -780,6 +780,1388 @@
           h('div', { className: 'tww-cta-buttons' },
             h('button', { className: 'tww-btn', onClick: () => scrollTo('tww-party') }, 'Meet the Party'),
             h('button', { className: 'tww-btn tww-btn-outline', onClick: () => onNavigate('recaps') }, 'Session Recaps')
+          )
+        )
+      );
+    }
+
+    // TWW Session Recaps Tab
+    function TWWRecapsTab() {
+      const [expandedSession, setExpandedSession] = useState(null);
+
+      const toggle = (id) => {
+        setExpandedSession(prev => prev === id ? null : id);
+      };
+
+      const arcs = [
+        {
+          number: 2,
+          title: 'The Long Way North',
+          sessions: [
+            {
+              id: 10, title: 'Riddle Me Mist', location: 'Forest of the Dawn', day: 'Early Day 5',
+              content: `They traveled for hours under moonlight, the road slowly dissolving into fog and drizzle as the hills rose around them. The forest ahead loomed low and wide, its silhouette creeping up the slopes like something patient. Somewhere in the distance, the trees waited.
+
+Io picked up the fiddle Cyrilius had lent him and, to everyone’s mild irritation, played it with alarming ease. The music cut through the mist just enough to feel hopeful, which was unfortunate, because the rain soon turned that hope into mud. Thick, clinging, wheel-swallowing mud.
+
+Scales repaired Lucien’s battered umbrella while the horses struggled, hooves sinking and sliding. Cyrilius explained his ring as they went, a gold band set with aquamarine that constantly emitted runes which burned the fog away directly in front of him. It only worked as long as he actively fed it magic. The moment his focus slipped, the mist rushed back in like it had been insulted.
+
+The wagons finally bogged down for good.
+
+Lucien hopped out to help Scales, holding the umbrella above him with exaggerated gallantry. He lifted one of the wagon wheels one-handed and announced, proudly, that he still had it. Then, turning toward Kor’dak, added that he had done so while everyone was still inside. Kor’dak snarled. The horses grew more distressed by the second, and Kor’dak confirmed what they already knew. This weather was not passing. The mud had been muddy for a while now. Mudslide-ready.
+
+Vaz climbed onto the wagon to scout and saw absolutely nothing through the fog. Kor’dak drove his fingers into the earth and molded the terrain, steadying the ground long enough to free the cart, only for it to immediately sink again. Johannes made the call. Everyone out. On foot from here.
+
+As Bear Kor’dak stood watch, he sensed something else beneath the rain and fog. Not hostile. Not friendly. Present. The hills and forest felt alive in a way that had nothing to do with beasts. Io felt it too. A unique magical field wrapped around them, foreign and intense. Not a weave. Not an illusion. For a brief heartbeat, he felt a directional pull from somewhere. Then it was gone.
+
+Cyrilius’s runes sputtered. The ring cracked its pattern and failed.
+
+The mist swallowed them whole.
+
+When it cleared enough to see, the bards were gone.
+
+Scales dropped low and focused, realizing immediately that they were standing on grass. They were off the trail. A natural 20 confirmed it. Someone had taken them here. Just for a moment, he saw a faint Y-shaped glow in the distance before it vanished. Lucien dropped his unholy Lathander pendant to test whether they were moving. They were not. Vaz tried to use her compass necklace. It was jammed. No sign of the troupe.
+
+Then the forest spoke.
+
+“Lost children in my forest,” an unseen voice said. “Before I can determine if you are worthy of meeting me, you must answer four questions. You have three attempts at each.”
+
+Io reacted with immediate enthusiasm, followed by immediate dread.
+
+The riddles came one by one.
+
+The first spoke of breath and binding, of strength and fraying, of honesty and fear. Vaz offered “secret.” Wrong. Lucien answered “oath,” and the mist shifted violently, relocating them without warning.
+
+The second described a city with no stone, laws without ink, crowns ground down, wars buried beneath roots. Guesses flew. Io said cemetery. Wrong. Scales said forest, and the mist moved again, drawing them closer to the source.
+
+The third spoke of something without mouth or lungs, something that clung, scratched, and stung, born where stories end too fast. Scales tried fear. Io tried mist. Both wrong. Scales corrected himself. Spirit. The forest accepted it.
+
+The final riddle described a throat of stone, borrowed years, bells ringing unheard, a place built to hold what cannot stay. Vaz said grave. Wrong. Io said temple. The answer landed.
+
+The mist peeled back.
+
+They stood before a shrine deep in the forest, its presence undeniable. At its heart stood a great stag, vast and still, antlers branching like dawn itself. The Spirit of the Forest regarded them with calm neutrality.
+
+It spoke.
+
+To Lucien, it explained that many had passed through this place. The same hand that plants a seed can pull a root. Judgment would come after integrity. To Kor’dak, it recognized a blessing outside the weaves entirely and urged him to seek the hidden druids. It warned them all. Seven weaves exist, each bound to a holy temple and a guardian. They open only for those who listen, yield, and endure. Two had already been claimed by evils tied to the null, like Mirai and the wolves.
+
+Seven spirits like itself stood rooted across different lands and biomes. Find them. Learn from what they guard. Earn the knowledge to hold the world without breaking it.
+
+The shrine held a door crowned with a carved stag’s head. Within lay a gift. Not every relic serves every bearer. Choose carefully. The weave is listening.
+
+“I am Caeltherenn the Dawnheart.”
+
+Kor’dak, in bear form, led them inside.
+
+There, embedded in stone, was a blade suffused with sunlight. Its hilt formed from an antler, warm to the eye. Orc Kor’dak stepped forward and tried to draw it gently, like a storybook hero. It did not move. He set his jaw, heaved with everything he had, and the blade came free.
+
+The Dawnhart Antler Blade.
+
+Warmth flooded him. Not fire, but something adjacent. Dry. Comforting. Radiant. Io felt it immediately and recognized it as power unlike Kossuth’s flame. This was sun, but older. Scales watched, unsettled. His world tilted in a way he had not expected.
+
+Lucien felt echoes stir. A memory surfaced of sneaking out near Vel’Carmín, of seeing an owlbear cub wander into a cave, of a mountain druid warning him not to follow. He remembered time spent with druids by a fire, stories of an owlbear spirit. Vaz reached for her own past and came up empty, a poor history roll yielding only fragments. Io drifted away from the shrine, curious.
+
+He leaned into the mist.
+
+Suddenly, he stood in the Dawat at night, sand freezing cold beneath his feet. He wore unfamiliar robes. A dune rose in the distance, camels silhouetted against the dark. He ran toward them. Five small camels and one massive one, unbothered by his presence. He climbed onto the great camel’s back. It did not care.
+
+They rode into a sandstorm.
+
+The camel spoke.
+
+It recognized Io as a dreamweaver. Asked why he was here. Why he existed on this plane at all. Said it had met his people before. Io panicked. Existed. Lucien later shared his own memory of the owlbear spirit. Scales and Vaz struggled to understand what Io was saying. Kor’dak admitted something else was wrong. Io smelled different now.
+
+Io finally said it out loud. He was an oracle. A dreamweaver. He usually did not exist on this plane. He fell from the sky as a baby.
+
+Lucien removed his ring.
+
+Darkness exploded outward, vampiric and vast, before snapping back into the ring when he replaced it. Scales’ Eyes of the Grave flared violently.
+
+They left the shrine.
+
+As Kor’dak lifted the blade, a mote of guiding light appeared, pushing the mist back as they walked. Near the forest’s edge, Lucien and Scales sensed a tall, ancient fence ahead, old and broken. The mote resisted moving away from it. From the outside, nothing could be seen within thirty or forty feet.
+
+Something waited on the other side.
+
+And the forest had finished asking questions.
+
+
+
+
+On Tue, Jan 27, 2026 at 3:21 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 2: The Long Way North |`
+            },
+            {
+              id: 9, title: 'Wolf Clan', location: 'Riverbank Camp, Road to the Forest of the Dawn', day: 'Day 4 into Day 5',
+              content: `The night did not ease in gently.
+
+Io drifted toward sleep at the southern edge of camp and immediately face-planted into it, rolling deep enough that a snot bubble formed, grew, and burst into a soft cloud of purple and pink fairy dust. It looked beautiful. It did absolutely nothing. Somewhere nearby, a will-o’-wisp approached, hovered, and then vanished again, like it was taking notes.
+
+The wolves did not wait.
+
+They came in fast and from multiple directions, and the moment they crossed the edge of camp, something in Io snapped awake. Magic flared through him and settled wrong. All of his damage twisted into acid, as if the world had decided that tonight, everything should burn.
+
+To the east, Vaz stepped forward and opened with fire. Burning Hands tore through three blights at once, scorching them evenly and without mercy. To the south, a vine blight lashed out and wrapped Bob in crushing greenery, only for Ignatius to throw himself between drum and doom with frantic, competent violence. Needles flew. Some missed. Some did not. Cyrilius caught incoming fire and immediately reconsidered every life choice that had led him here.
+
+To the north, the forest reached back. Another vine blight wrapped Scales completely, roots and tendrils pulling tight in a way that felt personal. Lucien tore free nearby. Bob followed suit with a heroic flex that snapped vines and dignity in equal measure.
+
+Cyrilius fled into Io’s tent, healed himself, and stayed there. Star did not leave her tent at all.
+
+Johannes struck his lute and unleashed cacophony into the southwest, sound ripping through blights and wolves alike, shoving bodies back with force that felt half magic and half righteous irritation. Ignatius darted in on wolves at the southern edge, blades flashing. Kor’dak rose from cuddling bear form straight into violence and shredded a vine blight apart like it had personally offended him.
+
+Scales turned toward the cave wolves.
+
+“You had your chance.”
+
+He commanded them to grovel, and Pe’ta hit the ground like gravity itself had remembered him. The weight of divine will pressed down hard. Mirai resisted, teeth bared.
+
+Lucien went for Mirai and struck true. Icy black blood sprayed across the ground. Whatever these wolves were, they were wrong. Cursed. Deeply.
+
+Io finally woke up, bolted from his tent, and immediately caught a swipe for his trouble.
+
+The will-o’-wisp drifted close to Lucien and attempted… something. It amounted to a light breeze. Mirai and Pe’ta went next. Pe’ta stayed crushed to the earth. Mirai failed to land a hit on Lucien, again and again, frustration mounting.
+
+South of the fireline, wolves hit Johannes as a pack. He took the blows and held his ground, bleeding but upright. Vaz pivoted east, whiffed her first strike in spectacular fashion, then recovered instantly and decapitated a needle blight with her dagger. Another missed her cleanly. Johannes took more needles. A vine wrapped him tight. He was not doing great.
+
+Bob’s drums rolled low and strange, and one wolf collapsed into magical sleep. Johannes got healed for barely anything. Cyrilius stayed hidden. Ignatius continued swinging and continued failing. Johannes healed himself and failed to break free of the vines, because the night was not done humbling him.
+
+North of camp, Kor’dak rolled a natural 20 and went for Pe’ta’s throat. Teeth sank deep. Flesh tore. Scales bent space itself and whispered doom into the wolves’ ears, marked Pe’ta for death, and shielded Lucien with divine protection that made him nearly untouchable. Lucien swung and only grazed Pe’ta, but his blade began to glow red with promise.
+
+South again, Io unleashed a chromatic orb that obliterated Wolf D, then erased a needle blight and a vine blight in the same breath. The fight was turning ugly in the party’s favor.
+
+Then the will-o’-wisp struck back.
+
+A natural 20.
+
+Lightning tore through Lucien, cold and electric and brutal. The thing mocked him instead of vanishing. Mirai followed up, biting and slamming Lucien to the ground, knocking him prone. Pe’ta gnawed at him while still partially crushed.
+
+Wolf C slept on. Wolf D failed to finish Johannes. Vaz inhaled, whispered into the air, and shattered the south side of camp with sound. Blights crumpled. Wolf D staggered, nearly dead. Wolf C woke up and seemed… calmer than expected.
+
+Vaz turned and buried a blade in another blight. Bob tried drumming at Pe’ta and accomplished nothing. Johannes healed again. Cyrilius hid harder. Johannes failed to escape the vines again and instead taunted Wolf C so viciously that it fought at disadvantage out of pure spite. Star finally emerged and sang healing into the night.
+
+North, Kor’dak finished Pe’ta. The bear tore his head free while apologizing, a low mournful sound rumbling through his chest. He turned on Mirai and struck again. Scales studied the will-o’-wisp and realized the truth. Resistant to bludgeoning and piercing. Immune to lightning and cold. Of course it was.
+
+Scales turned on Mirai and invoked Eyes of the Grave, marking him. Lucien rose.
+
+Lucien leapt.
+
+He brought his greatsword down and sawed through Mirai’s neck, lifting the head high as the body fell. Mirai’s dying howl ripped across the forest, summoning more wolves in answer, and the gods themselves seemed to take notice. Heroic inspiration flowed.
+
+South, Io burst sorcerous energy again and finished Wolf D, then twisted Phantasmal Force around the last wolf, filling its mind with an imaginary predator that tore into it from every angle. North, the will-o’-wisp struck Lucien again. He dropped to four hit points and barely stayed standing. He reacted with a strike of his own.
+
+Vaz flanked the wisp and drove her rapier home with advantage, necrotic energy pouring through the blade. It resisted. Of course it resisted. Bob prepared himself for whatever came next. Cyrilius finally acted, blasting the final wolf with a Ray of Frost on a natural 20 and freezing it solid, then healing Johannes. Ignatius followed up, missed once, then smashed through the frozen wound and killed it. He was ecstatic. He inspired Io.
+
+Johannes finally broke free of the vines through a combination of divine pity and Scales’ help and prepared more cacophony. To the west, Kor’dak charged the newly arrived wolves like an avalanche. He ripped one apart, tossing the body aside, then lunged for another that barely escaped. The remaining wolves froze in terror, shaking where they stood.
+
+Scales tried to burn the will-o’-wisp with sacred flame. It dodged. Lucien healed himself and struck again, barely grazing it. Wolves fled Kor’dak. Others tried to bite him and failed to do much more than annoy him. South, wolves rushed Johannes and were met with cacophony. One fled howling. Two stayed and attacked.
+
+Then Io ended it.
+
+He flooded the will-o’-wisp with acid-soaked magic, engulfing it in painted light. It screamed, sizzled, melted, and vanished completely.
+
+Vaz ice-knifed another wolf to death, accidentally frosting Johannes in the process. Cyrilius attempted to snitch. Vaz lied. Io backed her up. They rolled absurdly well and convinced Johannes the wisp was responsible. Ignatius finished the last wolf. North, Kor’dak rose onto his hind legs and roared at the remaining wolves to get out.
+
+They listened.
+
+Silence fell.
+
+Johannes stared at the wreckage. “What in the hells was that? Has anyone ever seen anything like it?”
+
+Io delivered the lie of his life. He claimed ignorance with such conviction that Johannes believed him completely.
+
+Johannes insisted they leave immediately. Mirai’s howl would bring more wolves. Scales and Kor’dak agreed. Wolves across the region would converge here. Kor’dak confirmed the worst part. They could track by scent. Io tried to erase everyone’s smell with prestidigitation. It worked. Except for Mirai’s head.
+
+Lucien wanted it as a trophy. Kor’dak did not like that. The compromise was strange and unresolved. Mirai’s head was hung from a tree, to be checked later, for reasons that made sense only in the moment.
+
+They packed fast and left.
+
+Four hours to the Forest of the Dawn.
+
+Behind them, the wolves howled.
+
+Not in rage.
+
+In mourning.
+
+
+
+
+On Tue, Jan 27, 2026 at 3:20 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 2: The Long Way North |`
+            },
+            {
+              id: 8, title: 'What Is Adventure?', location: 'The Road West of Rauru', day: 'Day 4',
+              content: `They left the shining heart of Rauru hidden in plain sight, smuggled out not in coffins or cloaks, but in the bright, ridiculous protection of a traveling troupe. Johannes’ caravan rolled beneath open sky, surrounded by music and halfling bravado. Johannes himself, black hair and a mandolin in hand. Ignatius with a violin and a shortsword he absolutely intended to use. Cyrilius, blonde, arcane, and observant, watching the road like it might suddenly confess. For a few hours, the party was allowed to feel something dangerously unfamiliar. Safe.
+
+That illusion ended when the trail narrowed and a fallen tree lay across the road like a verdict. Scales approached first and caught something wrong at the roots. Not the honest rot of age, but discoloration, a bruising in the earth itself. He let thaumaturgy boom through the woods with a single word. “AMBUSH.” Kor’dak shifted into a bear and sniffed the bark, then went still. The scent was wrong. Frozen roots. Charred wood. Cold and burn tangled together in a way that made no sense. Io felt the same uncomfortable familiarity he had tasted in the cult’s ritual chamber, that sense that reality had been thinned here and something else was pressing through.
+
+When Kor’dak brushed the trunk with petaled magic, the blossoms froze on contact, tiny perfect flowers turned brittle and glassy. Cyrilius crouched close, peering through his strange glasses, and his face tightened. He had seen this kind of freezerburn before. A shimmering patch of blue grass on the road to Rauru that killed their horse without leaving a wound anyone could explain. The weave here did not read like normal magic. It resisted being understood.
+
+Io did what Io does when the world gets incomprehensible. He made it smaller. He reached into the air with spellwork and wrestled the log into shrinking, feeling something push back, as if the stump itself had opinions. Johannes did not wait for philosophy. He hustled the wagon forward and the troupe passed the obstruction with the kind of practiced speed that suggested they had learned long ago not to linger near mysteries. The party followed. Kor’dak, nose still working, noticed a secondary trail nearby. A darker path where the forest bore scars. No footprints. No tracks. Just remnants of destruction, as if something heavy had passed through and the world was still trying to remember what it had looked like before.
+
+They made a choice. The troupe would camp by the riverbank and wait overnight. The party would follow the dark path and return before dawn. Cyrilius pressed a necklace into Vaz’s hands, stone-set and subtle. A compass of paired lights meant to find each other in the woods. A tether. A promise that if the forest swallowed one of them, it would not swallow the last trace.
+
+The deeper they went, the stranger the signs became. Vaz and Kor’dak felt two different directions of magic pulling at once, like competing tides. The ground held impressions that did not behave like tracks, too altered, too smeared by time or by something that did not walk the way living things do. Their tracking attempts landed on an honest diagnosis. Gee… not great. Kor’dak briefly became the least helpful detective in history, burned heroic inspiration, rerolled, and suddenly the world snapped into focus with one crucial truth.
+
+Wolf.
+Not metaphor.
+Not vibe.
+Eau de wolf.
+
+Lucien climbed into the canopy like a pale spider and, with a natural 20, found the shape of the problem. Ahead lay the river bend where the troupe would camp, the wagon visible through the trees. Beyond it rose a cliffside with a cave mouth half-blocked by two fallen trees, broken in the same cruel manner as the log on the road. Above the cave, patches of grass lay blistered in an impossible way. Frozen and burnt, as if the land had been touched by winter and fire and could not survive both.
+
+Scales reached the cliff’s edge and caught the scent fully. Scorched battlefield and sulfur. Charcoal. Alchemy. Something arcane that did not belong to any honest spellbook. A null smell, distinct, memorable, and nauseating in its wrongness. Kor’dak, rolling luck that felt like the gods briefly looking away, found a stronger stench near a small hole in the bushes, large enough for a rat to squeeze through. Through it, a thin line of cave light. Something was inside.
+
+Io tried the subtle approach, which is to say, none at all. He sent wolf howls and dancing lights into the cave mouth like bait. For a moment, everyone held their breath, because sometimes the forest answers. This time, it didn’t. The cave stayed quiet. Io pushed the lights deeper, and the spell revealed two dire wolves lying on a bed of vines. The cave looked normal. The wolves looked tired. Not poised. Not stalking. Just worn down, sleeping the way sick animals sleep when their bodies are losing an argument.
+
+Then the party decided to wake them up, which was an insane decision even on a good day. Scales boomed thaumaturgy into the cavern. Kor’dak roared as a bear. Io’s mage hand fussed with the air like a rude little ghost. The wolves rose slowly, dazed and unsteady. Fur sloughing off their legs. Bodies beaten down. Irritation building as they struggled to stand. Up close, the smell was overwhelming, and Kor’dak realized with a sinking certainty that the source was not the cave.
+
+It was them.
+
+The first wolf spoke, calm, old, and sharp with authority. “Child,” it said to Kor’dak, voice like gravel in snow, “you’re not from around here. Why do you come to disturb us?” Kor’dak’s posture shifted from predator to caretaker in a heartbeat. He asked what had happened. Why they were injured. The answer came like a confession they did not want to give. Nights of losing consciousness. Waking worse. Not understanding what was happening, only knowing it was dangerous to be near them. The second wolf coughed and spat bitter fear into the air, declaring they were cursed, that nature was reclaiming them, that the time of people was overtaking the time of wolves.
+
+Kor’dak’s keen senses caught the truth beneath the words. The wounds were ice-born, but the sickness ran deeper, behind the eyes, threaded through the spirit. The wolf sniffed Kor’dak in return and went still. “You’re no bear,” it growled. “Get out. Leave this cave and this forest.” When Kor’dak asked their names, the first answered plainly. Mirai and Pe’ta, guardians of the Forest of the Dawn. The command did not soften. Leave.
+
+Scales and Lucien, faced with suffering that looked terminal, quietly considered mercy. Mirai’s response snapped back immediately. Humans caused this. The wolves would not be saved by human gods or human kindness. Scales prostrated himself anyway and offered a painless end, because that is who he is. Mirai called it arrogance. Let them suffer their fate as nature intends. Do not attack them. It would trigger it.
+
+The party left.
+
+The party returned to camp without incident, guided by competence and a merciful run of survival rolls. The riverbank was alive when they arrived. Multiple fires burned low and steady. Music drifted through the trees. The troupe was doing what troupes do best, insisting the world was kind as long as the song kept going.
+
+By the fire, Vaz sat with Star. Star spoke quietly about her parents, powerful wizards who died in an accident she barely survived. She was twenty-five now. Her father had been four hundred. She did not even know her family name. Johannes had told her it was to protect her, that it was an important name, and that knowing it would put her in danger. She talked about Johannes like a father, and hinted at a past he carried carefully, like something heavy wrapped in cloth. Vaz shared her own losses in return, and her hope that this strange, damaged group might become a chosen family. Star admitted she loved magic deeply, but that Mystralis had a greed to it that never quite sat right with her. Vaz, carefully and without pressure, invited her north if she wanted to come.
+
+Elsewhere, Lucien attempted reconnaissance in the only way he knows how. He cornered Bob and asked if he had heard anything about vampires. Bob responded with confusion, a shrug, and an immediate pivot into loud bodily humor. Lucien tried again. Bob pivoted harder, this time toward food. The exchange ended without useful information, but with a very clear understanding of Bob’s priorities.
+
+Io found Johannes and admitted that if they had arrived earlier, he could have captured the troupe in the moment for art. Johannes demanded to see the mockup. Io announced he would do it immediately, took a generous swig, rolled a natural 1, and produced what could generously be described as a draft of an idea of an idea. Johannes glanced at it once and declared it trash. He ordered Io to leave and work on it properly.
+
+Scales spoke with Johannes about the road ahead. Johannes did not soften the truth. The Forest of the Dawn grows denser the deeper you go. More action. More battle. Ignatius immediately volunteered violence. Johannes explained they would likely need to camp, and that crossing the forest never takes less than two days. The real danger, he warned, is the mist. Cyrilius has magic that can help dispel it, but those who do not know how to navigate it sometimes wander until the forest becomes the only story anyone remembers about them.
+
+Night settled in.
+
+Io worked through the dark, stubborn and focused. His forgery advanced again, creeping from twelve percent to twenty-six. The mockup improved in quiet increments. Vaz and Kor’dak shared a tent, Kor’dak in bear form, curled protectively beside her. Scales went offline. The caravan settled into that fragile calm that exists only when danger is deciding whether it is worth the effort.
+
+Then Lucien and Scales saw a will-o’-wisp drifting in the distance.
+
+They smelled that acrid null scent again.
+
+Out in the trees, shapes moved where there should not have been movement. Too many. Too coordinated.
+
+Dire wolves closed in through the dark.
+
+And the forest finally answered the question it had been asking all day.
+
+What is adventure?
+
+Roll initiative.
+
+
+
+
+On Mon, Jan 5, 2026 at 1:49 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Threads of Fate |`
+            }
+          ]
+        },
+        {
+          number: 1,
+          title: 'Threads of Fate',
+          sessions: [
+            {
+              id: 7, title: 'Bye Bye Raru', location: 'Rauru', day: 'Day 3',
+              content: `The session opened in the Kelemvorite Mausoleum of the City of Rauru, beneath stone arches that smelled of incense, cold iron, and old judgments. Cardinal Justinus T. Law stood before Scales, his gaze lingering on the warforged’s chestplate. For a moment, he said nothing — only observed the subtle but undeniable shift in the engraved scales worked into the relief of Scales’s armor, as though some unseen hand had nudged them toward a new imbalance.
+
+Then the Cardinal placed his hand against Scales’s chest, directly over where a heart would be, and spoke a prayer not as a blessing, but as a ruling:
+
+“Kelemvor, lord of the final door, keeper of the balance… look now at your servant.
+By your voice, let him rise from cleric to deacon… from follower to leader.
+Let him walk not only in obedience, but in judgment.
+Be the one to restore balance.”
+
+This elevation was deeply unconventional. Scales was not being assigned a new post, nor placed beneath a superior’s command. Instead, the Church was releasing him — formally, deliberately — to walk his own path in Kelemvor’s name. A promotion that carried authority, responsibility, and isolation in equal measure.
+
+Scales accepted without hesitation. The weight of it felt correct. He embraced the role fully — and, with characteristic pragmatism, attempted to leverage the moment into better material support. His timing and argument were excellent (an 18), but the Church’s coffers were not. The Cardinal admitted that the true resources lay at the Domus Curae, not here. For now, all they could offer was ten gold pieces and their confidence.
+
+Before departing, Scales voiced a concern that cut sharply against the ceremony’s gravity: the party’s ambush in the Underward may not have been coincidence. Someone could have warned their enemies. The Cardinal reacted poorly. His demeanor shifted erratically, rejecting any implication that the Archbishop might be compromised and displaying open disdain for followers of Lathander. The matter was dismissed — forcefully.
+
+When asked what came next, the answer was stark and directional: go to the center — go to the desert. The Cardinal outlined what little was known. Eagle-folk, or Aarakocra as their species is known, dwell along the border of the Dawat Desert and may be able to guide travelers. The Forests of the Dawn, dangerous and strange, now serve as one of the few viable trade routes due to other paths being cut off. Goliaths would pose challenges deeper along the journey, and the northern waters are firmly controlled by sea-faring clans of the same. The Archbishop provided Scales with holy water, visibly unsettled by how suddenly and decisively the deaconate had been conferred.
+
+From there, the party reunited at the Broken Macaroni, where the tone shifted dramatically. A mid-day performance was underway as Johannes, a halfling bard who is sixty-five going on fifteen, opened for a traveling troupe known as The Mystic Star of the West. The tavern buzzed with noise and drink — Bertha flung beer with equal enthusiasm into her mouth and across the room.
+
+The central question resurfaced over drinks: the Ice Temple. Everyone agreed on heading northwest, but the route — how far north, how far west, and which side of the desert to risk — remained unsettled.
+
+The performance concluded with the elf dancer, The Mystic Star of The West commanding the room, her movements precise and radiant, fan clacking as she finished in a sheen of sweat and magic — unmistakable College of Dance technique. During her final flourish, she executed a Starfall Pirouette, scattering motes of light and fire through the air. Vaz clocked the magic immediately.
+
+Kord’ak approached afterward, offering her a pink rose that matched her hair. She introduced the band — Cyrilius and Ignatius, halflings, and Bob, a dwarf percussionist — explaining they’d just come from the southwest and were considering returning home to Mystralis, capital of the Veneficus Veil. There was mutual interest in crossing paths again. Kord’ak, perceptive as ever, noted that Star was very much appreciating his arms and general beefiness.
+
+Io, meanwhile, made the situation productive. He approached Johannes with his usual confidence and theatrical sincerity, flipped the script with a few well-placed questions, tossed him two gold pieces, and convinced him that Io absolutely must paint the troupe while traveling the open roads. Johannes, delighted, agreed on the spot. Though he did use Detect Thoughts and saw straight through the fake-name routine, it only made him more interested in bringing the entire party along.
+
+Io committed fully to the arrangement — drinking, and gambling. Lucien learned from Bertha that the troupe was well-known and lucrative. Vaz observed. Scales watched. The group, quietly, gained cover and passage.
+
+Errands followed. Disguised, Io visited the Aurelius Store of Magic Art Supplies, purchasing a white quill with invisible ink and additional paints, learning that custom work could be commissioned with magical feathers and ink for a future fee — and stealing more paint. At EXPRESS Airmail, he sent two letters to Gondowa via bundled express delivery, flirted with an off-menu same-day option, and befriended Quill, Aarakocra mailman, so thoroughly they are now, functionally, inseparable.
+
+The party sold items, shopped, schemed. Io lost money gambling the troupe, then immediately made it back by conning Bertha into free food.
+
+And then, quietly, they left Rauru.
+
+Draft horses pulled the caravan as the city fell behind them. Scales borrowed Star’s tarot talent and requested a divinatory reading for the road ahead:
+
+Past: Death
+Present: Safe Travel
+Future: Trust
+
+Kord’ak transformed into a skunk made of flowers — blossoms bursting where fur should be — and leapt into Star’s arms. Io shrank Lucien to ease their passage through customs.
+
+And with that, the party was once more in motion. Everyone hiding inside of Johannes' Travelling Band of Bards' caravan. 
+
+The road awaited.
+
+On Thu, Dec 11, 2025 at 3:06 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Threads of Fate |`
+            },
+            {
+              id: 6, title: 'Rock Bottom, Broken Creeds', location: 'Rauru', day: 'Days 2–3',
+              content: `Free Falling
+
+The session opened in the dark. Four figures and one fox dropped from the Silent Hand’s rooftop into the black shaft below. For a breathless instant there was no plan, no feather fall, just the certainty of impact and the thoughts that surface when you’re very sure you’re about to die.
+
+Scales, standing before the Silent Hand’s Raurian guild, surrounded and outnumbered, he had whispered, “If God wills it,” and stepped into the void. As he plummeted, his vision stretched back to the moment he’d reached for Kelemvor: a thousand paths of light branching away from him like veins of gold, each blinking out in quick succession until only one remained. The straight, impossible line downward. Every other future had gone dark. This was the only way left. The quiet mortuary errand he’d been sent on was gone; in its place, chaos and a calling he hadn’t asked for.
+
+No Name fell in silence, teeth clenched against pain as he yanked an arrow from each shoulder and let them tumble into the dark after him. Whatever else was happening, he could feel it: this spiral into the deep was still pulling him toward his true mission, toward Celigren’s purpose for him. It hurt, but he was used to that feeling.
+
+Io plummeted on his back, staring up at the shrinking ring of light far above. “Oh, fuck.” The sensation was horribly familiar — the helpless drop, the way the Weave seemed to twist around him, events unspooling like someone else’s script. He’d been here before, in dreams if not in body.
+
+Lucien’s borrowed umbrella blasted open from the force of the air, the little duck-headed handle spinning wildly as it was ripped and ruined. As the fabric tore, his thoughts went somewhere quieter: to Corvo, the man who’d set him on this path, the man who raised him, and the mission he’d sworn to complete. For the first time, it felt like he might simply… fail. Not in glorious battle, not in some noble last stand, but as a body at the bottom of a hole.
+
+Kord’ak fell as a fox, the heroic dive he’d started with collapsing into something smaller and more honest. The air roaring past his ears sounded like battlefield wind. He thought of Ursa, his mother, and the way she’d gone to war and never come back. He thought of the Algari elves who’d taken him in, trained him, tried to give him a life that wasn’t just Kantor brutality. If this was it, then he’d failed them too. The thought stung more than the fall.
+
+And then we cut to Vaz.
+
+As she dropped, the present blurred and the past slammed back into focus.
+
+She was fourteen again. Old, by Silent Hand standards, for a first mission. Most guild children earned their first assignment at thirteen. Rose had gone out at twelve. Perched high in a tree above a noble estate in Aveisa, a northern city in the Empire of Ram’rodûn, Vaz crouched beside two figures: the man they called M and the young shadar-kai who would become her closest ally.
+
+M was all sharp lines and restraint: a 6’5” shadar-kai mastermind with stark white skin, straight silver hair parted like curtains, and eyes as black and unreadable as ink wells. His ears were heavy with mismatched earrings, each one a lock on magic so destructive he dared not let it flow freely. He almost never spoke, and when he did, his words came wrapped in a faint, polite smile that gave nothing away. Vaz had never seen him fight outside training. In the field, people simply… died. Throats slit, lungs quietly crushed, poison needles finding their mark — whatever was most efficient.
+
+Rose was his opposite and mirror all at once: 6’7”, skin the color of storm-swept steel, dark navy eyes, and a cascade of wavy silver hair pulled back in a stylish, practical knot. He wore dark leathers like Vaz’s, layered with chains, rings, and too many earrings. Tattoos crawled over his skin: a veil of ink across his collarbone that let him move in true silence for a heartbeat, swirling sigils at his ankles that turned his steps to smoke, black bands around his wrists and fingers commemorating the dead — including one line circling wrist and index finger marked for Vaz herself. Some designs were magical. Many were just beautiful. He was seven years older, already a prodigy, already a legend among the guild’s children.
+
+On that night, Vaz had flubbed the basics. Her grappling hook caught the wrong ledge. A landing went loud. A table corner met her hip. Rose covered for her again and again with quiet assists and no judgment, but each misstep tightened the knot in her stomach. M vanished inside ahead of them, and when he finally signaled, it was with the simplest of hand signs: he would clear the first floor. Vaz and Rose were to each take an upstairs room.
+
+Vaz slipped into the assigned chamber, blades ready, heart pounding — and found a girl her own age asleep in bed, arms wrapped around a teddy bear.
+
+The creed said this was no different from any other target. The guild said obedience was survival. Still, Vaz hesitated. She was already behind the others. Already the one who needed extra help. This was supposed to be the moment she proved she belonged.
+
+Her hand wouldn’t move.
+
+She felt M step in behind her, his presence filling the room like a shadow. Terror and shame knotted together. Vaz forced herself to try again, raising her dagger over the girl’s chest. At the last second her arm locked, but her magic didn’t.
+
+Booming Blade surged out through cold steel, leaping the distance her hand refused to cross. Thunder swallowed the room, invisible and focused, and the spell drove straight into the sleeping girl’s heart.
+
+Silence fell heavy.
+
+M’s voice, when it came, was quiet and even — but for the first time since she’d known him, the warmth was gone. No careful encouragement. No gentle framing of failure as “progress.” Just simple disappointment, edged in warning. He told her never to do that again. Never to let the magic out. Never to lose control.
+
+A moment later, Rose stepped into the doorway and saw only the aftermath: a cleanly “handled” target, a shaken apprentice, and M as unreadable as ever. He never learned what really happened.
+
+Vaz had carried that moment ever since, the first time her magic had killed someone, the first time M’s voice had turned cold, the first time she realized there were lines she was afraid to cross… and that the Hand might not have room for that kind of fear.
+
+Then feather fall caught them, the memory dissolved, and the party’s plunge into the deep finally slowed.
+
+Rock Bottom 
+
+Feather Fall bloomed around them like a breath of mercy.
+
+Just before the spell softened the drop, Io felt the world fold sideways. Colors peeled upward like paint dripping in reverse. The dark around him brightened into lavender haze, and in the mist stood Her — the jeweled woman he had seen in the poppy fields. The one whose voice threaded through his dreams like a melody he had once known by heart.
+
+Power surged through Io’s brush, new, clean, fully formed: Feather Fall. When he gasped awake, the spell leapt from him as naturally as breath.
+
+The fall slowed. The abyss embraced them gently instead of breaking them.
+
+And then they hit rock bottom, literally. Five thousand feet beneath Rauru, where the last scraps of light from the surface thinned into memory. Here, the air tasted of rust and smoke. The cavern roofs rose like broken cathedral vaults. The people who lived here moved like ghosts, the destitute and the forgotten clinging to the edges of the city that had long abandoned them.
+
+They were alive. Barely. And they were alone.
+
+The first thing Scales did was stand, straight-backed, shoulders set, eyes grim. To him, their survival was not luck. It was a sign. A harsh, uncompromising validation that Kelemvor had intervened directly, that the god of death himself had decided these fools were not yet ready for his embrace. Scales immediately shifted into no nonsense, all while Io approached the nearest establishment — now calling himself Claude Mudrake — sweet-talked the barkeep of a miserable tavern into renting them a “pet-friendly room,” double price, no questions asked.
+
+The room was barely large enough for all of them to stand in at once. Damp walls, a slanted floor, a single straw mattress. Io insisted the ambiance was “underground chic.” Scales did not laugh.
+
+When they had all squeezed inside, Scales closed the door, turned slowly to face the group, and — without warning — broke. Not in weakness, but in fury.
+
+His voice was low at first, trembling not with fear but with conviction, and then it rose, filling the cramped room with the weight of judgment.
+
+“I am surrounded by fools and liars. My holy mission is lost. And the silent embrace of my Lord rushes toward us.”
+He turned on each of them in turn, the anger cold and almost ritualistic.
+
+To Io:
+
+“You lie with such ease I no longer know you. You provoke without foresight. Must I be alone again in study and contemplation?”
+To Vaz:
+
+“You led us blindly into a den of thieves. You knew them. You told us nothing. You have fed me to the wolves.”
+To Lucien:
+
+“Do you think I was not taught to recognize the signs of the dark? A creature I believed a friend hides behind faithless silence. Are you here to thwart me?”
+And then the worst blow — the one he reserved for himself.
+
+“But the greatest failure was my own.
+I allowed the sins and bonds of the living to divert me from my ordained purpose.
+And so I am alone, as I have ever been, at the bottom of the abyss, surrounded by thieves and charlatans.”
+The room fell still.
+
+And Vaz, who had been shrinking into herself with every accusation, feeling the fear of exile pressing against her ribs again, finally drew breath.
+
+Her voice was small at first. Honest. Raw. She told him she understood losing a purpose. That she, too, had felt herself unravel during the fall, realizing with sudden clarity that she did not care if she lived or died. Because purpose had been life for her, and without it, she had only been falling long before the shaft.
+
+She explained why the Underward hit her so hard: it looked like Aveisa, her home. Why the Silent Hand symbol lit something hopeful in her chest — the first familiar thing she had seen in weeks. She told them, haltingly, the truth she had hidden:
+
+She was a guild child. Raised by M, trained beside Rose, shaped by a life of knives, shadows, and creed.
+
+She spoke of her first mission, the one that went wrong, and how afterward she had thrown herself into becoming colder, sharper, emptier. But M had never assigned her emotional targets again. Vaz had always wondered if he had protected her from ever facing another sleeping child.
+
+And then she told them the reason she had been exiled:
+
+A girl.
+A target who looked too much like the one from her past.
+A mission she could not bring herself to complete.
+A perpetrator she attacked instead.
+The return of M’s disappointment — worse this time.
+And the decision of the Silent Six: exile.
+
+There was no going back. Not anymore. Not after the fiasco with the Silent Hand safehouse here in Raru. Rose had likely seen her. Fletch had certainly recognized her. Whatever slim chance she had of rejoining her guild was now ash.
+
+When she said it aloud, her magic burst from her in a tremor — a raw, involuntary Shatter that cracked the stone floor and left her blinking tears she didn’t mean to shed.
+
+And then, quietly:
+
+“My real name is Vazriel.”
+Kord’ak stepped forward next, shedding fox form for orcish truth. He spoke of the Kantor House, Masters of War, and how he was born in its shadow but never built for its cruelty. His mother, Ursa, had been the only softness in his life. Her death had hollowed something in him. His father, Tanagrosh, “the Land-Waster”, and his brothers had tried to beat the softness out of him once he showed signs of gentleness. But the more they punished him, the more nature answered him.
+
+He described the battle at Algari, how he had refused to fight the elves his family hated, how the elves took him in anyway, how he had tried to remake himself in their peaceful image… and how, in the end, he too had been captured and caged.
+
+No Name grunted — terse, almost dismissive — but even he admitted he remembered little, only that Fletch had been insufferable and that he’d been counting the ways to escape long before the party arrived.
+
+And then Io, in the most Io way possible, casually outed Lucien as a vampire.
+
+Lucien froze. Scales, who had now entered his Sentry's Rest, froze harder.
+
+And then, unexpectedly, Lucien spoke, truly spoke, not as a creature hiding his hunger but as a person choosing a path. He told Scales why he stayed. That he was here by choice, following faith in his own way, doing what he believed needed to be done. That he respected Scales. That he wanted to be worthy of trust, even if the truth was complicated.
+
+It was the kind of confession that shifts the air in a room.
+
+And for the first time since they’d hit the bottom of the world, the party felt less like strangers in a crisis and more like people tethered together by something fragile and real.
+
+Shadows Lurk
+
+As the last of Lucien’s words faded, the room fell into a thick, tender silence. Scales stood rigid, Lucien still half-braced as if expecting divine smiting, Vaz trembling from truth finally spoken, the others unsure where any of them stood.
+
+And then Vaz’s breath caught.
+
+Because behind Scales, in the narrow strip of dust-frosted window, a shadow shifted. Not just any shadow — a familiar one. Sharp lines. Tall frame. A silhouette she knew better than her own heartbeat.
+
+Vaz jerked to her feet.
+
+She opened the door into the hallway — and a hand emerged from behind it, tapping her shoulder with casual precision.
+
+She spun.
+
+Rose stood there.
+
+Not imagined. Not remembered. Not a trick of the light.
+
+Rose — 6’7”, steel-cloud skin, silver hair gathered loosely back, jewelry glinting softly even in the Underward gloom — was really, impossibly, here.
+
+He looked at her the way he used to look at her during training:
+Warmth buried under discipline. Concern hidden under command.
+A softness he never showed anyone else.
+
+“Vaz,” he said simply.
+A greeting. An apology. A thousand unsaid things.
+
+It hit her like a blade to the ribs.
+
+“I told them exile was wrong,” he said. “I told them you weren’t ready, that you needed guidance, not banishment.”
+
+The words cracked something in Vaz.
+He had cared. He still did.
+
+He explained everything with crisp, quiet efficiency:
+He had been sent to confirm the party’s deaths.
+Rose had volunteered to come down, find bodies, and declare them burned. It was the only way to buy her time.
+
+“Time,” he added, “not safety. They’ll look again.”
+
+Vaz reached for her belt — the one bearing her Silent Hand insignia — and unbuckled it with shaking hands.
+“This will convince them,” she whispered.
+
+Rose accepted it solemnly.
+“Good,” he murmured. “But now they’ll believe you’re dead. Do not prove them wrong.”
+
+“There’s much you don’t understand about this city,” he said. “About the forces beneath it.”
+
+And then he gave her what she desperately needed: answers.
+
+The Warnings of Rose
+He spoke of the magic orc — Kord’ak — and the power inside him that the church feared. If others like him awakened, the weave itself might tremble. Someone had ordered the church to capture him quietly. Someone high. Someone worried.
+
+He spoke of the bigger enemy, the one pulling strings from the shadows — too powerful to name directly, even here. An enemy with reach, with cultists, with agents like the ones the party had just fought. An enemy who wanted the world’s pillars — the temples, the weaves, the gods — weakened or broken.
+
+And then he said a name that made the air tighten.
+
+Vorinthian.
+“A warrior,” Rose said. “One with the blade.”
+
+Vorinthian was not a title. It was a legend — rare and terrifying. Those who bore that name could cut through armies. Through spells. Through fate. 
+
+“You see,” Rose said quietly. “You’re all part of something larger. And much of it is very, very dangerous.”
+
+He advised her against returning the missing tiefling girl to her home.
+“The safe path is a lie,” he warned. “If you want answers — follow the danger.”
+
+And then, with a final look at Vaz that held too many chapters in it, he was gone. Or rather — he wasn’t gone; he simply stopped being visible.
+
+After Vaz returned to inform the party of all of this, No Name was no more. Hearing the word Vorinthian struck him like lightning, and memory swallowed him whole.
+
+Vorinthian Flashback — The Blade and the Storm
+He was back in Volantis, Fulminar’s Peak, standing in the courtyard of his childhood home, where stone was cracked from war and blossoms thrived stubbornly through the wounds.
+
+He watched his older brother nearly beaten to death by their father.
+He remembered the helpless rage.
+The fear.
+The need.
+
+Lightning erupted from Vorin’s blade — wild, uncontrolled, answering the storm inside him. It lashed across the yard and struck his father squarely in the chest.
+
+And then his father answered with lightning of his own — steady, practiced, deadly.
+A meeting of storm and flesh.
+
+For one heartbeat, his father looked proud.
+The first and only moment of approval Vorin had ever tasted.
+
+Then the man slapped him across the face, hard enough to rattle his teeth.
+Pain.
+Humiliation.
+But also — accomplishment.
+A forbidden pride glowing through the bruise.
+
+Vorin gasped and came back to the cramped tavern room.
+
+The Long Rest — Divine Intervention
+That night, sleep came like a blade’s edge — thin, sharp, uncertain.
+
+And then Scales felt a pull.
+Not physical. Not magical.
+Existential.
+
+The darkness around him shifted, folding into a vast cosmic expanse. A path of shimmering light unfurled beneath his feet — a luminous bridge suspended in endless night, each step humming with judgment, memory, and the weight of eons. It curved gently upward, as if inviting him toward something he had spent his whole life preparing for but never expected to truly witness.
+
+At the end of that radiant path stood a colossal figure of light and shadow.
+
+Kelemvor.
+
+A towering form in full armor, face hidden behind a judges’ mask. The god’s mouth moved beneath it, speaking in a voice that was both thunder and whisper.
+
+“Scales,” he said, “your judgment begins.”
+
+He told the warforged that he had done well — but obedience was no longer enough. Scales had been chosen for something that required not just submission, but autonomy. Initiative. Discernment.
+
+The world was tipping.
+The balance failing.
+Weaves fraying.
+Things that should die were clinging to life.
+Things that should live were being cut away.
+
+And then, pointedly:
+
+“The vampire boy is no foe. He will die one day — but not by your hand.”
+Lucien, watching Scales’s armor glow faintly in the darkness of the room, saw something impossible:
+The engraved scales emblem on the cleric’s chest tilted, as if influenced by unseen hands — a sign of shifting cosmic balance.
+
+Scales awoke — or reactivated — with a certainty he had never felt before.
+
+“In faith,” he whispered to himself, “ever is my purpose found.”
+
+The new day had come.
+
+Good Morning, Fellow Cultist
+
+Morning came slowly to Rockbottom — the kind of morning that felt less like dawn (no sunlight here) and more like the world reluctantly switching itself back on. The group woke stiff, bruised, and emotionally sloshed, but alive. The old lady who ran the tavern offered worms, which Vaz devoured with suspicious enthusiasm (“texture,” she claimed). Kord’ak snuffled sadly in fox form. 
+
+Vorin took a second to see if there were other animals down here in the bottom of the world, and on a nat 20 nature check, befriended a mouse called Moby, who challenged Vorin to a bench press contest before being dubbed “Broby” the bro-mouse. Broby declared his life’s grandest desire was to one day try cheese, a fabled food item his friend had told him about.
+
+Between ecstatic squeaks, Broby informed them that cultists had been poking around the boarded-up entrance recently. Io raised an eyebrow. Then two. Then he pressed his palm to the warped cellar door and realized the truth:
+
+The boards weren’t real.
+The hinges weren’t real.
+The door wasn’t real.
+
+They walked through it like someone walking through a bad lie, and descended further — because of course they did.
+
+This time, the infiltration was methodical. Almost suspiciously competent.
+
+Lucien donned stolen cult robes, the hood shadowing his pale features. Io disguised himself as a cultist named Malthis, whom he absolutely did not understand, but whose likeness he reproduced flawlessly thanks to Desiguise Self. Vaz melted into invisibility. Kord’ak shrank into skunk-form, tail high. And Scales and Vorinthian willingly clanked forward in chains, the “prisoners.”
+
+Vaz and Kord’ak, rolling the gods' own luck, TWO NAT 20 STEALTH ROLLS, scouted the entire hideout like it was a B&B they were considering renting.
+
+Common rooms. Ritual spaces. Sleeping quarters. Squabbling goblins in robes two sizes too large stabbing each other for “blessings.”
+And whispering cultists in the shadows saying:
+
+“Bartho and Vladith failed, huh…”
+
+Vladith’s name hit like a falling stone — who we later learnt was the blue tiefling who led Elzerina into undeath.
+
+But the true danger lay behind a half-rotted skeleton guarding a heavy door. Through the cracks, Vaz saw two familiar robed figures — the same type of casters who ambushed them days earlier — chanting over a circle of bones. Dark magic thrummed in the air like a pulse of rot.
+
+Off-limits, said every instinct in her body.
+So of course that’s where they went.
+
+Io Becomes “Malthis”
+Before the confrontation, Io/Malthis waltzed into the cult’s dining hall with Kord’ak-skunk trotting loyally beside him. Three cultists sat gossiping over porridges of arguable edibility.
+
+They froze at the sight of him.
+
+“…Malthis? Didn’t the Seers say you died?”
+
+Io didn’t blink.
+“Obviously not. Look at me.”
+
+He lied with the elegance of a man lying about a lie he hadn’t yet invented. Detect Thoughts guided him through every conversational pothole. Malthis, it turned out, had been one of the cult’s “singers” part of the silent choir. And Vladith had been the one who “kept meeting the princess in the gardens.” Io connected the dots instantly: Vladith, the blue tiefling connected to the blue rose. Malthis was his cover identity.
+
+The cultists believed every word.
+
+They also casually revealed that the missing tiefling girl was en route north as part of the “Greater Plan”… until she wasn’t. Someone decided to keep her here instead. Too valuable to move. Too important to risk.
+
+Io asked for cheese.
+They had none.
+He told two goblins to “keep blessing each other until you just can’t anymore,” and they immediately began stabbing harder. Goblins cause their own problems…
+
+The Ritual Room
+Meanwhile, Vorinthian tested the barricaded entrance to the secret room — and tore it open with silent precision, a nat-20 worth of grace.
+
+Inside, Io (now fully committing to “Malthis”) donned a bone-white ritual mask, took the hands of Torvath and Nimora — the cultist-wizards — and began chanting along, stealing their thoughts word for word.
+
+This was not regular magic.
+
+The weave here felt wrong.
+
+A pressure.
+A hunger.
+A distortion in reality that clawed at Io’s mind.
+
+He held — barely — through a surge of shadowed power neither arcane nor divine.
+
+From across the room, Scales recognized the shape of forbidden magic. Necromantic threads older than Kelemvor. Older even than the era of the Children of the Fang. A weave that should not exist — and yet did.
+
+An eighth weave…
+
+Io dug deeper. Torvath’s mind cracked just enough to release one truth:
+
+“The vampires are only a distraction.
+The girl was always meant to stay here.”
+The bones inside of their forbidden runes started to animate and Scales cast Silence.
+
+And the room erupted.
+
+The Battle in Silence
+Scales threw a sphere of Silence across the ritual floor, smothering the chanting instantly. Lucien, recognizing from history checks alone that these women were powerful cultist-mages, stepped forward with cold resolve.
+
+The skeleton lunged — and Kord’ak, newly raging, smashed into it, nearly breaking its spine. Lucien delivered the finishing blow by stabbing through its ribcage, the skeleton collapsing with an indignant guffaw.
+
+Vaz unleashed Ice Knife at Nimora, exploding into scorching water scalding upon impact. The cultist and ghoul nearby shrieked in absolute melted agony — as if water were burning in its bones.
+
+And then Io — for the first time — slipped into a dream surge so powerful the world snapped.
+
+He stood in a field of poppies.
+Then fell into a pink sky of floating frames.
+Then plummeted past burning trees, upside-down fountains, writhing snakes, reverse horses.
+
+An ouroboros swallowed him.
+Exploded.
+Fire. Thunder. Silence. Screaming skies.
+Rain falling upward.
+Pianos spinning in tornadoes.
+
+He hit the ground as the effect manifested through him:
+a ninth-level spell.
+Weird.
+
+Nightmares poured from him into the room.
+Torvath, Nimora, and the ghoul were seized in visions so horrific they couldn’t even scream — not that they could, in Silence.
+
+The ghoul died instantly.
+Both casters crumpled.
+
+Vorinthian stepped into the void like a blade-shaped miracle. His sword flashed emerald, eyes alight with the storm of his lineage. Green-Flame Blade. He struck Nimora once — clean, merciful, absolute.
+
+She turned to ash.
+
+Torvath staggered, barely clinging to life, until Lucien and Kord’ak pinned her down.
+Initiative ended.
+But the horror did not.
+
+Torvath was still shaking when the silence dropped. She had clawed her way back from the visions Io forced upon her — but she was wounded, cornered, and surrounded by people who had nothing left to lose.
+
+Lucien and Kord’ak pinned her with blades at her throat. Vaz crossed her daggers cleanly under her chin. Io knelt before her, eyes dark beneath his stolen ritual mask.
+
+“Tell us everything,” he said — no charm, no mischief, just steel.
+
+Torvath coughed a bitter laugh through the gag.
+“I knew from the start you weren’t Malthis.”
+
+Io tilted his head. “Then who am I?”
+
+Her eyes narrowed.
+
+Io didn't break eye contact. He simply slapped her across the mind — a psychic snap like a door slamming shut.
+
+“You’re going to tell me everything about the tiefling girl.”
+
+Her breath stuttered as she began chanting a spell.
+“Imperio—” was all she managed before Vaz’s blades crossed, swift and silent.
+
+The cultist slumped.
+There would be no more answers from her.
+
+The Null Sun takes care to keep its secrets.
+
+The Cult Chamber of Bones
+With Torvath and Nimora dead, the ritual room settled into a stillness almost worse than combat. The skeletons lay shattered. The chanting circle flickered weakly without its conduits. The air smelled of scorched bone and ash.
+
+Vaz sifted through the remains of Nimora’s belongings and lifted a dagger etched with an abyssal engraving:
+
+THE NULL SUN WILL RISE AGAIN.
+Io pocketed scrolls, fragments of notes, sigils that hummed with unkind magic.
+Vaz, Kord’ak, and Io spread the Cassalanter map fragment across the desecrated ritual table and began cross-referencing symbols with the cult graffiti scrawled around the chamber.
+
+The deciphered pieces emerged like whispers:
+
+Fire. Ice. Lightning.
+Sefara.
+Kossuth is gone.
+Temples of —.
+(The missing letters refused to translate, as if the language itself resisted being spoken.)
+A tremor rattled the table.
+The coffin in the corner shuddered once, violently, as if something inside had heard its name.
+
+No one moved to open it.
+
+After the Cassalanter attic fiasco, the group collectively decided they were done dealing with vampire spawns.
+
+Vaz, crouched low, spotted a scrap of parchment taped to the underside of the ritual table. She peeled it away, studying the coded message until the letters rearranged in her mind:
+
+NEXT IS THE ICE TEMPLE OF VEL’CARMIN.
+The words pulled at her memory.
+M had spoken once of the Temples — ancient, sacred nodes of magic threaded across the world.
+Impossible. Dangerous.
+Unspoken except in whispers.
+
+One of them, he said, had nearly killed him.
+
+And now the cult was moving toward one. Or already had…
+
+The Surface Route: Elevators, Arcanum, and Agor the Dealer
+Back outside the ritual hall, Scales surveyed the lower tunnels. Two elevators rose from the Underward: one belonging to the Silent Hand, and the other — rusted, rattling — connected to the Bazaar above.
+
+Near it stood a crooked shack selling dubious “luxury wares,” run by a half-orc named Agor who radiated the kind of entrepreneurial spirit that assured everyone he had multiple active arrest warrants.
+
+Io sauntered over, mentioned (casually!) that he had just killed Torvath, and Agor perked up like someone hearing excellent gossip.
+He hated the cult.
+Loved money.
+And adored anyone willing to partake in arcanum, the purple powdered magical stimulant he claimed was “top shelf.”
+
+Io did a line.
+Agor did a line.
+Their hands glowed faintly — arcane advantage for a short time — proof that the drugs were indeed both potent and wildly unsafe.
+
+Io bought two vials.
+Agor threw in a grin.
+
+The Freight Elevator Escape
+The abandoned freight building near the drug shack was held closed by a miserable lock that Vaz dismantled in seconds. Inside: crates stacked to the ceiling, dust, broken beams, and one ancient cargo elevator.
+
+Scales, in an act of logistical brilliance, proposed they smuggle themselves out inside crates. Io alone would stand outside, disguised with Disguise Self, and operate the elevator like a very confident worker who belonged there.
+
+The group clambered into crates.
+Io transformed into Agor, mustache, swagger, and all.
+
+The elevator lever groaned like it hadn’t been touched since the Second Dawn, until Scales cleaned it and Lucien added muscle. With a shudder that felt like divine intervention or very poor engineering, the lift began to rise.
+
+Up through shafts of wood and rust.
+Up past the slums.
+Up toward the lights of the Under Bazaar.
+
+The doors opened.
+
+No one was waiting… except a broad-shouldered half-orc named Kyl.
+
+He eyed Io/Agor with deep suspicion.
+But Io, rolling divinely, didn’t blink.
+
+“Push this,” he ordered.
+
+Kyl pushed the dolly.
+
+Io refused him a hug.
+
+Kyl’s heart broke a little.
+
+Two Underward guards approached next — a dwarf and a human — demanding an explanation. Io rattled off a story so confident, so blisteringly mundane, that the guards nodded, saluted, and walked away without a single thought rattling in their skulls.
+
+Moments later, they emerged into the Dock Ward — free, unnoticed, and trailing a dolly full of party members pretending very hard to be boxes.
+
+Io, still disguised as Agor, promised half a dozen people free drugs on the way out.
+
+The man leaves social debt like confetti.
+
+Solo Moments
+Kord’ak — The Fox Returns Home
+Kord’ak slipped through the outskirts of the Kantor estate as a fox, paws silent on familiar stone. The gardens were just as he remembered: chrysanthemums blooming in stubborn defiance, roses climbing cracked walls that still bore the scars of a hundred battles. Beauty and brutality braided together — exactly like the Kantors themselves.
+
+Ahead, in the training yard, his brothers sparred.
+Azog — the “War Chief” — barked instructions with the same iron certainty he used to bark at Kord’ak. Malgus “Doom-Bringing” and Thrakk “Thunder-Blow” slammed fists into each other’s ribs with cheerful violence.
+
+Kord’ak froze. The sound of their fists, their grunts, the rhythm of pain — it hit him like a thrown hammer. Old fear crept up his spine. Old memories. Old bruises.
+
+He crept forward, trying to stay small.
+Trying not to remember.
+
+A glint in the window above caught his eye.
+
+Tanagrosh.
+The Land Waster.
+His father.
+
+The orc stood in his study, staring down at the yard — and then suddenly, at him.
+
+Father and son locked eyes.
+
+Kord’ak’s heart punched into his throat. His paws slipped. He tumbled off the wall in a flurry of fur and panic. The moment was as humiliating as it was devastating — a natural 1 in emotional stability — and he fled before Tanagrosh could move, breath ragged, chest aching.
+
+The past was not done with him.
+But neither, it seemed, was he done with the past.
+
+Io — Tea, Drama, and Crime at the Cassalanter Estate
+Io returned to the Cassalanter home as if nothing unusual had happened — despite having:
+• survived a 5,000-foot fall
+• infiltrated a death cult
+• snorted magic coke
+• and impersonated a half-orc drug dealer.
+
+He walked straight into Ser Rodrick.
+
+Once in Victoro’s study, Io launched immediately into a whirlwind of updates: the location of Radiant Requiem in the Dawat Desert, the implications for Elzerina’s disappearance, the involvement of vampires, the Hallowaters, cult conspiracies, blue roses, and star-crossed romance.
+
+He threw the blue rose dramatically onto a table.
+Victoro, entering mid-monologue, simply blinked at the chaos.
+
+Io then casually mentioned that Osvaldo might be doing drugs.
+
+Victoro blinked harder.
+
+The entire conversation became a duet of chaotic energy — Io vibrating at several emotional frequencies, Victoro in awe of his “brilliance”.
+
+Lucien — Mouse Enrichment Hour
+Lucien spent the afternoon seeking cracks of light in the streets above, peering into every opening that might connect to the Underward below. Moby the mouse scurried at his heels.
+
+Lucien, in a rare moment of levity, rolled a wheel of cheese into one of the fissures. By some miracle — or vampire dexterity — it bounced perfectly down into the Underward.
+
+Moments later, faintly, Moby’s tiny, ecstatic squeaks echoed up the shaft.
+He had discovered cheese.
+Life would never be the same.
+
+Vaz — The Belt, the Tattoo, and Zira
+Vaz slipped through the Under Bazaar in search of a replacement belt — something normal, something unmarked, something that did not scream assassin’s guild exile. She bought a plain one, cheap leather, nothing special.
+
+But then she saw the tattoo shop.
+
+And then she saw her.
+
+Zira — an albino tiefling covered in artwork, scars and symbols wrapped around her like a story half-told. Vaz stepped inside and instantly forgot how words worked.
+
+Zira studied her with a slow, deliberate smile. Vaz offered a design from an obscure assassin tradition: an Oathbreak Line. A slash of dark red ink across the collarbone, almost like a wound, symbolizing a creed broken — but survived.
+
+It offered slight magical resistance to coercion.
+It also looked unfairly hot.
+
+Zira rolled a NAT 20 on the tattoo.
+The line came out perfect — clean, sharp, devastatingly elegant.
+
+Their banter lingered a moment too long.
+Her hand brushed Vaz’s shoulder a moment too long.
+Her “come back anytime” absolutely lasted too long.
+
+Vaz left dazed, flustered, and deeply marked — in more than one way.
+
+Then, buoyed by confidence and a small loan from the Bank of Io, she returned to the tannery and bought the enchanted constitution belt she actually wanted.
+
+Scales — An Audience with the Divine Hierarchy
+Scales ascended the steps of the Basilica of Kelemvor with the quiet certainty of someone who had spoken directly to his god the night before. His metal feet echoed like ceremonial drums through the marble halls.
+
+He reported to the Archbishop first, then the Cardinal, kneeling with disciplined reverence. He told them everything:
+• the vampires were not the true threat
+• a cult manipulating a forbidden eighth weave walked the city
+• the gods themselves might be targeted
+• and his path now led toward the Ice Temple in Vel’Carmin
+
+The clergy did not doubt him.
+
+They saw the mark of revelation in him.
+Cardinal Justinus T. Law blessed him.
+He affirmed his destiny.
+And as he left the Mouselum, something inside him shifted — a gentle recalibration, a new balance in his internal mechanisms.
+
+Wisdom increased by +1.
+Purpose sharpened.
+A new dawn indeed.
+
+
+On Wed, Dec 3, 2025 at 2:55 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Four (+2) Threads of Fate |`
+            },
+            {
+              id: 5, title: 'Silent Hands, Falling Stars', location: 'Rauru', day: 'Day 2',
+              content: `At last, the party reached the true Underward — a vertical city of shanties and platforms, rope bridges and hanging lanterns, stacked like a thousand bad ideas under Rauru’s foundations. Light spilled down from grates high above, turning dust motes into constellations. Voices echoed from market stalls, walkways, and shadows.
+
+Rauru had a second city. And it was very much alive.
+
+The Silent Hand Headquarters
+The group descended by rope onto the roof of a squat building marked with a familiar symbol: the Silent Hand.
+
+Inside, they met Fletch, a young halfling lookout with more nerves than sense. He revealed three things very quickly:
+The building was a Silent Hand safehouse.
+He was supposed to be guarding “some big mysterious man.”
+The downstairs storage room was absolutely off-limits.
+He was, in other words, completely unprepared for four heavily-armed strangers and a Kelemvorite cleric.
+
+On the second floor, in a reinforced room, the group found the “mysterious prisoner”: an 8-foot-tall goliath wearing little more than a loincloth and confusion. Slate-gray skin, emerald eyes, braided black hair, and scars like a life story written in slashes. He didn’t offer a name, so, for now, the party called him No Name.
+
+Vaz, correctly suspicious that freeing a prisoner in front of a Silent Hand agent was a very bad idea, quietly conferred with Scales about neutralizing Fletch before making their escape.
+
+Scales, with priestly authority, cast Command, ordering Fletch to fetch a gag and shackles from storage. The halfling dutifully obeyed and returned with a ball gag and restraints. Vaz then attempted to knock him out with the flat of her blade.
+
+She nearly killed him.
+
+He collapsed, vomiting and bleeding on the floor. Scales sighed, placed a gentle metal hand on the halfling’s cheek, and stabilized him with divine magic. Fletch lived. But on a nat-1 Insight, Scales completely misread the situation — Fletch would later wake with a splitting headache, a new fear of warforged, and a very clear memory of what each of them looked like to report back to his guild.
+
+The Skunk, the Orc, and the Box
+Meanwhile, Io and Lucien checked the downstairs storage room. Lucien kicked the door open; a crate rattled ominously inside.
+
+They opened it and came face-to-face with a very upset skunk — injured, ribs cracked, and radiating noxious fumes. As they tried to control the situation, the creature began to shift.
+
+Bones cracked. Fur receded. Limbs stretched.
+
+After Io and Lucien broke the restraints and removed the cuffs, the skunk completed a grotesque half-Animorph transformation into a 7’5” orc, still half-wild, half-shifting, clearly not in full control of their powers. This was Kord’ak — last seen as a helpless animal in a cage, now very much conscious, self-healing, and extremely disoriented.
+
+The party gathered what gear and stolen goods they could, freed No Name from his restraints, and made a fast exit through a window just as multiple Silent Hand members pounded back into the guild.
+
+Outside, Vaz lingered long enough to see at least six figures converge on the building. Among them: a huge orc she mentally tagged as “the Boss” and a figure she thinks might be “Rose.”
+
+The Silent Hand would definitely remember this.
+
+The Under Bazaar
+From there, the group slipped into the Under Bazaar, the beating heart of the Underward. Crowded stalls, colorful awnings, hawkers shouting, scam artists smiling, music playing — a chaotic, semi-legal marketplace humming with life.
+
+Highlights included:
+A shady human vendor selling questionably-sourced magical weapons. No Name, guided by instinct, sensed one item humming with real power. The vendor challenged him to an arm-wrestling match for it. With a bit of Guidance (literally) from Scales, No Name won and claimed a Clockwork Amulet, its tiny gears ticking like a second heartbeat.
+Nestor, a dwarven animal trafficker running a stall of caged, exotic creatures. Kord’ak made two attempts to free the animals and failed, his argument deteriorating into angry spit on Nestor’s boots. On the third attempt, Io rolled a clutch nat 20 and snapped the cages open, freeing the animals in a burst of fur, feathers, and chaos. Nestor was furious. The party did not stay to discuss customer service. One of the animals — a reptilian parrot — took a particular liking to Kord’ak.
+A cigar-smoking tabaxi with an eyepatch — clearly Silent Hand muscle — began trailing the group from the shadows.
+The group tried, unsuccessfully, to secure safe refuge with a local widow. Their pitch was… not compelling. She shut the door in their faces.
+
+Kord’ak asked the reptilian parrot, who had returned to perch near the druid-barbarian, for help. The creature agreed to guide them to “safety.”
+
+“Safety” turned out to be a high, exposed vantage point. But at least it was far away from Nestor.
+
+Which is how we got to the next part.
+
+The Silent Hand Ambush
+As soon as the party approached the top of the building, a rain of arrows descended from above. It was an ambush, and it hurt.
+
+Vaz, caught completely flat-footed, acted last. Lucien launched into the fray, landing a massive 27-point hit on a tiefling Silent Hand enforcer — only to realize she was still very capable of fighting back.
+
+Kord’ak flew into a rage and Wild Shaped into a bear made of chrysanthemums — petals swirling with each movement. He tanked blow after blow, snarling as the gang was gradually overwhelmed.
+
+Then the real threat stepped in.
+
+The eyepatched tabaxi, arm glowing with arcane force, closed the distance to Scales. He struck with lethal precision, and Scales barely dodged what would have been a killing blow. It was the first clear glimpse that the Silent Hand had true monsters in their ranks, not just street-level thieves.
+
+Vaz tried to negotiate mid-combat, pleading for a ceasefire, but her argument fell apart under the weight of reality: they had robbed a Silent Hand safehouse, freed their prisoner, emptied their cages, assaulted their lookout, and left survivors.
+
+The tiefling enforcer and her allies were not in a talking mood.
+
+The Fall
+As the fight spiraled, Scales was hit by more than just steel. In the chaos and near-death, he prayed to Kelemvor:
+
+“There are many paths toward death. Show me one that leads away from it.”
+
+In answer, he saw a vision: glowing paths of light stretching in every direction from where he stood, each one winking out like snuffed candles — all but one. The single surviving path led straight into a massive, dark shaft descending into the depths of the undercity.
+
+“If God wills it,” he said, and the 680-pound warforged pencil-dived, upright, into the hole.
+
+Io followed.
+No Name cast Darkness over the enemies and leapt after them.
+Vaz, realizing her second attempt at negotiation had failed, disengaged and dove in.
+Lucien, naturally, jumped with an umbrella.
+Kord’ak turned into a fox, threw on a cape, shouted “You’ll never catch me alive!” and dove after the rest.
+
+They all plummeted into blackness.
+
+Freefall.
+No plan.
+No idea how far down.
+Flashes of life and death flickering through everyone’s mind.
+
+Until Io rolled a nat 20.
+
+Into the Abyss
+As they tumbled, Io’s vision shattered again. In the void of the shaft, he saw Her — the jeweled woman from his dreams, the one among the purple poppies.
+
+“My boy… it’s not over,” she told him with a soft smile. “Not yet.”
+
+She reached for his hand, and Io felt power surge into his brush — a new spell, etched fully formed into his mind and granted with a spell slot to cast right now.
+
+Feather Fall.
+
+He spoke the word.
+The air caught them as Io painted wings around each of his companions.
+
+The group slowed from terminal velocity to a gentle drift, cloaks billowing around them as the Underward’s lights vanished above. For a moment, they were just silhouettes in the dark, hanging between the city they’d just angered and whatever waited further below.
+
+Vaz, feeling the weight of Silent Hand eyes somewhere far above, realized how badly this had gone. The Hand knew she was alive, knew who she was with, and had every reason to come for them.
+
+They weren’t just passing through the Underward anymore.
+
+They were on the Silent Hand’s map.
+Or did the Hand simply assume the party’s undeniable death?
+
+The group now falls slowly into the deepest parts of Rauru’s underbelly — battered, wanted, and entangled with a thieves’ guild, a cult, a fading weave, and at least three gods with opinions.
+
+The light of the city feels very far away. So does their main quest.
+And the further they fall, the more The Waning Wonder begins to live up to its name…
+
+On Wed, Dec 3, 2025 at 2:52 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Four Threads of Fate |`
+            },
+            {
+              id: 4, title: 'Teeth in the Dark', location: 'Rauru', day: 'Day 2',
+              content: `We picked up in the tunnels beneath the Mausoleum, with the echoes of “for the glory of the Sun Unmade” still hanging in the air. Ahead: darkness, stale water, and the promise of bad decisions as we entered the old sewer systems under the city of Rauru.
+
+The Abandoned Sewers
+The group began with cautious exploration — lantern light, soft footsteps, weapons drawn. The catacombs slowly gave way to older stonework and makeshift passages. There were three points of interest:
+Io looted a rusted key off a slumped skeleton wedged in a wall niche, its bones water-stained and forgotten.
+Vaz scouted ahead and found a blue-iron gate at the bottom of a short stairwell. Beyond it: a large cistern of stagnant, foul-smelling water and more skeletal remains.
+Scales investigated another passage and discovered a red-iron gate leading down into a chamber thick with poisonous air. He felt the sting in his nose, but his warforged body shrugged it off.
+In the center of a larger chamber that connected these routes was a green lever. The party, being adventurers, did what adventurers do best.
+
+They pulled the lever.
+
+The Ooze Problem
+The door behind them slammed shut.
+
+Grey oozes slithered out from the walls like congealed nightmares — sludge bubbling with acidic hunger. One dropped from above, one surged from below, and suddenly the group was trapped in what can only be described as Ooze-verse (with special guests Ooze-Top and Ooze-Bottom).
+
+Lucien and Vaz immediately started carving the nearest blob to pieces, blades sizzling where they met corrosive mass. Another ooze oozed its way toward Scales, testing his armor and his patience. He tried to toll its mind with Kelemvor’s judgment — the ooze, having no discernible brain, remained unimpressed.
+
+Io stepped back, raised his brush, and let cold surge through him. A Chromatic Orb of frost slammed into the nearest ooze, shattering it into glittering shards of frozen sludge. As ice spread across the stone, Io’s vision fractured.
+
+For a moment, he wasn’t in the catacombs.
+He was standing beneath a pale, distant sun of ice. A woman’s voice — not the one from the poppy fields — whispered:
+
+“Child… I cannot hold this much longer. Help me.”
+
+The sensation of brittle, failing ice-weave pulsed through him, then snapped.
+
+Back in the chamber, the oozes closed in again. Lucien, decidedly not a dummy, spider-climbed up the wall, popped open the red gate with ease, and dropped down with a clean strike that finished the ooze harrying him. Vaz darted in with blades flashing, chipping away at the remaining creature. The last ooze tried to engulf her; Lucien cut it down before it could do more than sting.
+
+The lever trap reset, the room quieted, and the party moved on.
+
+The Poisoned Pool and the Mimic
+Beyond the red gate, Scales investigated the poisonous water chamber, confirming that the pool was indeed toxic and likely connected to a larger system. Lucien found the blue lever mirroring the red one above and, with only minimal drama, pulled it.
+
+Further in, Io used the key from his skeleton friend to unlock a hidden stone panel in the wall, revealing a small side room. Inside: a suspiciously pristine chest.
+
+They opened it.
+
+It bit back.
+
+The mimic latched onto Io, teeth sinking into his shoulder as adhesive tendrils dragged him close. It was, briefly, very bad. Vaz stepped in with her first-ever Witch Bolt, lancing the creature with continuous blue lightning that crackled and held. Io, bleeding and trapped, ripped himself free with a burst of misty movement and stumbled back, searing the mimic with a follow-up spell.
+
+Lucien hacked into the creature with feral efficiency. Scales ended the fight with a measured, respectful strike — sending the mimic back to whatever afterlife exists for lying furniture. Among its remains, the party found supplies, gear, and clues that this under-tunnel infrastructure was more than just old city maintenance.
+
+The Turbine and the Waterwheel
+A short walk later, the group entered a blue-lit chamber housing a strange, rusted turbine mechanism connected to water channels in the walls. Four skeletons lay on the ground nearby, weapons scattered around them.
+
+Before touching anything, the group wisely removed the skeletons’ weapons and smashed the bones to pieces, pre-empting the inevitable “they stand up and stab you” moment.
+
+After some trial and error — and a series of successful Strength checks — they managed to get the turbine turning, clearing the poison from the earlier water chamber. Somewhere in the distance, a waterwheel groaned back to life.
+
+Which is when the crocodile appeared.
+
+The Crocodile and the Storm
+With the waterways reactivated, a churning channel now flowed through a tunnel opening, washing away the putrid puddles that would have poisoned anyone who tried to cross.
+
+As the group approached, the sounds they had heard earlier intensified and a giant crocodile burst through the rusty grates of the tunnel alongside the rushing water.
+
+Io painted an illusory crocodile into existence, sending the shimmering construct to distract the beast. It worked—mostly. The real crocodile launched into combat with its painted rival just as Lucien vaulted onto its back in full heroic fashion.
+
+He dealt immense damage… but a failed Acrobatics check, made harder by his heavy armor, sent Lucien tumbling into the running water — one of his greatest weaknesses.
+
+The crocodile did not go gently.
+Lucien went into the water.
+
+Dragged beneath the surface and mauled, Lucien took a brutal series of hits and dropped unconscious as the water burned his undead flesh like acid. His body rag-dolled in the current — a scene that raised alarms in the rest of the party.
+
+On the shore, Vaz unleashed a devastating nat-20 Witch Bolt, sending 28 points of crackling lightning through the crocodile. As the air filled with ozone and the smell of scorched scales, Vaz was pulled into a memory: fighting back-to-back with M, wounded but reassuring, promising that everything would be alright. The lightning weave around her hummed in recognition.
+
+Io, calling on this same storm-thread, hurled another surge of lightning. As he cast, he slipped again into dreamspace — this time seeing Talos himself striking a thunderhead, struggling against something unseen, the storm fraying at its edges. When Io’s vision snapped back, the crocodile was being torn between the real lightning and his illusory reptile, which bit down in a final echo of power.
+
+The crocodile fell.
+The water ran red, then clear.
+
+Scales hauled Lucien’s broken body from the water and began reviving him. Something was off. No breath. No heartbeat. Not enough blood. Scales felt the unease settle in his chestplate but chose, for now, to trust his friend over his suspicions.
+
+Lucien came to.
+Scales gave him a piggy-back ride over the water.
+It was weirdly tender.
+
+Weaves and Whispers
+As the group regrouped, Io and Vaz walked side by side, comparing notes on magic. Io admitted that cold and lightning spells had been pulling him into visions — one of ice (potentially Auril) and one of storm (likely Talos). Fire, notably, stayed quiet. He wondered aloud if the jeweled woman from his dreams was Evania, and what it meant that different gods felt… strained.
+
+Vaz, quietly crackling with new lightning power, listened and shared what she’d felt.
+
+Scales, listening from behind, turned over what they’d seen and learned:
+Talos and Auril have devout followers, but something in their weaves feels thin, frayed.
+Revolutions aren’t always loud. Sometimes, belief just… shifts.
+Somewhere above them, Rauru kept shining like nothing was wrong.
+Somewhere below, the undercity waited.
+
+They had found teeth in the dark — oozes, mimics, crocodiles — but the true danger was in the pattern: gods stretching thin, undead rising where they shouldn’t, cultists praising a Sun Unmade.
+
+The Underward was close now.
+And the light was clearly not reaching this deep.
+
+Will the group uncover the mystery of the girls turned vampires?
+Or will chaos pull them down a different path entirely?
+
+On Tue, Nov 11, 2025 at 2:47 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Four Threads of Fate |`
+            },
+            {
+              id: 3, title: 'Whispers of the Sun Unmade', location: 'Rauru', day: 'Day 2',
+              content: `The session began where we left off — deep inside the Tower of Knowledge, under the supervision of Libby the Librarian and her dwarf assistants. The group was granted access to the library’s restricted section, after Scales presented his Kelemvorite seal and the Dean personally approved their research request.
+
+The Crimson Concordat
+In the lower vaults of the Tower, Lucien and Scales examined a strange crimson-bound tome locked by an old mechanism. The book’s surface pulsed faintly when touched, as if breathing. Lucien managed to pry a loose page from its binding, revealing a fragment titled Chapter VII — On the Night That Knows Its Name.
+
+The translation described an ancient age when vampires—called Children of the Fang—once lived openly among mortals. They drank blood not as sin, but as memory. When the light turned against them, holy armies rose in what became known as the Bright Crusades: a war between the Fifth and Sixth Suns meant to cleanse the world of their kind.
+
+The page also spoke of three “strains”:
+
+Those of the Fang, who hunt without song.
+Those of the Tome, who remember too much.
+Those of the Veil, who dream the world awake.
+Notes in the margins hinted that these beings still exist today—details deliberately scratched out.
+
+Meanwhile, Io “borrowed” a page illustrating art pieces similar to The Radiant Requiem, with a note claiming the last known version was seen in the northwest Dawat Desert. Vaz researched the noble families further and uncovered a legal treatise signed by Beau Bellingham, confirming that House Bellingham (Masters of Law) are even more rigid and self-important than expected.
+
+The Mausoleum of Kelemvor
+After the library, the group returned to the Mausoleum, where His Eminence Cardinal Justinus T. Law had finally arrived from the royal castle. The Cardinal—a drow with a booming presence and unpredictable temperament—met Scales and his group. He was curious, then furious, then proud, all within the span of a conversation. When he learned the group had visited the library unprompted, he praised their initiative (after briefly furiously yelling at them).
+
+He confirmed the Archbishop’s fears: a second incident had occurred—another girl turned into a vampire just two nights prior. He formally approved the group’s request to investigate the Underward, the subterranean maze beneath Rauru rumored to connect the catacombs, sewers, and forgotten tunnels of the city. Right there in the mausoleum, the Archbishop Voss per the Cardinal's instructions, escorted the group to a secret tunnel that would leave the safe passage and avoid having to enter the Underward through "conventional" means. 
+
+The Descent to the Underward
+The group descended into the catacombs through a narrow hall lined with cubby-like burial niches and Kelemvorite carvings. Moisture dripped from the ceilings. Dust clung to every breath. The deeper they went, the more the architecture shifted—from sacred tombs to unmarked tunnels carved by other hands.
+
+The path opened into a large chamber filled with cracked pillars and old supply crates. Io’s dancing lights floated gently ahead, casting colorful orbs of paint and glow across the damp stone. The silence didn’t last.
+
+The Ambush
+Without warning, a spell struck Io like a hammer — Hold Person — freezing him in place as his dancing paint orbs flickered and splattered on the floor. From the shadows, two cultists fired arrows while swarms of bats burst out from the ceiling, swarming Vaz and Lucien. (The following is an approximation, I forget the exact details of combat, but here's broad strokes that hopefully, capture the essence)
+
+Vaz was immediately pinned by the chaos — arrows flying, bats tearing at her cloak — while Scales channeling divine power to burn through the swarm. Lucien spotted the caster who’d frozen Io and charged through the chaos, his blade slamming into the robed figure hard enough to break concentration and free Io from the spell.
+
+Io barely had time to breathe before another hooded figure rushed him with a dagger, stabbing deep. Blood hit the stone. Io was downed. Lucien struck again, but the cultist remained standing.
+
+Then Vaz snapped.
+
+Fueled by adrenaline and rage, she lunged forward and drove her dagger straight through the cultist’s eyes, silencing him instantly. As his body fell, he gasped out a final phrase: “…for the glory of the Sun Unmade…”
+
+Scales knelt beside Io, hands glowing with Kelemvor’s light, saying "It is not yet your time" and stabilized him. Io awoke coughing up blood and retaliated immediately — a Fire Bolt that ignited another cultist’s face in a flash of red flame. Lucien decapitated the last archer cleanly, and without hesitation, sneakily opening his mouth as blood rushed out of his severed carotid artery.
+
+Aftermath
+The group caught their breath and inspected the bodies. Each cultist wore a corrupted Lathander pendant—its sunburst inverted and blackened. On their robes were crude markings of the same symbol. These were not random criminals. These were followers of something...
+
+They heard footsteps approaching and ducked behind the pillars, and Lucien vampire-climbed above the door. When a lone survivor entered the chamber, they ambushed him. Under threat—and missing an arm after getting struck by the group—the man begged for death, muttering his deep desire to perish. He bled out before anything else could be extracted from him.
+
+The party now stands at the junction where the catacombs meet the sewers—a threshold between the holy city above and something much older below.
+
+Whatever the is going on in the underbelly of Rauru, this was only their first glimpse of it.
+
+On Wed, Nov 5, 2025 at 12:38 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+The Waning Wonder | Arc 1: Four Threads of Fate |`
+            },
+            {
+              id: 2, title: 'The Investigation Begins', location: 'Rauru', day: 'Days 1–2',
+              content: `The morning bells of the Festival rang bright and merciless, and the city of Rauru burned gold. Pilgrims sang, banners fluttered, and the whole capital knelt before the rising sun. Inside a cramped inn room above The Broken Macaroni, four very different people woke to the sound of worship.
+
+Before we rejoined them, time rewound forty-eight hours.
+
+Flashback — The Meeting at Ballylee
+On the Eastern Pathway leading into Rauru, the warforged cleric Scales trudged beside a pale man with careful steps and quieter secrets. In the village of Ballylee, they had crossed paths in a tiny church whose priest worshipped the light. Over bread and sermons they learned of the empire’s war — Ram’rodûn leading as the Algari shatter. The Algari elves, once a proud pureblood kingdom, now scattered and bitter, clinging to the past like an open wound. 
+
+Present Day — Morning at the Festival
+The bells waking them all (or those who sleep anyways). Outside, the streets were filled with prayer and sunlight. Lucien, standing by the dock, spotted a halfling darting against the crowd, slipping away like a shadow under the light, but lost him in the noise. Scales, still heavy with purpose from the night before, spent the morning in silent reflection. Io, ever the con artist, spent it getting free breakfast.
+
+When a city soldier arrived with a summons from House Cassalanter, Io secured complimentary catering. Minutes later, the group set off with a basket of bacon, focaccia, and sandwiches — carried adorably by Scales, a 6’8, 680-pound metallic priest clutching a picnic basket like a doll’s purse.
+
+Return to the Cassalanter Estate
+Lord Victoro received them in his study, looking ten years older than yesterday. He formally requested their help investigating the circumstances of Elzerina’s death. Osvaldo, her brother, looked stricken — realizing too late he hadn’t known her at all.
+
+Cassian de Lora, the family’s art curator, was confirmed dead. That left one problem: Io, who had already impersonated being his assistant. To everyone’s astonishment (and Victoro’s resignation), Lord Cassalanter decided to make it official. He offered Io a formal contract as Acting Assistant Curator: no payment, no stipend, “exposure only.” Io haggled anyway and secured 200 gold upfront — a victory for art and fraud alike.
+
+Elzerina’s Room
+The investigation began in the girl’s chambers. Io examined a golden painting of the rose garden, its frame threaded with fine magical seams. As he focused, the world seemed to rewind — a flicker of Elzerina walking through a garden at dawn, roses curling and blackening as she passed. Vaz rifled discreetly through her desk, finding a book of poetry and a strange rose sealed in her nightstand — deep blue, almost otherworldly. She pocketed both.
+
+Io suggested Elzerina may have been “seeing someone.” Osvaldo’s face fell.
+
+The Rose Garden
+Under gray clouds, the group ventured into the Cassalanter gardens. The staff offered umbrellas; Scales took one to shield the food basket, creating an image none would forget. Lucien knighted the umbrella boy (Rodrick, polite, deeply flustered).
+
+Io searched for the arch of roses he’d seen in his vision and found it: the air shimmered faintly, whispering of dream-magic — but slipped away when he reached for it. Vaz discovered a hidden lattice gate in the hedge, and with Scales’ uncuttable arms, forced it open. Beyond it, a narrow path led toward another estate.
+
+Io and Osvaldo climbed a tree to get a better view but were immediately spotted by a green-skinned tiefling guard patrolling the other side. The guard declared they were trespassing on Bellingham Estate — home of the Master of Law. Io panicked, flailed, and launched into the greatest performance of his life: terrified new hire, too fragile for arrest, begging to be escorted back to Cassalanter property. The guard refused to be seduced (“aggressively,” according to eyewitnesses) but did escort him off the premises — by the book.
+
+The Theology of the Dawn Era
+Later, Victoro met with Io privately to discuss his “new position.” Over brandy and self-importance, he lectured on the Dawn Era — the age when the Morninglord tried to remake all creation in his own image, failed spectacularly, and lost his beloved goddess of earth to treachery disguised as a flower.
+“The lesson, Curator,” Victoro intoned, “is that imitation is not devotion. Beauty lies in contrast.”
+Io nodded wisely and retained none of it.
+
+Victoro then handed him a set of enchanted envelopes that could deliver reports directly to the Cassalanter estate — and with that, Io’s fraudulent employment was now official.
+
+The Mausoleum of Kelemvor
+Meanwhile, Scales, Vaz, and Lucien reported back to the Kelemvorite Mausoleum, the gray stone V-shaped building tucked behind the Lux Cathedral. Their meeting with Cardinal Justinus Law was postponed again; Archbishop Elira Voss requested a private word.
+
+She led Scales to her study — a solemn chamber adorned with reliefs of mortality and light. She spoke candidly: there had been more resurrections, more incidents like the Cassalanter girl. The timing was wrong, the pattern disturbing. “Something stirs beneath Rauru,” she said. “I need eyes in the underground.” She described reports of a tiefling girl suffering the same fate as Elzerina, also around dusk the same day, possibly connected.
+
+Scales inquired delicately about the Bellingham Estate and its staff. “All tieflings,” he said. “Why?” The Archbishop frowned, promising to pull the house reports herself. (Also, Archbishop Voss being canonically a lesbian remains in force.)
+
+The Library of Knowledge
+With the meeting concluded, the group decided on research. The Tower of Knowledge, Rauru’s grand library in the Light Ward, rose like a spiraling marble shell. Inside, they met Libby the Librarian, a dwarven matron with a magnificent beard and an obvious lie about “no vampire records.”
+
+Scales flashed his Kelemvorite seal, forcing her to send a request to the Dean. Around them scuttled her assistants: siblings Marvin and Darwin, and the sharp-eyed Rebecca.
+
+Io climbed to the 7th floor to study art history but ended up reading Marvin’s mind instead, discovering only that the dwarf had a hopeless work crush. He failed to shake him off but did confirm that the library had a basement — and that basement was off-limits.
+
+Vaz, on the 6th floor, researched Rauru’s Noble Houses:
+Rauru – Human/Aasimar: the Royal Line, Masters of the Crown.
+Cassalanter – Half-Elves: Masters of Culture.
+Lantaro – Halflings: Masters of Coin.
+Kantor – Orcs: Masters of War.
+Hallowater – Drow Elves: Masters of Ships.
+Bellingham – Tieflings: Masters of Law.
+Illumina – Dwarves: Masters of Whispers.
+
+When the Dean’s approval finally arrived, Libby escorted Scales and Lucien down into the library’s sealed basement to review “restricted materials” on vampires. She was tense, her hands shaking slightly.
+
+Rows of books lay in quiet dust. Lucien skimmed titles filled with nonsense — “Vampires and Tulips” among them — while Scales’ sense of dread deepened. As they passed one particular shelf, a heavy tome slid from its place and thudded to the floor.
+
+The candlelight flickered.
+
+What secrets could this book hold?
+ᐧ
+
+On Tue, Oct 21, 2025 at 3:15 PM Lucas Cocco Delgado <lucascoccodelgado@gmail.com> wrote:
+Hello friends,
+
+Sending a session recap below. What a day! Thank you all so much for an AMAZING and EPIC Session 1 of The Waning Wonder! Everyone killed it with their role play and character portrayals. I hope you're enjoying the start of your journey in Sefara.
+
+Some logistics from your DM:
+
+Please reply to this note / or text me (reply all if you think your intentions would be public to the group) with what you think your character is most likely to want to pursue the following session (this helps me loosley plan around your intentions, but no guarantee that we will get to dive into what you reply). Something as simple as, "I really hope to talk to X NPC, or visit Y location to follow up on Z." would be really helpful!
+As always, any feedback is welcome and would love to improve as a DM, please let me know if you have thoughts or even cool ideas of things to explore or do.
+The next session of The Waning Wonder will be on October 28th at 7:30 PM, a week from today.
+Lastly, enjoy this recap of our first 6 hours of D&D as a group!
+
+With love,
+Lucas
+
+
+The Waning Wonder | Arc 1: Four Threads of Fate |`
+            },
+            {
+              id: 1, title: 'The Light in Darkness', location: 'Rauru, Festival of Radiance', day: 'Day 1',
+              content: `The sun was already sinking when the first two threads of fate slipped quietly into the House Cassalanter estate. In the Art Ward, where marble palaces glowed pink with sunset and banners for the Festival of Radiance hung from every window, Iodem “Io” and Vaz prepared for a job. A tip from a nameless man at the Broken Gull had promised an easy score: light staffing, priceless art, and one night before the household became too busy with festival rites to notice anything missing. It was, of course, not as simple as it seems.
+
+They climbed the pale façade of the Cassalanter manor with rope and grappling hook, slipping through a balcony window into a silent third-floor gallery. No guards. No sound. The room was a temple to vanity and devotion: frescoes of saints whose eyes glowed faintly on the ceiling, gold-leaf icons catching the dying sun, and relics resting under glass like sleeping eyes. Vaz moved with surgical precision, her mage hand finding a sealed envelope tucked away in a drawer: a ledger of “pending acquisitions,” listing paintings and relics of divine origin from across the continent of Sefara. Io studied the room like a chessboard and spotted the centerpiece, a bronze triptych worth more gold than either of them had ever seen.
+
+Then the reliquary. A marbel pedestal stood at the center of the gallery, inside it a vial filled with what looked like liquid sunlight, the oil of the first lamps, drawn from the dawn of the world. Vaz brushed too close, and the air turned to ice. A whisper passed through the room like the last breath of a dying god, and somewhere deep below, a scream—human and impossible—ripped through the house.
+
+Down in the Dawn Ward, a different pair crossed Rauru’s bridges. Scales, the warforged cleric of Kelemvor, walked beside a man with pale skin: Lucien, a paladin hiding his undead nature beneath a simple silver ring. They had arrived from the western roads that morning, Scales following an assignment from the Episcopate: to report at once to Kelemvorite Cardinal Justinus T. Law in Rauru. 
+
+At the Kelemvorite mausoleum behind the Lux Cathedral, Archbishop Elira Voss had greeted them in her gray robes. She handed Scales a sealed scroll detailing a quiet mortuary request from House Cassalanter. The family’s daughter, Elzerina, had died, and her body required the rites of passing. Eminence Voss also gave them a hand-drawn map of the city, and a warning: The Cassalanters wish for privacy. Handle it quietly before dusk. And so they set out, unaware that the cleric and the vampire were walking straight toward the scene of an ongoing art heist.
+
+The manor’s servants announced the arrival of the Cleric of Kelemvor and his escort/bodyguard. Lady Ammalia Cassalanter met them in the vestibule, regal even through grief, and a butler guided them through halls lined with murals of light and ornate tapestries. Lord Victoro Cassalanter stood apart, hollow-eyed, while Osvaldo Cassalanter, their son, lingered near the door, his face caught between fury and despair. The body lay in a chamber heavy with incense. Elzerina Cassalanter, pale as ivory, rested on a golden bier. Scales began the ritual prayers, his metallic voice low and steady. When he reached the invocation of rest, something twitched beneath the shroud. Eyes of the Grave flared like a warning bell. There it was—the faint pulse of undeath.
+
+He cast Gentle Repose, too late. The flesh beneath his hands shuddered. Lucien felt it in his bones, the echo of his own curse. And then she screamed. An unnatural shriek blasted across the manor. Elzerina’s eyes opened wide and black, her body convulsing as the reliquary upstairs flickered violently, disturbed moments before by Io and Vaz’s curious hands.
+
+Chaos followed. The maid shrieked and fled as guards drew steel. Scales shouted a command that froze the creature in place while Lucien moved to her side, offering mercy, only for her to strike him like lightning, claws sparking off his armor. Upstairs, Vaz swung from her rope to peer down through the stairwell and was immediately spotted by Osvaldo and two guards; steel clashed against her arrows as she fended them off.
+
+A guard burst into the gallery upstairs just seconds after the scream. Io had already cut the triptych clean from its frame and melted into the shadows, perfect and silent. A whispered Subtle Spell—Sleep—rolled across the room like a sigh of sand, but the guard resisted. Io shifted, misstepped, and was caught in the open. And then the mask dropped, and the show began.
+
+“Ouuuuuuch! WHY would you SHOOT me?!” Io bellowed, half wounded and half outraged, his voice ricocheting off marble walls. The guard, startled, shouted back on instinct. What followed was a shouting match of pure chaos and charisma, Io gesturing wildly with his paintbrush like an insulted maestro. Then, with a flourish worthy of a stage, he snapped, “I’M CASSIAN DE LORA’S ASSISTANT — THE ART CURATOR! Do you even know who I am?”
+
+Something in that righteous fury broke the guard’s doubt. His weapon lowered, guilt flooding his face. Incredibly, Io won. The artist-turned-forger-turned-curator strode from the room as if he belonged there, the guard following meekly to “investigate the disturbance.” A performance so perfect it could have been painted.
+
+Downstairs, the chaos had peaked. Io’s brush pulsed faintly with blue light as he whispered a word and hurled a bubble of blue-violet paint swirling with thunderclouds. The Chromatic Orb struck Elzerina square in the chest like divine retribution, knocking her off Lucien. The paladin rose, cloak torn, and drove his blade through her heart in one clean, divine stroke accompanied by the cacophony of screaming souls in his blade. The vampire spawn fell still. The light guttered, and for a long moment, the only sound was her body crumbling into ash.
+
+Scales spoke gently to the grieving parents. “Your daughter’s soul is free. She rests now, as she should have from the start.” Lord Victoro was incredulous. Lady Ammalia sobbed once, quietly. When Vaz hinted she had been sent by the Hand and Io claimed his curator’s post, Victoro only nodded, disbelief swallowed by exhaustion. “Leave,” he said. “All of you.” And so they did.
+
+At dusk, they returned to the Mausoleum. Elira Voss listened, her face hardening into stone as she drafted a letter to Kelemvorite Cardinal Justinus T. Law, sealing it in black wax and sending it off by crow. Before dismissing them, she offered a short blessing—the irony of sanctifying Lucien’s undead flesh mercifully lost on her.
+
+The night came, and with it, the tavern. The Broken Gull, also known as The Broken Macaroni, was a dockside dive lit by greasy lanterns and run by Bertha, a goliath with magnificent confidence and even more magnificent titties. The group found a table near the back and ordered drinks: ale, mead, tapas, and a Bloody Patricia for Lucien, who also requested a blue owlbear steak, no garlic. As a warforged, Scales couldn’t eat or drink, yet he poured ale over his chestplate and pressed a blue steak to his face in an effort to blend in with local culture. When the waiter tried to overcharge them, Scales became a Karen, and slammed a thaumaturgic remark referencing the church, winning back ten gold and absolute silence, despite the waiter's indifference to his name dropping of the Cardinal.
+
+At the center of the table, Vaz turned the reliquary over in her hands. Inside the base, hidden under gold filigree, she found a fragment of a map sealed with wax sigils depicting seals of flame, frost, and lightning. The script encircling it was ancient and dead, familiar only in passing to Scales from the archives of the Domus Curae. The fragment pulsed faintly, alive with power.
+
+Later that night, in a filthy rented room, “shitty,” as Bertha had promised, Lucien caught the scent of rot beneath the salt air. Peering through the window for fresh air, he saw three hooded figures moving crates by lamplight. He called for Vaz. Ever the rogue, she went from rooftop to rooftop until she crouched above the docks like a gargoyle—nat 20, perfection. Below, she spotted a red-eyed elf, a redish-gold-haired elf woman, and two hooded orcs loading cargo onto a ship. The elves wore matching necklaces with green, pulsing stones. One of the crates shook violently until the orc kicked it still with his boots. “Set sail before dawn,” the red-eyed elf ordered. Vaz watched long enough to know that what she was seeing, wasn't commercial trade. She slipped back into the shadows and reported to Lucien.
+
+Meanwhile, Io dreamed. He wandered through fields of shimmering purple poppies, each bloom releasing clouds of violet flame that drifted into the sky. From the horizon came a voice—warm, luminous, familiar. “I’ve been expecting you,” it said. “You remind me of Him. Sit down. Gather them. You have a place where you belong.” The woman wore jewels that burned like trapped suns. Then the dream dissolved into blinding light.
+
+Elsewhere in Rauru’s upper ward, Lord Hector Hallowater dipped his quill into ink. Scribbled something in his trade ledger. In the darkness of his basement, chains rattled. A voice screamed, “Please… let me out of here! LET ME OUT!”
+
+...
+
+That was Session 1—your first day in the Shining City. You stole from lords, slew a vampire in a noble’s parlor, drank blue steaks dry, uncovered a mystery by the docks, and ended the night with a dream, a map, and the promise of something rotten beneath Rauru’s perfect light.
+
+Your adventures in Rauru continue tomorrow.
+And the light, as you’ve learned, casts long shadows.`
+            }
+          ]
+        }
+      ];
+
+      return h('div', { className: 'tww-recaps' },
+        arcs.map(arc =>
+          h('div', { key: arc.number, className: 'tww-recaps-arc' },
+            h('h3', { className: 'tww-recaps-arc-header' }, `Arc ${arc.number}: ${arc.title}`),
+            h('div', { className: 'tww-recaps-sessions' },
+              arc.sessions.map(session =>
+                h('div', { key: session.id },
+                  h('button', {
+                    className: `tww-recaps-session-btn ${expandedSession === session.id ? 'active' : ''}`,
+                    onClick: () => toggle(session.id)
+                  },
+                    h('div', { className: 'tww-recaps-session-info' },
+                      h('span', { className: 'tww-recaps-session-number' }, `Session ${session.id}`),
+                      h('span', { className: 'tww-recaps-session-title' }, session.title),
+                      h('span', { className: 'tww-recaps-session-meta' }, `${session.location} | ${session.day}`)
+                    ),
+                    h('span', { className: 'tww-recaps-expand-icon' }, '\u25BC')
+                  ),
+                  expandedSession === session.id && h('div', { className: 'tww-recaps-session-content' },
+                    session.content.split('\n\n').map((para, i) =>
+                      h('p', { key: i }, para)
+                    )
+                  )
+                )
+              )
+            )
           )
         )
       );
