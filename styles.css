@@ -774,6 +774,33 @@ body {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
+/* Arc Achievements Buttons */
+.arc-achievements-buttons {
+  margin-bottom: 2rem;
+}
+
+.arc-achievements-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, rgba(45, 27, 78, 0.95) 0%, rgba(90, 61, 138, 0.9) 100%);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  color: #ffd700;
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.arc-achievements-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(255, 215, 0, 0.25);
+  background: linear-gradient(135deg, rgba(55, 35, 95, 0.95) 0%, rgba(110, 75, 165, 0.9) 100%);
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }

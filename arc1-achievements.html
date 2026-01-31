@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Achievements</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cinzel', 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #d4af37;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .landing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .landing h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.1em;
+        }
+
+        .landing h2 {
+            font-size: 1.5rem;
+            color: #a89968;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #aa8c2d 100%);
+            border: 2px solid #d4af37;
+            color: #1a1a2e;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .viewer {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .viewer.active {
+            display: flex;
+        }
+
+        .achievement-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .achievement-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+            border: 3px solid;
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .achievement-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .achievement-name {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .achievement-rarity {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .achievement-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #e0d6b8;
+            font-style: italic;
+        }
+
+        .achievement-unlock {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #a89968;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            padding-top: 1.5rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .nav-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .counter {
+            color: #a89968;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .index-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            z-index: 1000;
+        }
+
+        .index-toggle:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .home-toggle {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            z-index: 1000;
+        }
+
+        .home-toggle:hover {
+            background: rgba(212, 175, 55, 0.4);
+        }
+
+        .index-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.98);
+            display: none;
+            padding: 4rem 2rem 2rem;
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .index-view.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .index-item {
+            background: rgba(22, 33, 62, 0.8);
+            border: 2px solid;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .index-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .index-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .index-name {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .index-rarity {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+
+        /* Rarity colors */
+        .common { border-color: #9e9e9e; color: #9e9e9e; }
+        .uncommon { border-color: #4caf50; color: #4caf50; }
+        .rare { border-color: #2196f3; color: #2196f3; }
+        .very-rare { border-color: #9c27b0; color: #9c27b0; }
+        .legendary { border-color: #ffd700; color: #ffd700; }
+        .special { border-color: #d4af37; color: #d4af37; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing" id="landing">
+        <h1>The Waning Wonder</h1>
+        <h2>Arc 1: Threads of Fate</h2>
+        <h2>Achievements Unlocked</h2>
+        <button class="start-btn" onclick="startViewer()">View Achievements</button>
+    </div>
+
+    <div class="viewer" id="viewer">
+        <button class="home-toggle" onclick="goHome()">← Home</button>
+        <button class="index-toggle" onclick="toggleIndex()">Index</button>
+
+        <div class="achievement-display">
+            <div class="achievement-card" id="achievementCard"></div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="prevAchievement()">← Previous</button>
+            <span class="counter" id="counter"></span>
+            <button class="nav-btn" id="nextBtn" onclick="nextAchievement()">Next →</button>
+        </div>
+    </div>
+
+    <div class="index-view" id="indexView">
+        <div class="index-grid" id="indexGrid"></div>
+    </div>
+
+    <script>
+        const achievements = [
+            { icon: "🍖", name: "I'm Blending In, I Swear", rarity: "common", description: "Attempt to eat and drink despite lacking a mouth.", unlock: "Unlocked when/where: Scales presses steak to his face and pours ale on himself at the Broken Macaroni." },
+            { icon: "💰", name: "No Bills for the Pretty", rarity: "uncommon", description: "Leave a tavern having paid nothing through confidence alone.", unlock: "Unlocked when/where: Io cons Bertha into free food at the Broken Macaroni." },
+            { icon: "🌹", name: "Blue Is Not a Romantic Color", rarity: "rare", description: "Acquire a mysterious blue rose that absolutely will matter later.", unlock: "Unlocked when/where: Vaz takes the blue rose from Elzerina's nightstand in House Cassalanter." },
+            { icon: "⚔️", name: "Knighted for Umbrella Service", rarity: "rare", description: "Knight a servant as a joke. Everyone takes it seriously.", unlock: "Unlocked when/where: Lucien knights Rodrick in the Cassalanter gardens." },
+            { icon: "☂️", name: "Little Eensy Tiny Umbrella", rarity: "common", description: "Hold a novelty umbrella as a 680-pound divine war machine.", unlock: "Unlocked when/where: Scales holds the staff umbrella while carrying the Cassalanter picnic basket." },
+            { icon: "📜", name: "You're Hired", rarity: "rare", description: "Accept official employment that began as a felony.", unlock: "Unlocked when/where: Victoro Cassalanter offers Io the \"Acting Assistant Curator\" contract." },
+            { icon: "🧛", name: "Vampire Lore", rarity: "very-rare", description: "Learn the difference between monsters and mistakes.", unlock: "Unlocked when/where: Lucien and Scales uncover the three vampire strains in the Tower of Knowledge restricted vaults." },
+            { icon: "🧳", name: "Furniture with Intent", rarity: "uncommon", description: "Survive an ambush by weaponized municipal storage.", unlock: "Unlocked when/where: The sewer \"chest\" reveals itself as a mimic and is destroyed." },
+            { icon: "🎒", name: "Piggyback Ride of Shame", rarity: "uncommon", description: "Carry an unconscious ally across poison water like a concerned parent.", unlock: "Unlocked when/where: Scales carries Lucien across the poisoned channel after the crocodile fight." },
+            { icon: "🦨", name: "Met a Skunk", rarity: "rare", description: "Discover that the injured animal in the crate is actually an orcish noble.", unlock: "Unlocked when/where: The caged skunk transforms into Kord'ak inside the Silent Hand safehouse." },
+            { icon: "🍃", name: "The Druid Stays", rarity: "legendary", description: "Officially welcome a new member to the party.", unlock: "Unlocked when/where: Kord'ak formally joins the group as a permanent companion." },
+            { icon: "🦜", name: "I'm from Tongo", rarity: "very-rare", description: "Free trafficked birds and emotionally adopt one from Tongo.", unlock: "Unlocked when/where: Io opens the cages at Nestor's stall and one reptilian parrot chooses Kord'ak." },
+            { icon: "🕳️", name: "Leap of Faith", rarity: "legendary", description: "Choose to jump into a bottomless shaft as the only viable escape.", unlock: "Unlocked when/where: Scales pencil-dives into the Underward abyssal shaft." },
+            { icon: "💪", name: "Broby the Bro-Rat", rarity: "rare", description: "Befriend a gym-obsessed mouse with dreams of greatness.", unlock: "Unlocked when/where: Vorin nat 20 Nature befriends the mouse and names him \"Broby\" in Rockbottom." },
+            { icon: "💊", name: "Bought Drugzz", rarity: "uncommon", description: "Purchase and consume magical stimulants from a man with no permits.", unlock: "Unlocked when/where: Io consumes arcanum with Agor." },
+            { icon: "🌀", name: "Eight Is Too Many", rarity: "very-rare", description: "Identify a forbidden weave that should not exist.", unlock: "Unlocked when/where: Scales recognizes the eighth weave in the ritual room." },
+            { icon: "🥷", name: "I'm Blending In, I Swear (Advanced)", rarity: "legendary", description: "Achieve perfect stealth in a death cult hideout while in skunk and invisible forms. Two nat 20s.", unlock: "Unlocked when/where: Vaz and Kord'ak each roll a nat 20 Stealth while scouting the cult base." },
+            { icon: "🌪️", name: "Weird Nightmares", rarity: "legendary", description: "Unleash power far beyond your level through dreams, trauma, and catastrophic timing.", unlock: "Unlocked when/where: Io's Dream Surge manifests in the ritual-room combat, flooding the room with nightmare visions." },
+            { icon: "🕯️", name: "There Will Be No Answers", rarity: "uncommon", description: "Kill the last source of information mid-sentence.", unlock: "Unlocked when/where: Torvath begins casting (\"Imperio—\") and is killed before completing the spell." },
+            { icon: "⚰️", name: "We Don't Open Coffins Anymore", rarity: "uncommon", description: "Choose restraint based on prior trauma.", unlock: "Unlocked when/where: The party deliberately refuses to open the coffin in the ritual chamber." },
+            { icon: "📦", name: "Certified Logistics Professional", rarity: "rare", description: "Escape the Underward using crates, disguises, and unearned confidence.", unlock: "Unlocked when/where: The party exits via crate freight-elevator without being detained at the Dock Ward checkpoint." },
+            { icon: "🩸", name: "Come Clean", rarity: "very-rare", description: "Reveal a past that can no longer be taken back.", unlock: "Unlocked when/where: Vaz confesses her guild-child history, exile, and true name (\"Vazriel\") to the party in Rockbottom." },
+            { icon: "👁️", name: "Still Watching", rarity: "very-rare", description: "Learn that your death has already been reported—and accepted.", unlock: "Unlocked when/where: Rose takes Vaz's Silent Hand belt to \"confirm\" her death." },
+            { icon: "🖊️", name: "Oathbreak Line", rarity: "rare", description: "Permanently mark yourself to survive your past.", unlock: "Unlocked when/where: Vaz receives the Oathbreak Line tattoo from Zira." },
+            { icon: "🧀", name: "Cheese Changes a Man", rarity: "legendary", description: "Introduce dairy to an entire belief system.", unlock: "Unlocked when/where: Moby receives and consumes cheese via the fissure drop." },
+            { icon: "😵", name: "Natural 1, Emotional Damage", rarity: "rare", description: "Be spotted by the person you least wanted to notice you.", unlock: "Unlocked when/where: Kord'ak locks eyes with Tanagrosh and immediately eats shit fleeing the Kantor estate." },
+            { icon: "⚖️", name: "Judgment Begins", rarity: "very-rare", description: "Speak directly with a god and be told obedience is no longer enough.", unlock: "Unlocked when/where: Scales receives Kelemvor's divine visitation during the long rest." },
+            { icon: "⛪", name: "Promotion!", rarity: "rare", description: "Gain authority without protection.", unlock: "Unlocked when/where: Scales is elevated from cleric to deacon in the Kelemvorite Mausoleum." },
+            { icon: "🎨", name: "Patronage Secured", rarity: "rare", description: "Acquire cover on the road by talking artists into employing you.", unlock: "Unlocked when/where: Johannes agrees on the spot to bring the party along as \"subjects\" for Io's painting plan." },
+            { icon: "✉️", name: "Sent Mail", rarity: "common", description: "Entrust important information to a bird with a job.", unlock: "Unlocked when/where: Io sends his first express letters at EXPRESS Airmail." },
+            { icon: "🛤️", name: "Leaving Raru", rarity: "common", description: "Depart the capital city to adventure north.", unlock: "Unlocked when/where: The party leaves Raru on the northern road, ending Arc 1." },
+            { icon: "✨", name: "To Be Continued", rarity: "special", description: "Thank you to our players for their incredible contributions to this world and this story. The road ahead grows darker as the Waning Wonder tightens its grip. Time slips away. Reality frays at the edges. Will you uncover the truth before all is nullified?", unlock: "" }
+        ];
+
+        let currentIndex = 0;
+
+        function startViewer() {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('viewer').classList.add('active');
+            displayAchievement(0);
+            buildIndex();
+        }
+
+        function displayAchievement(index) {
+            currentIndex = index;
+            const ach = achievements[index];
+            const card = document.getElementById('achievementCard');
+
+            card.className = `achievement-card ${ach.rarity}`;
+
+            if (ach.unlock) {
+                card.innerHTML = `
+                    <div class="achievement-icon">${ach.icon}</div>
+                    <div class="achievement-name">${ach.name}</div>
+                    <div class="achievement-rarity">${ach.rarity.replace('-', ' ')}</div>
+                    <div class="achievement-description">${ach.description}</div>
+                    <div class="achievement-unlock">${ach.unlock}</div>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="achievement-icon">${ach.icon}</div>
+                    <div class="achievement-name">${ach.name}</div>
+                    <div class="achievement-description" style="margin-top: 2rem;">${ach.description}</div>
+                `;
+            }
+
+            document.getElementById('counter').textContent = `${index + 1} / ${achievements.length}`;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === achievements.length - 1;
+        }
+
+        function prevAchievement() {
+            if (currentIndex > 0) {
+                displayAchievement(currentIndex - 1);
+            }
+        }
+
+        function nextAchievement() {
+            if (currentIndex < achievements.length - 1) {
+                displayAchievement(currentIndex + 1);
+            }
+        }
+
+        function toggleIndex() {
+            document.getElementById('indexView').classList.toggle('active');
+        }
+
+        function buildIndex() {
+            const grid = document.getElementById('indexGrid');
+            grid.innerHTML = achievements.map((ach, i) => `
+                <div class="index-item ${ach.rarity}" onclick="selectFromIndex(${i})">
+                    <div class="index-icon">${ach.icon}</div>
+                    <div class="index-name">${ach.name}</div>
+                    <div class="index-rarity">${ach.rarity.replace('-', ' ')}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectFromIndex(index) {
+            toggleIndex();
+            displayAchievement(index);
+        }
+
+        function goHome() {
+            document.getElementById('viewer').classList.remove('active');
+            document.getElementById('landing').style.display = 'flex';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('viewer').classList.contains('active') &&
+                !document.getElementById('indexView').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') prevAchievement();
+                if (e.key === 'ArrowRight') nextAchievement();
+            }
+            if (e.key === 'Escape' && document.getElementById('indexView').classList.contains('active')) {
+                toggleIndex();
+            }
+        });
+    </script>
+</body>
+</html>

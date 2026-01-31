@@ -264,7 +264,7 @@
           activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
           activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(RecapsTab, { recaps, onSave: saveRecaps })),
           activeTab === 'comments' && h(CommentsTab, { comments, onSave: saveComments }),
-          activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements }),
+          activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
           activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs }),
           activeTab === 'maps' && h(MapsTab, { campaign })
         )
@@ -411,7 +411,7 @@
     }
 
     // Achievements Tab
-    function AchievementsTab({ achievements, onSave }) {
+    function AchievementsTab({ achievements, onSave, campaign }) {
       const [isAdding, setIsAdding] = useState(false);
       const [newAchievement, setNewAchievement] = useState({ title: '', description: '', date: '' });
 
@@ -441,6 +441,14 @@
             className: 'add-button',
             onClick: () => setIsAdding(!isAdding)
           }, isAdding ? 'Cancel' : '+ Add Achievement')
+        ),
+        campaign === 'tww' && h('div', { className: 'arc-achievements-buttons' },
+          h('a', {
+            href: 'arc1-achievements.html',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            className: 'arc-achievements-btn'
+          }, 'Arc 1: Threads of Fate — Achievements')
         ),
         isAdding && h('div', { className: 'add-form' },
           h('input', {
