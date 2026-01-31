@@ -1766,8 +1766,15 @@ body {
   font-size: 0.95rem;
   line-height: 1.85;
   color: #2d1b4e;
-  white-space: pre-wrap;
   animation: fadeIn 0.3s ease;
+}
+
+.tww-recaps-session-content p {
+  margin: 0 0 1.2em 0;
+}
+
+.tww-recaps-session-content p:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
