@@ -257,17 +257,17 @@
             onClick: () => setActiveTab('recaps')
           }, 'Session Recaps'),
           h('button', {
-            className: activeTab === 'achievements' ? 'active' : '',
-            onClick: () => setActiveTab('achievements')
-          }, 'Achievements'),
-          h('button', { 
             className: activeTab === 'npcs' ? 'active' : '',
             onClick: () => setActiveTab('npcs')
           }, 'NPCs'),
-          h('button', { 
+          h('button', {
             className: activeTab === 'maps' ? 'active' : '',
             onClick: () => setActiveTab('maps')
-          }, 'Maps')
+          }, 'Maps'),
+          h('button', {
+            className: activeTab === 'achievements' ? 'active' : '',
+            onClick: () => setActiveTab('achievements')
+          }, 'Achievements')
         ),
         h('main', { className: 'campaign-content' },
           activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
