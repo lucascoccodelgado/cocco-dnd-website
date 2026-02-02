@@ -273,7 +273,7 @@
           activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
           activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(RecapsTab, { recaps, onSave: saveRecaps })),
           activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
-          activeTab === 'npcs' && h(NpcsTab, { npcs, onSave: saveNpcs }),
+          activeTab === 'npcs' && (campaign === 'tww' ? h(TWWNpcsTab) : h(NpcsTab, { npcs, onSave: saveNpcs })),
           activeTab === 'maps' && h(MapsTab, { campaign })
         )
       );
@@ -479,6 +479,197 @@
                   }, 'Delete')
                 )
               )
+        )
+      );
+    }
+
+    // TWW NPCs Tab (hardcoded)
+    function TWWNpcsTab() {
+      const [expandedGroup, setExpandedGroup] = useState(null);
+      const [filter, setFilter] = useState('all');
+
+      const toggleGroup = (id) => {
+        setExpandedGroup(prev => prev === id ? null : id);
+      };
+
+      const groups = [
+        {
+          id: 'cassalanter',
+          name: 'House Cassalanter',
+          icon: '🏛️',
+          location: 'Cassalanter Estate, Rauru',
+          npcs: [
+            { name: 'Victoro Cassalanter', title: 'Head of House Cassalanter', status: 'alive', description: 'The lord of the estate. Received the party personally and retained them for sensitive investigative work. Measured, composed, and clearly accustomed to power.' },
+            { name: 'Ammalia Cassalanter', title: 'Lady of House Cassalanter', status: 'alive', description: 'Present during the events surrounding Elzerina. Poised and sharp-eyed — not the type to miss details.' },
+            { name: 'Osvaldo Cassalanter', title: 'Son of House Cassalanter', status: 'alive', description: 'Involved in the aftermath at the estate. Later came up again in connection with follow-up developments.' },
+            { name: 'Elzerina Cassalanter', title: 'Daughter of House Cassalanter', status: 'deceased', description: 'Her condition — and her death — became central to the early investigation. Whatever happened to her started a chain of events the party is still unraveling.' },
+            { name: 'Cassian de Lora', title: 'Art Curator (deceased)', status: 'deceased', description: 'The Cassalanter estate\'s former art curator. Io impersonated a connection to him early on. No longer around to dispute the claim.' },
+            { name: 'Ser Rodrick', title: 'Cassalanter Staff', status: 'alive', description: 'Encountered during the estate sequence. Part of the household\'s inner workings.' }
+          ]
+        },
+        {
+          id: 'kelemvor',
+          name: 'Kelemvorite Church',
+          icon: '⚖️',
+          location: 'Kelemvorite Mausoleum, Rauru',
+          npcs: [
+            { name: 'Archbishop Elira Voss', title: 'Archbishop', status: 'alive', description: 'Oversees the Kelemvorite mausoleum in Rauru. Directed Scales and actively supported the investigation. Stern, faithful, and not easily impressed.' },
+            { name: 'Cardinal Justinus T. Law', title: 'Cardinal of the Kelemvorite Church', status: 'alive', description: 'A senior authority figure in the church hierarchy. Interacted directly with Scales regarding responsibilities and the path forward.' }
+          ]
+        },
+        {
+          id: 'tower',
+          name: 'Tower of Knowledge',
+          icon: '📚',
+          location: 'Tower of Knowledge Library, Rauru',
+          npcs: [
+            { name: 'Libby', title: 'Head Librarian', status: 'alive', description: 'A dwarven librarian who runs the Tower of Knowledge with an iron filing system. Controls access to the restricted materials — and does not hand out favors lightly.' },
+            { name: 'Marvin, Darwin & Rebecca', title: 'Library Assistants', status: 'alive', description: 'Libby\'s trio of dwarven assistants — affectionately (or not) called the "youngins." They keep the stacks in order and seem to know where everything is buried.' }
+          ]
+        },
+        {
+          id: 'macaroni',
+          name: 'The Broken Macaroni',
+          icon: '🍺',
+          location: 'The Broken Macaroni Tavern, Rauru',
+          npcs: [
+            { name: 'Bertha', title: 'Tavern Owner', status: 'alive', description: 'Runs the Broken Macaroni. The kind of tavern keeper who\'s heard it all and remembers more than she lets on.' }
+          ]
+        },
+        {
+          id: 'silenthand',
+          name: 'The Silent Hand',
+          icon: '🗡️',
+          location: 'The Underward, Rauru',
+          npcs: [
+            { name: 'Fletch', title: 'Halfling Lookout', status: 'alive', description: 'A halfling posted at a Silent Hand safehouse. Small, quick, and clearly used to not being noticed.' },
+            { name: 'M', title: 'Shadar-kai Operative', status: 'unknown', description: 'Connected to Vaz\'s training and early missions. Appeared in flashbacks — their current whereabouts are unclear.' },
+            { name: 'Rose', title: 'Shadar-kai Operative', status: 'alive', description: 'Tied to Vaz\'s past. Later appeared in person in the Underward — so whatever their history, it\'s not finished.' }
+          ]
+        },
+        {
+          id: 'underward',
+          name: 'Under Bazaar & Underward',
+          icon: '🕳️',
+          location: 'Under Bazaar / Underward, Rauru',
+          npcs: [
+            { name: 'Nestor', title: 'Dwarven Vendor', status: 'alive', description: 'Deals in caged animals down in the Under Bazaar. The kind of merchant who doesn\'t ask questions and prefers you don\'t either.' },
+            { name: 'Agor', title: 'Half-orc Dealer', status: 'alive', description: 'A half-orc in the Underward associated with arcanum trade. Knows things. Sells things. Probably shouldn\'t be trusted with either.' },
+            { name: 'Kyl', title: 'Half-orc', status: 'alive', description: 'Encountered during the freight elevator sequence. Brief, memorable.' },
+            { name: 'Zira', title: 'Tattoo Artist', status: 'alive', description: 'An albino tiefling who works ink in the Under Bazaar. Her art is permanent — so hopefully the party chose wisely.' }
+          ]
+        },
+        {
+          id: 'nullsun',
+          name: 'The Null Sun',
+          icon: '🌑',
+          location: 'Various — Rauru and surrounding areas',
+          npcs: [
+            { name: 'Torvath', title: 'Cult Spellcaster', status: 'unknown', description: 'Encountered in the ritual room. Dangerous, deliberate, and clearly not acting alone.' },
+            { name: 'Nimora', title: 'Cult Spellcaster', status: 'unknown', description: 'Fought alongside Torvath. Just as dangerous — possibly more so.' },
+            { name: 'Malthis', title: 'Cult Identity', status: 'unknown', description: 'A name used during infiltration. Whether the real Malthis is still out there remains to be seen.' },
+            { name: 'Vladith', title: 'Cult Figure', status: 'unknown', description: 'Referenced in connection with a missing tiefling girl. A name that keeps surfacing in the worst contexts.' },
+            { name: 'Bartho', title: 'Cult Figure', status: 'unknown', description: 'Mentioned in cult dialogue. Another thread in the web.' }
+          ]
+        },
+        {
+          id: 'troupe',
+          name: 'Mystic Star of the West',
+          icon: '🎭',
+          location: 'Traveling — road north from Rauru',
+          npcs: [
+            { name: 'Johannes', title: 'Troupe Leader', status: 'alive', description: 'The lead performer and decision-maker for the traveling troupe. When the road splits, Johannes picks the fork.' },
+            { name: 'Cyrilius', title: 'Troupe Member', status: 'alive', description: 'Carries a rune-emitting gold ring set with aquamarine. The ring burns away mist — but only for as long as Cyrilius keeps his focus.' },
+            { name: 'Ignatius', title: 'Troupe Member', status: 'alive', description: 'Stepped up during combat on the road. Not just a performer — or at least, not only one.' },
+            { name: 'Bob', title: 'Percussionist', status: 'alive', description: 'A dwarven drummer with the troupe. Keeps the beat. Keeps things grounded.' },
+            { name: 'Star', title: 'Lead Dancer & Diviner', status: 'alive', description: 'The troupe\'s lead dancer and tarot reader. When Star pulls a card, people tend to listen.' }
+          ]
+        },
+        {
+          id: 'wolves',
+          name: 'Grassland Guardians',
+          icon: '🐺',
+          location: 'Grasslands outside Rauru',
+          npcs: [
+            { name: 'Mirai', title: 'Dire Wolf Guardian', status: 'alive', description: 'A massive guardian wolf encountered in the cave outside Rauru. Fierce, territorial, and clearly protecting something.' },
+            { name: 'Pe\'ta', title: 'Dire Wolf Guardian', status: 'alive', description: 'Encountered alongside Mirai. Equally imposing. Whatever they guard, they guard together.' }
+          ]
+        },
+        {
+          id: 'forest',
+          name: 'Forest of the Dawn',
+          icon: '🌿',
+          location: 'Forest of the Dawn',
+          npcs: [
+            { name: 'Caeltherenn the Dawnheart', title: 'Forest Spirit', status: 'alive', description: 'The ancient spirit of the forest shrine. Spoke in riddles and tested the party before granting passage. Offered cryptic guidance about the weaves, the temples, and the guardians that watch over them.' }
+          ]
+        },
+        {
+          id: 'other',
+          name: 'Other Figures',
+          icon: '👤',
+          location: 'Various',
+          npcs: [
+            { name: 'Corvo', title: 'Figure from Lucien\'s Past', status: 'unknown', description: 'A name tied to Lucien\'s history. The details are his to share — if he ever does.' },
+            { name: 'Lord Hector Hallowater', title: 'Lord Hallowater', status: 'unknown', description: 'Appeared in a cutaway scene. A figure of influence whose role in the broader picture has yet to become clear.' }
+          ]
+        }
+      ];
+
+      const statusCounts = { all: 0, alive: 0, deceased: 0, unknown: 0 };
+      groups.forEach(g => g.npcs.forEach(n => { statusCounts.all++; statusCounts[n.status]++; }));
+
+      const filteredGroups = groups.map(g => ({
+        ...g,
+        npcs: filter === 'all' ? g.npcs : g.npcs.filter(n => n.status === filter)
+      })).filter(g => g.npcs.length > 0);
+
+      return h('div', { className: 'tab-content tww-npcs-tab' },
+        h('div', { className: 'tab-header' },
+          h('h2', null, 'NPCs & Characters')
+        ),
+        h('div', { className: 'npc-filter-bar' },
+          ['all', 'alive', 'deceased', 'unknown'].map(s =>
+            h('button', {
+              key: s,
+              className: `npc-filter-btn ${filter === s ? 'active' : ''}`,
+              onClick: () => setFilter(s)
+            }, `${s.charAt(0).toUpperCase() + s.slice(1)} (${statusCounts[s]})`)
+          )
+        ),
+        h('div', { className: 'npc-groups' },
+          filteredGroups.map(group =>
+            h('div', { key: group.id, className: 'npc-group' },
+              h('div', {
+                className: `npc-group-header ${expandedGroup === group.id ? 'expanded' : ''}`,
+                onClick: () => toggleGroup(group.id)
+              },
+                h('div', { className: 'npc-group-header-left' },
+                  h('span', { className: 'npc-group-icon' }, group.icon),
+                  h('div', null,
+                    h('h3', null, group.name),
+                    h('span', { className: 'npc-group-location' }, group.location)
+                  )
+                ),
+                h('div', { className: 'npc-group-header-right' },
+                  h('span', { className: 'npc-group-count' }, `${group.npcs.length} NPC${group.npcs.length !== 1 ? 's' : ''}`),
+                  h('span', { className: 'npc-group-chevron' }, expandedGroup === group.id ? '▾' : '▸')
+                )
+              ),
+              expandedGroup === group.id && h('div', { className: 'npc-group-cards' },
+                group.npcs.map((npc, i) =>
+                  h('div', { key: i, className: 'npc-card' },
+                    h('div', { className: 'npc-header' },
+                      h('h3', null, npc.name),
+                      h('span', { className: `status-badge ${npc.status}` }, npc.status)
+                    ),
+                    npc.title && h('p', { className: 'npc-title' }, npc.title),
+                    h('p', { className: 'npc-description' }, npc.description)
+                  )
+                )
+              )
+            )
+          )
         )
       );
     }
