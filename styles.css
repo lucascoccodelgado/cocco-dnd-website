@@ -1459,6 +1459,7 @@ body {
 .tww-home {
   animation: fadeIn 0.3s ease;
   position: relative;
+  margin: -2rem -2rem 0;
 }
 
 .tww-home::before {
