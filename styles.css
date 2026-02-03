@@ -1269,6 +1269,49 @@ body {
 }
 
 /* TWW NPC Groups */
+.npc-search-bar {
+  margin-bottom: 1rem;
+}
+
+.npc-search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.65rem 1rem;
+  border: 2px solid rgba(126, 82, 184, 0.3);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.5);
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.npc-search-input:focus {
+  outline: none;
+  border-color: #7e52b8;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.npc-search-input::placeholder {
+  color: rgba(45, 27, 78, 0.5);
+}
+
+.npc-race {
+  font-size: 0.85rem;
+  color: #7e52b8;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  background: rgba(126, 82, 184, 0.1);
+  border-radius: 4px;
+}
+
+.status-badge.dead {
+  background: #6c757d;
+  color: #fff;
+}
+
 .npc-filter-bar {
   display: flex;
   gap: 0.5rem;
