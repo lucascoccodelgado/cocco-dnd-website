@@ -1040,10 +1040,13 @@
     // TWW Session Recaps Tab
     function TWWRecapsTab() {
       const [expandedSession, setExpandedSession] = useState(null);
+      const [search, setSearch] = useState('');
 
       const toggle = (id) => {
         setExpandedSession(prev => prev === id ? null : id);
       };
+
+      const searchLower = search.toLowerCase().trim();
 
       const arcs = [
         {
@@ -2398,15 +2401,44 @@ And the light, as you’ve learned, casts long shadows.`
         }
       ];
 
+      // Filter sessions based on search
+      const matchesSearch = (session) => {
+        if (!searchLower) return true;
+        return session.title.toLowerCase().includes(searchLower) ||
+               session.location.toLowerCase().includes(searchLower) ||
+               session.content.toLowerCase().includes(searchLower);
+      };
+
+      const filteredArcs = arcs.map(arc => ({
+        ...arc,
+        sessions: arc.sessions.filter(matchesSearch)
+      })).filter(arc => arc.sessions.length > 0);
+
+      // Count total matches
+      const matchCount = filteredArcs.reduce((sum, arc) => sum + arc.sessions.length, 0);
+
       return h('div', { className: 'tww-recaps' },
-        arcs.map(arc =>
+        h('div', { className: 'tww-recaps-search-bar' },
+          h('input', {
+            type: 'text',
+            placeholder: 'Search recaps (names, places, events...)',
+            value: search,
+            onChange: (e) => setSearch(e.target.value),
+            className: 'tww-recaps-search-input'
+          }),
+          searchLower && h('span', { className: 'tww-recaps-search-count' },
+            `${matchCount} session${matchCount !== 1 ? 's' : ''} found`
+          )
+        ),
+        filteredArcs.map(arc =>
           h('div', { key: arc.number, className: 'tww-recaps-arc' },
             h('h3', { className: 'tww-recaps-arc-header' }, `Arc ${arc.number}: ${arc.title}`),
             h('div', { className: 'tww-recaps-sessions' },
-              arc.sessions.map(session =>
-                h('div', { key: session.id },
+              arc.sessions.map(session => {
+                const isExpanded = searchLower ? true : expandedSession === session.id;
+                return h('div', { key: session.id },
                   h('button', {
-                    className: `tww-recaps-session-btn ${expandedSession === session.id ? 'active' : ''}`,
+                    className: `tww-recaps-session-btn ${isExpanded ? 'active' : ''}`,
                     onClick: () => toggle(session.id)
                   },
                     h('div', { className: 'tww-recaps-session-info' },
@@ -2414,18 +2446,19 @@ And the light, as you’ve learned, casts long shadows.`
                       h('span', { className: 'tww-recaps-session-title' }, session.title),
                       h('span', { className: 'tww-recaps-session-meta' }, `${session.location} | ${session.day}`)
                     ),
-                    h('span', { className: 'tww-recaps-expand-icon' }, '\u25BC')
+                    h('span', { className: 'tww-recaps-expand-icon' }, isExpanded ? '\u25B2' : '\u25BC')
                   ),
-                  expandedSession === session.id && h('div', { className: 'tww-recaps-session-content' },
+                  isExpanded && h('div', { className: 'tww-recaps-session-content' },
                     session.content.split('\n\n').map((para, i) =>
                       h('p', { key: i }, para)
                     )
                   )
-                )
-              )
+                );
+              })
             )
           )
-        )
+        ),
+        searchLower && matchCount === 0 && h('p', { className: 'tww-recaps-no-results' }, 'No sessions match your search.')
       );
     }
 

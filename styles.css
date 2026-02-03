@@ -2171,6 +2171,51 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
+.tww-recaps-search-bar {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tww-recaps-search-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 500px;
+  padding: 0.65rem 1rem;
+  border: 2px solid rgba(126, 82, 184, 0.3);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.5);
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.tww-recaps-search-input:focus {
+  outline: none;
+  border-color: #7e52b8;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.tww-recaps-search-input::placeholder {
+  color: rgba(45, 27, 78, 0.5);
+}
+
+.tww-recaps-search-count {
+  font-size: 0.9rem;
+  color: #7e52b8;
+  font-style: italic;
+}
+
+.tww-recaps-no-results {
+  text-align: center;
+  color: #7e52b8;
+  font-style: italic;
+  padding: 2rem;
+}
+
 .tww-recaps-arc {
   margin-bottom: 2rem;
 }
