@@ -187,7 +187,7 @@
 
     // Campaign Dashboard Component
     function CampaignDashboard({ campaign, onBack }) {
-      const [activeTab, setActiveTab] = useState(campaign === 'tww' ? 'home' : 'recaps');
+      const [activeTab, setActiveTab] = useState('home');
       const [recaps, setRecaps] = useState([]);
       const [achievements, setAchievements] = useState([]);
       const [npcs, setNpcs] = useState([]);
@@ -248,7 +248,7 @@
           }, 'D&D Beyond')
         ),
         h('nav', { className: 'campaign-nav' },
-          campaign === 'tww' && h('button', {
+          h('button', {
             className: activeTab === 'home' ? 'active' : '',
             onClick: () => setActiveTab('home')
           }, 'Home'),
@@ -270,10 +270,10 @@
           }, 'Achievements')
         ),
         h('main', { className: 'campaign-content' },
-          activeTab === 'home' && campaign === 'tww' && h(TWWHomeTab, { onNavigate: setActiveTab }),
-          activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(RecapsTab, { recaps, onSave: saveRecaps })),
+          activeTab === 'home' && (campaign === 'tww' ? h(TWWHomeTab, { onNavigate: setActiveTab }) : h(COSHomeTab, { onNavigate: setActiveTab })),
+          activeTab === 'recaps' && (campaign === 'tww' ? h(TWWRecapsTab) : h(COSRecapsTab)),
           activeTab === 'achievements' && h(AchievementsTab, { achievements, onSave: saveAchievements, campaign }),
-          activeTab === 'npcs' && (campaign === 'tww' ? h(TWWNpcsTab) : h(NpcsTab, { npcs, onSave: saveNpcs })),
+          activeTab === 'npcs' && (campaign === 'tww' ? h(TWWNpcsTab) : h(COSNpcsTab)),
           activeTab === 'maps' && h(MapsTab, { campaign })
         )
       );
@@ -2312,6 +2312,272 @@ And the light, as you’ve learned, casts long shadows.`
                     session.content.split('\n\n').map((para, i) =>
                       h('p', { key: i }, para)
                     )
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    // COS Home Tab
+    function COSHomeTab({ onNavigate }) {
+      const scrollTo = (id) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      const partyMembers = [
+        { name: 'Adventurer 1', player: 'TBD', race: '???', level: '?', classInfo: 'Coming Soon', hook: 'A soul drawn into the mists...', bio: 'Their story has yet to be written.' },
+        { name: 'Adventurer 2', player: 'TBD', race: '???', level: '?', classInfo: 'Coming Soon', hook: 'Fate has darker plans...', bio: 'Their story has yet to be written.' },
+        { name: 'Adventurer 3', player: 'TBD', race: '???', level: '?', classInfo: 'Coming Soon', hook: 'The mists do not let go easily...', bio: 'Their story has yet to be written.' }
+      ];
+
+      const [carouselIndex, setCarouselIndex] = useState(0);
+      const count = partyMembers.length;
+
+      const goLeft = () => setCarouselIndex(prev => (prev - 1 + count) % count);
+      const goRight = () => setCarouselIndex(prev => (prev + 1) % count);
+
+      const getPos = (i) => {
+        let diff = i - carouselIndex;
+        if (diff > Math.floor(count / 2)) diff -= count;
+        if (diff < -Math.floor(count / 2)) diff += count;
+        return diff;
+      };
+
+      return h('div', { className: 'cos-home' },
+        // Hero Section
+        h('section', { className: 'cos-hero-section', id: 'cos-hero' },
+          h('h2', null, 'Curse of Strahd'),
+          h('p', { className: 'cos-hero-tagline' }, 'The mists have parted. There is no way back.'),
+          h('div', { className: 'cos-hero-teaser' },
+            h('p', null, 'Barovia is a land smothered by fog and ruled by a tyrant who has outlived death itself.'),
+            h('p', null, 'The sun never truly rises here. The wolves never truly sleep. And the castle on the cliff watches everything.'),
+            h('p', null, 'You did not choose to come. But now that you are here, survival demands more than strength \u2014 it demands sacrifice.')
+          ),
+          h('div', { className: 'cos-hero-buttons' },
+            h('button', { className: 'cos-btn', onClick: () => scrollTo('cos-premise') }, 'Read the Premise'),
+            h('button', { className: 'cos-btn cos-btn-outline', onClick: () => scrollTo('cos-party') }, 'Meet the Party')
+          )
+        ),
+
+        // Meet the Party Section
+        h('section', { className: 'cos-party-section', id: 'cos-party' },
+          h('h3', null, 'Meet the Party'),
+          h('p', { className: 'cos-party-subtitle' }, 'Souls trapped in the Domain of Dread.'),
+          h('p', { className: 'cos-party-intro' }, 'They came from different worlds. The mists brought them to the same nightmare.'),
+
+          h('div', { className: 'cos-carousel' },
+            h('button', { className: 'cos-carousel-arrow cos-arrow-left', onClick: goLeft, 'aria-label': 'Previous character' }, '\u2039'),
+            h('div', { className: 'cos-carousel-track' },
+              partyMembers.map((member, i) => {
+                const pos = getPos(i);
+                const isCenter = pos === 0;
+                const absPos = Math.abs(pos);
+                const visible = absPos <= 1;
+                return h('div', {
+                  key: member.name,
+                  className: `cos-carousel-card ${isCenter ? 'cos-carousel-center' : ''} ${!visible ? 'cos-carousel-hidden' : ''}`,
+                  style: {
+                    transform: `translateX(${pos * 280}px) scale(${isCenter ? 1 : 0.85})`,
+                    zIndex: 10 - absPos,
+                    opacity: visible ? (isCenter ? 1 : 0.4) : 0,
+                    filter: isCenter ? 'none' : 'brightness(0.5)'
+                  },
+                  onClick: () => setCarouselIndex(i)
+                },
+                  h('div', { className: 'cos-carousel-placeholder' }, '?'),
+                  isCenter && h('h4', { className: 'cos-char-name' }, member.name),
+                  isCenter && h('p', { className: 'cos-char-meta' }, `Level ${member.level} ${member.race}`),
+                  isCenter && h('p', { className: 'cos-char-meta' }, member.classInfo),
+                  isCenter && h('p', { className: 'cos-char-player' }, `Played by ${member.player}`)
+                );
+              })
+            ),
+            h('button', { className: 'cos-carousel-arrow cos-arrow-right', onClick: goRight, 'aria-label': 'Next character' }, '\u203A')
+          ),
+
+          h('p', { className: 'cos-party-closing' }, 'The party composition will be revealed when the mists part.')
+        ),
+
+        // Premise Section
+        h('section', { className: 'cos-premise-section', id: 'cos-premise' },
+          h('h3', null, 'Premise'),
+          h('div', { className: 'cos-premise-body' },
+            h('p', null, 'Barovia is a demiplane of dread \u2014 a prison without walls, where the mists themselves serve as bars.'),
+            h('p', null, 'At its heart sits Castle Ravenloft, ancient and patient, home to Count Strahd von Zarovich \u2014 vampire, conqueror, and the land\'s eternal lord.'),
+            h('p', null, 'The people of Barovia live in perpetual twilight, their hope long since bled dry. They whisper of a prophecy, of outsiders who might break the curse \u2014 but prophecies in Barovia have a way of turning on those who trust them.'),
+            h('p', null, 'You have been pulled through the mists. There is no path back. Only forward, into the dark.')
+          )
+        ),
+
+        // Themes & Pillars Section
+        h('section', { className: 'cos-dm-notes-section', id: 'cos-themes' },
+          h('h3', null, 'Themes & Pillars'),
+          h('p', { className: 'cos-dm-notes-intro' }, 'What waits in the dark is not always a monster.'),
+          h('div', { className: 'cos-dm-notes-body' },
+            h('p', null, 'Curse of Strahd is a gothic horror campaign \u2014 a story of survival, moral compromise, and the weight of an unbreakable curse.'),
+            h('p', null, h('strong', null, 'Horror & Dread: '), 'Barovia is a land designed to unsettle. The fog hides things. The silence says more than the screams.'),
+            h('p', null, h('strong', null, 'Survival: '), 'Resources are scarce, allies are rare, and trust is a luxury few can afford.'),
+            h('p', null, h('strong', null, 'Moral Choices: '), 'There are no clean answers. Every deal has a price. Every mercy may be a mistake.'),
+            h('p', null, h('strong', null, 'Dark Fantasy: '), 'Magic exists here, but it feels wrong \u2014 twisted by the land itself. Even the light casts longer shadows.')
+          )
+        ),
+
+        // At-a-Glance Strip
+        h('section', { className: 'cos-glance-section', id: 'cos-glance' },
+          h('div', { className: 'cos-glance-strip' },
+            h('div', { className: 'cos-glance-item' },
+              h('span', { className: 'cos-glance-label' }, 'Setting'),
+              h('span', { className: 'cos-glance-value' }, 'Barovia (Domains of Dread)')
+            ),
+            h('div', { className: 'cos-glance-item' },
+              h('span', { className: 'cos-glance-label' }, 'Core Themes'),
+              h('span', { className: 'cos-glance-value' }, 'Horror, survival, moral compromise, dread')
+            ),
+            h('div', { className: 'cos-glance-item' },
+              h('span', { className: 'cos-glance-label' }, 'Tone'),
+              h('span', { className: 'cos-glance-value' }, 'Gothic horror with creeping despair and moments of dark beauty')
+            ),
+            h('div', { className: 'cos-glance-item' },
+              h('span', { className: 'cos-glance-label' }, 'Play Style'),
+              h('span', { className: 'cos-glance-value' }, 'Exploration-driven, resource-scarce, high-stakes decisions')
+            )
+          )
+        ),
+
+        // Footer CTA
+        h('section', { className: 'cos-footer-cta-section', id: 'cos-footer' },
+          h('h3', null, 'The mists have closed behind you. The story begins.'),
+          h('div', { className: 'cos-cta-body' },
+            h('p', null, 'Some will seek the light. Some will bargain with the dark.'),
+            h('p', null, 'But all of them will face the same truth:'),
+            h('p', null, h('strong', null, 'In Barovia, even the brave learn to be afraid.'))
+          ),
+          h('div', { className: 'cos-cta-buttons' },
+            h('button', { className: 'cos-btn', onClick: () => scrollTo('cos-party') }, 'Meet the Party'),
+            h('button', { className: 'cos-btn cos-btn-outline', onClick: () => onNavigate('recaps') }, 'Session Recaps')
+          )
+        )
+      );
+    }
+
+    // COS Session Recaps Tab
+    function COSRecapsTab() {
+      const arcs = [];
+
+      if (arcs.length === 0) {
+        return h('div', { className: 'tab-content cos-recaps' },
+          h('div', { className: 'tab-header' },
+            h('h2', null, 'Session Recaps')
+          ),
+          h('div', { className: 'cos-empty-state' },
+            h('p', null, 'No sessions recorded yet.'),
+            h('p', null, 'The mists are gathering. Your story will begin soon.')
+          )
+        );
+      }
+
+      return h('div', { className: 'cos-recaps' },
+        arcs.map(arc =>
+          h('div', { key: arc.number, className: 'cos-recaps-arc' },
+            h('h3', { className: 'cos-recaps-arc-header' }, `Arc ${arc.number}: ${arc.title}`),
+            h('div', { className: 'cos-recaps-sessions' },
+              arc.sessions.map(session =>
+                h('div', { key: session.id },
+                  h('button', {
+                    className: 'cos-recaps-session-btn',
+                    onClick: () => {}
+                  },
+                    h('div', { className: 'cos-recaps-session-info' },
+                      h('span', { className: 'cos-recaps-session-number' }, `Session ${session.id}`),
+                      h('span', { className: 'cos-recaps-session-title' }, session.title),
+                      h('span', { className: 'cos-recaps-session-meta' }, `${session.location} | ${session.day}`)
+                    ),
+                    h('span', { className: 'cos-recaps-expand-icon' }, '\u25BC')
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    // COS NPCs Tab
+    function COSNpcsTab() {
+      const groups = [];
+
+      if (groups.length === 0) {
+        return h('div', { className: 'tab-content cos-npcs-tab' },
+          h('div', { className: 'tab-header' },
+            h('h2', null, 'NPCs & Characters')
+          ),
+          h('div', { className: 'cos-empty-state' },
+            h('p', null, 'No NPCs encountered yet.'),
+            h('p', null, 'The denizens of Barovia await your arrival.')
+          )
+        );
+      }
+
+      const [expandedGroup, setExpandedGroup] = useState(null);
+      const [filter, setFilter] = useState('all');
+
+      const toggleGroup = (id) => {
+        setExpandedGroup(prev => prev === id ? null : id);
+      };
+
+      const statusCounts = { all: 0, alive: 0, deceased: 0, unknown: 0 };
+      groups.forEach(g => g.npcs.forEach(n => { statusCounts.all++; statusCounts[n.status]++; }));
+
+      const filteredGroups = groups.map(g => ({
+        ...g,
+        npcs: filter === 'all' ? g.npcs : g.npcs.filter(n => n.status === filter)
+      })).filter(g => g.npcs.length > 0);
+
+      return h('div', { className: 'tab-content cos-npcs-tab' },
+        h('div', { className: 'tab-header' },
+          h('h2', null, 'NPCs & Characters')
+        ),
+        h('div', { className: 'npc-filter-bar' },
+          ['all', 'alive', 'deceased', 'unknown'].map(s =>
+            h('button', {
+              key: s,
+              className: `npc-filter-btn ${filter === s ? 'active' : ''}`,
+              onClick: () => setFilter(s)
+            }, `${s.charAt(0).toUpperCase() + s.slice(1)} (${statusCounts[s]})`)
+          )
+        ),
+        h('div', { className: 'npc-groups' },
+          filteredGroups.map(group =>
+            h('div', { key: group.id, className: 'npc-group' },
+              h('div', {
+                className: `npc-group-header ${expandedGroup === group.id ? 'expanded' : ''}`,
+                onClick: () => toggleGroup(group.id)
+              },
+                h('div', { className: 'npc-group-header-left' },
+                  h('span', { className: 'npc-group-icon' }, group.icon),
+                  h('div', null,
+                    h('h3', null, group.name),
+                    h('span', { className: 'npc-group-location' }, group.location)
+                  )
+                ),
+                h('div', { className: 'npc-group-header-right' },
+                  h('span', { className: 'npc-group-count' }, `${group.npcs.length} NPC${group.npcs.length !== 1 ? 's' : ''}`),
+                  h('span', { className: 'npc-group-chevron' }, expandedGroup === group.id ? '\u25BE' : '\u25B8')
+                )
+              ),
+              expandedGroup === group.id && h('div', { className: 'npc-group-cards' },
+                group.npcs.map((npc, i) =>
+                  h('div', { key: i, className: 'npc-card' },
+                    h('div', { className: 'npc-header' },
+                      h('h3', null, npc.name),
+                      h('span', { className: `status-badge ${npc.status}` }, npc.status)
+                    ),
+                    npc.title && h('p', { className: 'npc-title' }, npc.title),
+                    h('p', { className: 'npc-description' }, npc.description)
                   )
                 )
               )
