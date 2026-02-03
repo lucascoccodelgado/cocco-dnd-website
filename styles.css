@@ -1715,6 +1715,34 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Map Section */
+.tww-map-section {
+  padding: 3rem 2rem;
+  text-align: center;
+  scroll-margin-top: 80px;
+}
+
+.tww-map-section h3 {
+  font-size: 2rem;
+  color: #5a3d8a;
+  margin-bottom: 1.5rem;
+}
+
+.tww-map-container {
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(45, 27, 78, 0.2);
+  border: 3px solid rgba(125, 82, 184, 0.3);
+}
+
+.tww-map-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* DM Notes Section */
 .tww-dm-notes-section {
   max-width: 800px;
@@ -2109,8 +2137,13 @@ body {
   }
 
   .tww-premise-section h3,
+  .tww-map-section h3,
   .tww-dm-notes-section h3 {
     font-size: 1.6rem;
+  }
+
+  .tww-map-section {
+    padding: 2rem 1rem;
   }
 
   .tww-footer-cta-section h3 {
@@ -2950,6 +2983,7 @@ body {
   }
 
   .tww-premise-section h3,
+  .tww-map-section h3,
   .tww-dm-notes-section h3,
   .cos-premise-section h3,
   .cos-dm-notes-section h3 {
