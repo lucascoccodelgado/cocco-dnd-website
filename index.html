@@ -851,6 +851,14 @@
       const goLeft = () => setCarouselIndex(prev => (prev - 1 + count) % count);
       const goRight = () => setCarouselIndex(prev => (prev + 1) % count);
 
+      const getSpread = () => window.innerWidth < 480 ? 120 : window.innerWidth < 768 ? 160 : 350;
+      const [spread, setSpread] = useState(getSpread);
+      useEffect(() => {
+        const onResize = () => setSpread(getSpread());
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+      }, []);
+
       // Compute position offset from center for each card
       const getPos = (i) => {
         let diff = i - carouselIndex;
@@ -898,7 +906,7 @@
                   key: member.name,
                   className: `tww-carousel-card ${isCenter ? 'tww-carousel-center' : ''} ${!visible ? 'tww-carousel-hidden' : ''}`,
                   style: {
-                    transform: `translateX(${pos * 350}px) scale(${isCenter ? 1 : 0.48})`,
+                    transform: `translateX(${pos * spread}px) scale(${isCenter ? 1 : 0.48})`,
                     zIndex: 10 - absPos,
                     opacity: visible ? (isCenter ? 1 : 0.55 - (absPos - 1) * 0.2) : 0,
                     filter: isCenter ? 'none' : 'brightness(0.6) saturate(0.5)'
@@ -2337,6 +2345,14 @@ And the light, as you’ve learned, casts long shadows.`
       const [carouselIndex, setCarouselIndex] = useState(0);
       const count = partyMembers.length;
 
+      const getCosSpread = () => window.innerWidth < 480 ? 110 : window.innerWidth < 768 ? 140 : 280;
+      const [spread, setSpread] = useState(getCosSpread);
+      useEffect(() => {
+        const onResize = () => setSpread(getCosSpread());
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+      }, []);
+
       const goLeft = () => setCarouselIndex(prev => (prev - 1 + count) % count);
       const goRight = () => setCarouselIndex(prev => (prev + 1) % count);
 
@@ -2381,7 +2397,7 @@ And the light, as you’ve learned, casts long shadows.`
                   key: member.name,
                   className: `cos-carousel-card ${isCenter ? 'cos-carousel-center' : ''} ${!visible ? 'cos-carousel-hidden' : ''}`,
                   style: {
-                    transform: `translateX(${pos * 280}px) scale(${isCenter ? 1 : 0.85})`,
+                    transform: `translateX(${pos * spread}px) scale(${isCenter ? 1 : 0.85})`,
                     zIndex: 10 - absPos,
                     opacity: visible ? (isCenter ? 1 : 0.4) : 0,
                     filter: isCenter ? 'none' : 'brightness(0.5)'

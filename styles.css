@@ -1471,6 +1471,95 @@ body {
   .achievements-grid, .npcs-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Homepage */
+  .hero-wrapper {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .campaigns-wrapper {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .section-title {
+    margin-bottom: 2rem;
+  }
+
+  /* Password Gate */
+  .password-box {
+    padding: 2rem 1.5rem;
+  }
+
+  .password-box h2 {
+    font-size: 1.8rem;
+  }
+
+  .password-box input {
+    font-size: 1rem;
+    padding: 0.85rem;
+  }
+
+  .password-box button[type="submit"] {
+    font-size: 1rem;
+    padding: 0.85rem 1.5rem;
+  }
+
+  /* Campaign Dashboard Header */
+  .campaign-header {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .campaign-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .campaign-header .back-button {
+    position: static;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  .dndbeyond-link {
+    position: static;
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.85rem;
+  }
+
+  /* Campaign Nav */
+  .campaign-nav {
+    padding: 0.5rem;
+    gap: 0.3rem;
+  }
+
+  .campaign-nav button {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+    border-width: 1.5px;
+  }
+
+  /* Campaign Content */
+  .campaign-content {
+    padding: 1rem;
+  }
+
+  /* Map Viewer */
+  .map-viewer {
+    min-height: 50vh;
+  }
+
+  /* Arc Achievements */
+  .arc-achievements-btn {
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  .arc-achievements-title {
+    font-size: 1.1rem;
+  }
 }
 
 /* ===== TWW Landing Page Styles ===== */
@@ -1983,6 +2072,25 @@ body {
 
   .tww-footer-cta-section h3 {
     font-size: 1.4rem;
+  }
+
+  .tww-hero-section {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .tww-hero-teaser {
+    font-size: 0.95rem;
+  }
+
+  .tww-party-section,
+  .tww-premise-section,
+  .tww-dm-notes-section,
+  .tww-footer-cta-section {
+    padding: 2rem 1rem;
+  }
+
+  .tww-glance-section {
+    padding: 1.5rem 1rem;
   }
 }
 
@@ -2592,6 +2700,17 @@ body {
   flex-shrink: 0;
 }
 
+/* Responsive COS Recaps */
+@media (max-width: 768px) {
+  .cos-recaps-arc-header {
+    font-size: 1.4rem;
+  }
+
+  .cos-recaps-session-btn {
+    padding: 0.75rem 1rem;
+  }
+}
+
 /* Responsive COS Home */
 @media (max-width: 768px) {
   .cos-hero-section h2 {
@@ -2653,6 +2772,144 @@ body {
   }
 
   .cos-footer-cta-section h3 {
+    font-size: 1.4rem;
+  }
+
+  .cos-hero-section {
+    padding: 2.5rem 1rem 2rem;
+  }
+
+  .cos-hero-teaser {
+    font-size: 0.95rem;
+  }
+
+  .cos-party-section,
+  .cos-premise-section,
+  .cos-dm-notes-section,
+  .cos-footer-cta-section {
+    padding: 2rem 1rem;
+  }
+
+  .cos-glance-section {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* ========================================
+   Phone-Specific Refinements (≤480px)
+   ======================================== */
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.6rem;
+  }
+
+  .dm-portrait {
+    width: 200px;
+  }
+
+  .hero-portrait::before {
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+  }
+
+  .hero-portrait::after {
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+  }
+
+  .campaign-header {
+    padding: 0.75rem 0.75rem 0.5rem;
+  }
+
+  .campaign-header h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .campaign-header .back-button {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .dndbeyond-link {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.65rem;
+    margin-top: 0.25rem;
+  }
+
+  .password-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .tww-hero-section h2,
+  .cos-hero-section h2 {
+    font-size: 1.8rem;
+  }
+
+  .tww-glance-strip,
+  .cos-glance-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .tww-carousel-center {
+    width: 240px;
+  }
+
+  .tww-carousel-card {
+    width: 110px;
+  }
+
+  .tww-carousel-track {
+    min-height: 360px;
+  }
+
+  .tww-carousel-img {
+    max-height: 260px;
+  }
+
+  .cos-carousel-center {
+    width: 200px;
+  }
+
+  .cos-carousel-card {
+    width: 110px;
+  }
+
+  .cos-carousel-track {
+    min-height: 220px;
+  }
+
+  .cos-carousel-placeholder {
+    height: 100px;
+  }
+
+  /* Nav: compact pill layout for phones */
+  .campaign-nav {
+    padding: 0.4rem;
+    gap: 0.25rem;
+  }
+
+  .campaign-nav button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+    border-width: 1px;
+    border-radius: 6px;
+  }
+
+  .tww-footer-cta-section h3,
+  .cos-footer-cta-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .tww-premise-section h3,
+  .tww-dm-notes-section h3,
+  .cos-premise-section h3,
+  .cos-dm-notes-section h3 {
     font-size: 1.4rem;
   }
 }
